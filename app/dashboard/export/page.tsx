@@ -6,9 +6,10 @@ import { DatePickerWithRange } from "@/components/date-range-picker";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Download, FileSpreadsheet, FileText } from "lucide-react";
 import { useState } from "react";
+import { DateRange } from "react-day-picker";
 
 export default function ExportPage() {
-  const [date, setDate] = useState<{ from: Date; to: Date }>();
+  const [date, setDate] = useState<DateRange | undefined>();
 
   return (
     <div className="space-y-6 p-6">

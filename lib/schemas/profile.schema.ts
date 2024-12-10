@@ -1,0 +1,34 @@
+import { z } from "zod";
+
+export const nameSchema = z.object({
+  first_name: z
+    .string()
+    .trim()
+    .min(2, "Le prénom doit contenir au moins 2 caractères")
+    .max(50, "Le prénom ne peut pas dépasser 50 caractères"),
+  last_name: z
+    .string()
+    .trim()
+    .min(2, "Le nom doit contenir au moins 2 caractères")
+    .max(50, "Le nom ne peut pas dépasser 50 caractères"),
+});
+
+export const emailSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, "L'email est requis")
+    .email("Format d'email invalide"),
+});
+
+export const phoneSchema = z.object({
+  phone: z
+    .string()
+    .trim()
+    .min(1, "Le numéro de téléphone est requis")
+    .regex(/^\+?[0-9\s-]+$/, "Format de numéro invalide"),
+});
+
+export type NameFormData = z.infer<typeof nameSchema>;
+export type EmailFormData = z.infer<typeof emailSchema>;
+export type PhoneFormData = z.infer<typeof phoneSchema>;

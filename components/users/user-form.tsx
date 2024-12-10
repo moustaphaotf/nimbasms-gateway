@@ -2,7 +2,10 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createUserSchema, CreateUserFormData } from "@/lib/schemas/user.schema";
+import {
+  createUserSchema,
+  CreateUserFormData,
+} from "@/lib/schemas/user.schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UserPlus } from "lucide-react";
@@ -15,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { PhoneInputField } from "@/components/ui/phone-input";
 
 interface UserFormProps {
   onSuccess?: () => void;
@@ -97,7 +101,11 @@ export function UserForm({ onSuccess }: UserFormProps) {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="john.doe@example.com" {...field} />
+                  <Input
+                    type="email"
+                    placeholder="john.doe@example.com"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -111,7 +119,11 @@ export function UserForm({ onSuccess }: UserFormProps) {
               <FormItem>
                 <FormLabel>Téléphone</FormLabel>
                 <FormControl>
-                  <Input placeholder="+224 XXX XX XX XX" {...field} />
+                  <PhoneInputField
+                    value={field.value}
+                    onChange={(value) => field.onChange(value)}
+                    error={!!form.formState.errors.phone}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -122,7 +134,9 @@ export function UserForm({ onSuccess }: UserFormProps) {
         <div className="flex justify-end">
           <Button type="submit" disabled={createUser.isPending}>
             <UserPlus className="mr-2 h-4 w-4" />
-            {createUser.isPending ? "Création en cours..." : "Ajouter l'utilisateur"}
+            {createUser.isPending
+              ? "Création en cours..."
+              : "Ajouter l'utilisateur"}
           </Button>
         </div>
       </form>

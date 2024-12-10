@@ -1,10 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { accountService } from '@/lib/api/services/account.service';
-import { toast } from 'sonner';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { accountService } from "@/lib/api/services/account.service";
+import { toast } from "react-toastify";
 
 export function useAccountInfo() {
   return useQuery({
-    queryKey: ['account', 'info'],
+    queryKey: ["account", "info"],
     queryFn: accountService.getInfo,
   });
 }
@@ -15,11 +15,11 @@ export function useRegenerateApiKey() {
   return useMutation({
     mutationFn: accountService.regenerateApiKey,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['account', 'info'] });
-      toast.success('Clé API régénérée avec succès');
+      queryClient.invalidateQueries({ queryKey: ["account", "info"] });
+      toast.success("Clé API régénérée avec succès");
     },
     onError: () => {
-      toast.error('Erreur lors de la régénération de la clé API');
+      toast.error("Erreur lors de la régénération de la clé API");
     },
   });
 }
@@ -30,11 +30,11 @@ export function useUpdateWebhook() {
   return useMutation({
     mutationFn: accountService.updateWebhook,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['account', 'info'] });
-      toast.success('URL du webhook mise à jour avec succès');
+      queryClient.invalidateQueries({ queryKey: ["account", "info"] });
+      toast.success("URL du webhook mise à jour avec succès");
     },
     onError: () => {
-      toast.error('Erreur lors de la mise à jour du webhook');
+      toast.error("Erreur lors de la mise à jour du webhook");
     },
   });
 }

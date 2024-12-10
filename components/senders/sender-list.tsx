@@ -25,9 +25,9 @@ export function SenderList({ senders }: SenderListProps) {
 
   const getStatusBadge = (status: SenderStatus) => {
     switch (status) {
-      case "approved":
+      case "accepted":
         return <Badge variant="success">Approuvé</Badge>;
-      case "rejected":
+      case "refused":
         return <Badge variant="destructive">Rejeté</Badge>;
       default:
         return <Badge variant="secondary">En attente</Badge>;

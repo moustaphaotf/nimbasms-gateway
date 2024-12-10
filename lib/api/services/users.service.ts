@@ -1,14 +1,13 @@
-import { User, PaginatedResponse } from '../types';
-import { API_ENDPOINTS } from '../endpoints';
-import apiClient from '../client';
-import { CreateUserFormData } from '@/lib/schemas/user.schema';
-import { generatePassword } from '@/lib/utils';
+import { User, PaginatedResponse } from "../types";
+import { API_ENDPOINTS } from "../endpoints";
+import apiClient from "../client";
+import { CreateUserFormData } from "@/lib/schemas/user.schema";
 
 export interface UserFilters {
   offset?: number;
   limit?: number;
   search?: string;
-  order?: string;
+  ordering?: string;
 }
 
 export const usersService = {
@@ -21,11 +20,10 @@ export const usersService = {
   },
 
   createUser: async (userData: CreateUserFormData) => {
-    const password = generatePassword();
-    const { data } = await apiClient.post<User>(API_ENDPOINTS.AUTH.CREATE_USER, {
-      ...userData,
-      password,
-    });
-    return { ...data, generatedPassword: password };
+    const { data } = await apiClient.post<User>(
+      API_ENDPOINTS.AUTH.CREATE_USER,
+      userData
+    );
+    return data;
   },
 };

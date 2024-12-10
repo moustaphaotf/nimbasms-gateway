@@ -4,8 +4,11 @@ import * as React from "react";
 import { OTPInput } from "input-otp";
 import { cn } from "@/lib/utils";
 
+// @ts-ignore
 interface InputOTPProps extends React.ComponentProps<typeof OTPInput> {
-  maxLength?: number;
+  maxLength: number;
+  className?: string;
+  children: React.ReactNode;
 }
 
 interface InputOTPGroupProps {
@@ -19,15 +22,16 @@ interface InputOTPSlotProps extends React.ComponentProps<"div"> {
   isActive?: boolean;
 }
 
-const InputOTP = React.forwardRef<React.ElementRef<typeof OTPInput>, InputOTPProps>(
-  ({ className, ...props }, ref) => (
-    <OTPInput
-      ref={ref}
-      containerClassName={cn("flex items-center gap-2", className)}
-      {...props}
-    />
-  )
-);
+const InputOTP = React.forwardRef<
+  React.ElementRef<typeof OTPInput>,
+  InputOTPProps
+>(({ className, ...props }, ref) => (
+  <OTPInput
+    ref={ref}
+    containerClassName={cn("flex items-center gap-2", className)}
+    {...props}
+  />
+));
 InputOTP.displayName = "InputOTP";
 
 const InputOTPGroup = React.forwardRef<HTMLDivElement, InputOTPGroupProps>(

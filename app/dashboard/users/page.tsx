@@ -2,29 +2,29 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { UserList } from "@/components/users/user-list";
+import { DataTable } from "@/components/ui/data-table/data-table";
+import { columns } from "./columns";
 import { AddUserDialog } from "@/components/users/add-user-dialog";
 import { useUsers } from "@/hooks/api/use-users";
-import { Skeleton } from "@/components/ui/skeleton";
 import { UserPlus } from "lucide-react";
 import { useState } from "react";
+import { PaginationState, SortingState } from "@tanstack/react-table";
 
 export default function UsersPage() {
-  const { data: users, isLoading } = useUsers();
   const [showAddUser, setShowAddUser] = useState(false);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [search, setSearch] = useState("");
 
-  if (isLoading) {
-    return (
-      <div className="space-y-6 p-6">
-        <header className="border-b pb-4">
-          <h1 className="text-2xl font-semibold">Gestion des utilisateurs</h1>
-        </header>
-        <div className="space-y-4">
-          <Skeleton className="h-[400px]" />
-        </div>
-      </div>
-    );
-  }
+  const { data, isLoading } = useUsers({
+    offset: pagination.pageIndex * pagination.pageSize,
+    limit: pagination.pageSize,
+    search,
+    ordering: sorting.length > 0 ? `${sorting[0].desc ? "-" : ""}${sorting[0].id}` : undefined,
+  });
 
   return (
     <div className="space-y-6 p-6">
@@ -40,10 +40,16 @@ export default function UsersPage() {
       </div>
 
       <Card className="p-6">
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Liste des utilisateurs</h2>
-          <UserList users={users?.results || []} />
-        </div>
+        <DataTable
+          columns={columns}
+          isLoading={isLoading}
+          data={data?.results || []}
+          pageCount={Math.ceil((data?.count || 0) / pagination.pageSize)}
+          onPaginationChange={setPagination}
+          onSortingChange={setSorting}
+          onSearch={setSearch}
+          searchPlaceholder="Rechercher un utilisateur..."
+        />
       </Card>
 
       <AddUserDialog open={showAddUser} onOpenChange={setShowAddUser} />

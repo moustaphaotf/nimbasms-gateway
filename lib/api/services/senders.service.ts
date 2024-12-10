@@ -1,21 +1,34 @@
-import { Sender, CreateSenderRequest, SenderStatus, UpdateSenderStatusRequest, PaginatedResponse } from '../types';
-import { API_ENDPOINTS } from '../endpoints';
-import { v1ApiClient } from '../client';
+import {
+  Sender,
+  CreateSenderRequest,
+  SenderStatus,
+  UpdateSenderStatusRequest,
+  PaginatedResponse,
+  SenderFilters,
+} from "../types";
+import { API_ENDPOINTS } from "../endpoints";
+import { v1ApiClient } from "../client";
 
 export const sendersService = {
-  getSenders: async () => {
-    const { data } = await v1ApiClient.get<PaginatedResponse<Sender>>(API_ENDPOINTS.SENDERS.LIST);
+  getSenders: async (filters?: SenderFilters) => {
+    const { data } = await v1ApiClient.get<PaginatedResponse<Sender>>(
+      API_ENDPOINTS.SENDERS.LIST,
+      { params: filters }
+    );
     return data;
   },
 
   createSender: async (sender: CreateSenderRequest) => {
-    const { data } = await v1ApiClient.post<Sender>(API_ENDPOINTS.SENDERS.CREATE, sender);
+    const { data } = await v1ApiClient.post<Sender>(
+      API_ENDPOINTS.SENDERS.CREATE,
+      sender
+    );
     return data;
   },
 
   updateStatus: async (senderId: string, status: UpdateSenderStatusRequest) => {
     const { data } = await v1ApiClient.patch<Sender>(
-      API_ENDPOINTS.SENDERS.UPDATE_STATUS(senderId),
+      API_ENDPOINTS.SENDERS.DETAIL(senderId),
       status
     );
     return data;

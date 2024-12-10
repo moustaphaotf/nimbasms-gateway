@@ -1,4 +1,4 @@
-export type SenderStatus = "pending" | "approved" | "rejected";
+export type SenderStatus = "pending" | "accepted" | "refused";
 
 export interface Sender {
   uid: string;
@@ -9,8 +9,14 @@ export interface Sender {
 
 export interface CreateSenderRequest {
   name: string;
-  status: SenderStatus;
-  owner: number;
+}
+
+export interface SenderResponse extends Sender {
+  owner: {
+    email: string;
+    first_name: string;
+    last_name: string;
+  };
 }
 
 export interface UpdateSenderStatusRequest {

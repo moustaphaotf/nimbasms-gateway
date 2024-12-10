@@ -1,13 +1,13 @@
-import axios, { AxiosError } from 'axios';
-import { auth } from '@/lib/auth';
-import { authService } from './services/auth.service';
-import { toast } from 'react-toastify';
+import axios, { Axios, AxiosError } from "axios";
+import { auth } from "@/lib/auth";
+import { authService } from "./services/auth.service";
+import { toast } from "react-toastify";
 
 // Create base API client
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
@@ -15,12 +15,12 @@ const apiClient = axios.create({
 export const v1ApiClient = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}${process.env.NEXT_PUBLIC_API_V1_PREFIX}`,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
 // Configure interceptors for both clients
-[apiClient, v1ApiClient].forEach(client => {
+[apiClient, v1ApiClient].forEach((client) => {
   // Request interceptor
   client.interceptors.request.use(
     (config) => {
@@ -38,8 +38,8 @@ export const v1ApiClient = axios.create({
   // Response interceptor
   client.interceptors.response.use(
     (response) => response,
-    async (error: AxiosError) => {
-      const originalRequest = error.config;
+    async (error: any) => {
+      const originalRequest: any = error.config;
 
       // Handle 401 errors
       if (error.response?.status === 401 && !originalRequest?._retry) {
@@ -48,15 +48,15 @@ export const v1ApiClient = axios.create({
         try {
           const refreshToken = auth.getRefreshToken();
           if (!refreshToken) {
-            throw new Error('No refresh token');
+            throw new Error("No refresh token");
           }
 
           // Try to refresh the token
           const { access } = await authService.refreshToken(refreshToken);
-          
+
           // Update the token
           auth.setTokens(access, refreshToken);
-          
+
           // Retry the original request
           if (originalRequest.headers) {
             originalRequest.headers.Authorization = `Bearer ${access}`;
@@ -74,7 +74,7 @@ export const v1ApiClient = axios.create({
         toast.error(error.response.data.detail);
       } else {
         // Fallback error message
-        toast.error('Une erreur est survenue. Veuillez réessayer.');
+        toast.error("Une erreur est survenue. Veuillez réessayer.");
       }
 
       return Promise.reject(error);

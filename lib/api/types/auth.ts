@@ -36,10 +36,16 @@ export interface ChangePasswordRequest {
   new_password: string;
 }
 
-export interface CreateUserRequest {
-  email: string;
-  phone: string;
+export interface ProfileInfo {
   first_name: string;
   last_name: string;
-  password: string;
+  email: string;
+  phone: string;
+}
+
+export interface UpdateProfileRequest {
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  phone?: string;
 }

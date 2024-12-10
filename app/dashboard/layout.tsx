@@ -1,6 +1,10 @@
 "use client";
 
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/sidebar";
+import {
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
 
 export default function DashboardLayout({
   children,
@@ -8,13 +12,12 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen bg-background">
+    <SidebarProvider>
       <AppSidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <main className="flex-1 overflow-y-auto">
-          {children}
-        </main>
-      </div>
-    </div>
+      <main className="flex-1">
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
   );
 }

@@ -21,10 +21,10 @@ interface UserListProps {
 
 export function UserList({ users }: UserListProps) {
   const [search, setSearch] = useState("");
-  const [order, setOrder] = useState("");
+  const [ordering, setOrdering] = useState("");
   const { data, isLoading } = useUsers({
     search,
-    order,
+    ordering,
     limit: 10,
   });
 
@@ -39,20 +39,18 @@ export function UserList({ users }: UserListProps) {
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-sm"
         />
-        <Select value={order} onValueChange={setOrder}>
+        <Select value={ordering} onValueChange={setOrdering}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Trier par" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="email">Email (A-Z)</SelectItem>
-            <SelectItem value="-email">Email (Z-A)</SelectItem>
             <SelectItem value="first_name">Prénom (A-Z)</SelectItem>
             <SelectItem value="-first_name">Prénom (Z-A)</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-md bordering">
         <Table>
           <TableHeader>
             <TableRow>

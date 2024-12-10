@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function createSortableHeader<TData>(
   header: string,
@@ -15,7 +16,7 @@ export function createSortableHeader<TData>(
       return (
         <Button
           variant="ghost"
-          className="-ml-4"
+          className={cn("-ml-4", className)}
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           {header}
@@ -23,6 +24,5 @@ export function createSortableHeader<TData>(
         </Button>
       );
     },
-    className,
   };
 }

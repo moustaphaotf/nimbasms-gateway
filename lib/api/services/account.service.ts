@@ -1,4 +1,4 @@
-import { AccountInfo, WebhookUpdate } from '../types';
+import { AccountInfo } from '../types';
 import { API_ENDPOINTS } from '../endpoints';
 import { v1ApiClient } from '../client';
 

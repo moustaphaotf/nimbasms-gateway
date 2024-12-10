@@ -6,36 +6,27 @@ import { columns } from "./columns";
 import { useState } from "react";
 import { DatePickerWithRange } from "@/components/date-range-picker";
 import { DateRange } from "react-day-picker";
-
-const mockData = [
-  {
-    id: "1",
-    date: "2024-03-20",
-    message: "Promotion du mois de mars",
-    recipients: 1500,
-    status: "delivered",
-    cost: 150,
-  },
-  {
-    id: "2",
-    date: "2024-03-19",
-    message: "Rappel de rendez-vous",
-    recipients: 800,
-    status: "pending",
-    cost: 80,
-  },
-  {
-    id: "3",
-    date: "2024-03-18",
-    message: "Notification de paiement",
-    recipients: 2000,
-    status: "failed",
-    cost: 200,
-  },
-];
+import { useMessages } from "@/hooks/api/use-messages";
+import { Skeleton } from "@/components/ui/skeleton";
+import { PaginationState, SortingState } from "@tanstack/react-table";
 
 export default function HistoryPage() {
   const [date, setDate] = useState<DateRange>();
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [search, setSearch] = useState("");
+
+  const { data: messages, isLoading } = useMessages({
+    offset: pagination.pageIndex * pagination.pageSize,
+    limit: pagination.pageSize,
+    search,
+    start_date: date?.from?.toISOString(),
+    end_date: date?.to?.toISOString(),
+    ordering: sorting.length > 0 ? `${sorting[0].desc ? "-" : ""}${sorting[0].id}` : undefined,
+  });
 
   return (
     <div className="space-y-6 p-6">
@@ -51,9 +42,13 @@ export default function HistoryPage() {
 
           <DataTable
             columns={columns}
-            data={mockData}
+            isLoading={isLoading}
+            data={messages?.results || []}
+            pageCount={Math.ceil((messages?.count || 0) / pagination.pageSize)}
+            onPaginationChange={setPagination}
+            onSortingChange={setSorting}
+            onSearch={setSearch}
             searchPlaceholder="Rechercher un message..."
-            searchColumn="message"
           />
         </div>
       </Card>

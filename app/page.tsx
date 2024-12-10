@@ -25,7 +25,7 @@ export default function LoginPage() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md space-y-8 px-4"
       >
-        <div className="flex flex-col items-center space-y-2">
+        <div className="flex flex-col items-center space-y-4">
           <Image 
             src="/mtn-logo.png" 
             alt="MTN Logo" 

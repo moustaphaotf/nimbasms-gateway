@@ -1,14 +1,13 @@
-import { 
-  ChangePasswordRequest, 
-  CreateUserRequest,
+import {
   RequestOTPResponse,
   ValidateOTPRequest,
   AuthTokens,
-  RefreshTokenRequest,
-  RefreshTokenResponse
-} from '../types';
-import { API_ENDPOINTS } from '../endpoints';
-import apiClient from '../client';
+  RefreshTokenResponse,
+  UpdateProfileRequest,
+  ProfileInfo,
+} from "../types";
+import { API_ENDPOINTS } from "../endpoints";
+import apiClient from "../client";
 
 export const authService = {
   requestEmailOTP: async (email: string) => {
@@ -50,20 +49,17 @@ export const authService = {
     );
     return data;
   },
-
-  changePassword: async (passwords: ChangePasswordRequest) => {
-    const { data } = await apiClient.post(
-      API_ENDPOINTS.AUTH.CHANGE_PASSWORD,
-      passwords
+  getProfileInfo: async () => {
+    const { data } = await apiClient.get<ProfileInfo>(
+      API_ENDPOINTS.AUTH.PROFILE_INFO
     );
     return data;
   },
-
-  createUser: async (user: CreateUserRequest) => {
-    const { data } = await apiClient.post(
-      API_ENDPOINTS.AUTH.CREATE_USER,
-      user
+  updateProfile: async (data: UpdateProfileRequest) => {
+    const { data: response } = await apiClient.patch<ProfileInfo>(
+      API_ENDPOINTS.AUTH.PROFILE_INFO,
+      data
     );
-    return data;
+    return response;
   },
 };

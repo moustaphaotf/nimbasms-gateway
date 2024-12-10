@@ -8,7 +8,10 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useValidateEmailOTP, useValidateMobileOTP } from "@/hooks/api/use-auth";
+import {
+  useValidateEmailOTP,
+  useValidateMobileOTP,
+} from "@/hooks/api/use-auth";
 import { ArrowLeft } from "lucide-react";
 
 interface OTPVerificationProps {
@@ -17,7 +20,11 @@ interface OTPVerificationProps {
   onBack: () => void;
 }
 
-export function OTPVerification({ pinUid, method, onBack }: OTPVerificationProps) {
+export function OTPVerification({
+  pinUid,
+  method,
+  onBack,
+}: OTPVerificationProps) {
   const [otp, setOtp] = useState("");
   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
 
@@ -77,12 +84,14 @@ export function OTPVerification({ pinUid, method, onBack }: OTPVerificationProps
         </p>
 
         <InputOTP
+          // @ts-ignore
           value={otp}
           onChange={setOtp}
           maxLength={6}
+          // @ts-ignore
           render={({ slots }) => (
             <InputOTPGroup className="gap-2">
-              {slots.map((slot, index) => (
+              {slots.map((slot: any, index: number) => (
                 <InputOTPSlot key={index} {...slot} />
               ))}
             </InputOTPGroup>

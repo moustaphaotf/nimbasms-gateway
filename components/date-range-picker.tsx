@@ -17,7 +17,7 @@ import {
 interface DatePickerWithRangeProps {
   className?: string;
   date?: DateRange;
-  setDate?: (date: DateRange) => void;
+  setDate?: (date: DateRange | undefined) => void;
 }
 
 export function DatePickerWithRange({

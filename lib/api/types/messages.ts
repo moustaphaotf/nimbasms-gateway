@@ -1,8 +1,10 @@
+export type MessageStatus = "pending" | "sent" | "failure" | "delivered";
+
 export interface Message {
   id: string;
   contact: string;
   content: string;
-  status: "delivered" | "failed" | "pending";
+  status: MessageStatus;
   created_at: string;
 }
 
@@ -11,6 +13,7 @@ export interface MessageFilters {
   limit?: number;
   search?: string;
   status?: string;
+  ordering?: string;
   start_date?: string;
   end_date?: string;
 }

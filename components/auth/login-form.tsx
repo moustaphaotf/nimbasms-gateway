@@ -9,34 +9,52 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRequestEmailOTP, useRequestMobileOTP } from "@/hooks/api/use-auth";
 import { OTPVerification } from "./otp-verification";
 import { Phone, Mail } from "lucide-react";
+import { PhoneInputField } from "@/components/ui/phone-input";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, LoginFormData } from "@/lib/schemas/login.schema";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 export function LoginForm() {
   const [step, setStep] = useState<"request" | "verify">("request");
-  const [identifier, setIdentifier] = useState("");
   const [pinUid, setPinUid] = useState("");
   const [method, setMethod] = useState<"email" | "phone">("email");
 
+  const form = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      phone: "",
+    },
+  });
+
   useEffect(() => {
-    setIdentifier("");
-  }, [method])
+    form.reset({ email: "", phone: "" });
+  }, [method, form]);
 
   const requestEmailOTP = useRequestEmailOTP();
   const requestMobileOTP = useRequestMobileOTP();
 
-  const handleRequestOTP = async () => {
+  const onSubmit = async (data: LoginFormData) => {
     try {
-      if (method === "email") {
-        const response = await requestEmailOTP.mutateAsync(identifier);
+      if (method === "email" && data.email) {
+        const response = await requestEmailOTP.mutateAsync(data.email);
         setPinUid(response.pin_uid);
         setStep("verify");
-      } else {
-        const response = await requestMobileOTP.mutateAsync(identifier);
+      } else if (method === "phone" && data.phone) {
+        const response = await requestMobileOTP.mutateAsync(data.phone);
         setPinUid(response.pin_uid);
         setStep("verify");
       }
     } catch (error) {
-      console.log(error)
-      // Error is handled by the mutation
+      console.error(error);
     }
   };
 
@@ -67,41 +85,59 @@ export function LoginForm() {
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="email" className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="exemple@mtn.com"
-                    value={identifier}
-                    onChange={(e) => setIdentifier(e.target.value)}
-                  />
-                </div>
-              </TabsContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
+                  <TabsContent value="email">
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="exemple@mtn.com"
+                              type="email"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </TabsContent>
 
-              <TabsContent value="phone" className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Numéro de téléphone</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="+224 XXX XX XX XX"
-                    value={identifier}
-                    onChange={(e) => setIdentifier(e.target.value)}
-                  />
-                </div>
-              </TabsContent>
+                  <TabsContent value="phone">
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Numéro de téléphone</FormLabel>
+                          <FormControl>
+                            <PhoneInputField
+                              value={field.value!}
+                              onChange={(value) => field.onChange(value)}
+                              error={!!form.formState.errors.phone}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </TabsContent>
 
-              <Button
-                className="w-full mt-4"
-                onClick={handleRequestOTP}
-                disabled={!identifier || requestEmailOTP.isPending || requestMobileOTP.isPending}
-              >
-                {requestEmailOTP.isPending || requestMobileOTP.isPending
-                  ? "Envoi en cours..."
-                  : "Recevoir le code"}
-              </Button>
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={requestEmailOTP.isPending || requestMobileOTP.isPending}
+                  >
+                    {requestEmailOTP.isPending || requestMobileOTP.isPending
+                      ? "Envoi en cours..."
+                      : "Recevoir le code"}
+                  </Button>
+                </form>
+              </Form>
             </Tabs>
           </motion.div>
         ) : (

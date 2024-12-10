@@ -1,7 +1,7 @@
 "use client";
 
 import { StatsCard } from "@/components/dashboard/stats-card";
-import { ContactsTable } from "@/components/dashboard/contacts-table";
+import { RecentMessages } from "@/components/dashboard/recent-messages";
 import { SMSBalance } from "@/components/dashboard/sms-balance";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { useAccountInfo } from "@/hooks/api/use-account";
@@ -22,34 +22,28 @@ export default function DashboardPage() {
   const { data: accountInfo, isLoading: isLoadingAccount } = useAccountInfo();
   const { data: messages, isLoading: isLoadingMessages } = useMessages({
     limit: 5,
-    ordering: "-created_at"
+    ordering: "-created_at",
   });
-
-  const mockContacts = messages?.results.map(msg => ({
-    name: msg.contact,
-    phone: msg.contact,
-    group: "Groupe 1"
-  })) || [];
 
   return (
     <div className="space-y-6 p-6">
       <header className="border-b pb-4">
         <h1 className="text-2xl font-semibold">Tableau de Bord</h1>
       </header>
-      
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatsCard 
-          title="Nombre de messages envoyés" 
-          value={messages?.count.toString() || "0"} 
-          change={42} 
+        <StatsCard
+          title="Nombre de messages envoyés"
+          value={messages?.count.toString() || "0"}
+          change={42}
         />
         <StatsCard title="Contacts" value="52403" change={22} />
         <StatsCard title="Campagnes" value="32" change={-32} />
         <StatsCard title="DSO Moyen" value="7 jours" change={12} />
       </div>
 
-      {/* Recent Contacts and SMS Balance */}
+      {/* Recent Messages and SMS Balance */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <h2 className="text-lg font-semibold mb-4">Messages récents</h2>
@@ -60,7 +54,7 @@ export default function DashboardPage() {
               <Skeleton className="h-12" />
             </div>
           ) : (
-            <ContactsTable contacts={mockContacts} />
+            <RecentMessages messages={messages?.results || []} />
           )}
         </div>
         <div>
@@ -84,13 +78,13 @@ export default function DashboardPage() {
               <Line
                 type="monotone"
                 dataKey="sent"
-                stroke="hsl(var(--chart-1))"
+                stroke="hsl(var(--primary))"
                 strokeWidth={2}
               />
               <Line
                 type="monotone"
                 dataKey="received"
-                stroke="hsl(var(--chart-2))"
+                stroke="hsl(var(--muted-foreground))"
                 strokeWidth={2}
               />
             </LineChart>

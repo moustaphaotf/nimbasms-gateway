@@ -5,23 +5,28 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { createSortableHeader } from "@/components/ui/data-table/columns";
+import { Message } from "@/lib/api/types";
 
-export type History = {
-  id: string;
-  date: string;
-  message: string;
-  recipients: number;
-  status: "delivered" | "failed" | "pending";
-  cost: number;
-};
-
-export const columns: ColumnDef<History>[] = [
-  createSortableHeader<History>("Date", "date"),
+export const columns: ColumnDef<Message>[] = [
   {
-    accessorKey: "message",
-    header: "Message",
+    accessorKey: "created_at",
+    header: "Date",
+    cell: ({ row }) => {
+      return format(new Date(row.getValue("created_at")), "Pp", { locale: fr });
+    },
   },
-  createSortableHeader<History>("Destinataires", "recipients"),
+  {
+    accessorKey: "content",
+    header: "Message",
+    cell: ({ row }) => {
+      const content = row.getValue("content") as string;
+      return content.length > 50 ? `${content.substring(0, 50)}...` : content;
+    },
+  },
+  {
+    accessorKey: "contact",
+    header: "Destinataire",
+  },
   {
     accessorKey: "status",
     header: "Statut",
@@ -30,31 +35,22 @@ export const columns: ColumnDef<History>[] = [
       return (
         <Badge
           variant={
-            status === "delivered"
+            status === "sent" || status === "delivered"
               ? "success"
-              : status === "failed"
+              : status === "failure"
               ? "destructive"
               : "secondary"
           }
         >
-          {status === "delivered"
-            ? "Livré"
-            : status === "failed"
+          {status === "sent"
+            ? "Envoyé"
+            : status === "failure"
             ? "Échoué"
+            : status === "delivered"
+            ? "Livré"
             : "En attente"}
         </Badge>
       );
-    },
-  },
-  {
-    accessorKey: "cost",
-    header: "Coût",
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("cost"));
-      return new Intl.NumberFormat("fr-FR", {
-        style: "currency",
-        currency: "XOF",
-      }).format(amount);
     },
   },
 ];

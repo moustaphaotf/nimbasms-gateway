@@ -1,17 +1,17 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { ThemeProvider } from '@/components/theme-provider';
-import { SidebarProvider } from '@/components/providers/sidebar-provider';
-import { QueryProvider } from '@/providers/query-provider';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import "./globals.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SidebarProvider } from "@/components/providers/sidebar-provider";
+import { QueryProvider } from "@/providers/query-provider";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'MTN Dashboard',
-  description: 'MTN SMS Dashboard',
+  title: "MTN Dashboard",
+  description: "MTN SMS Dashboard",
 };
 
 export default function RootLayout({
@@ -22,7 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+        >
           <QueryProvider>
             <SidebarProvider>
               {children}
