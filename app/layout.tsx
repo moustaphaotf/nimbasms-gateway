@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
-import { SidebarProvider } from "@/components/providers/sidebar-provider";
 import { QueryProvider } from "@/providers/query-provider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -28,7 +27,6 @@ export default function RootLayout({
           enableSystem={false}
         >
           <QueryProvider>
-            <SidebarProvider>
               {children}
               <ToastContainer
                 position="top-right"
@@ -42,7 +40,6 @@ export default function RootLayout({
                 pauseOnHover
                 theme="colored"
               />
-            </SidebarProvider>
           </QueryProvider>
         </ThemeProvider>
       </body>

@@ -1,7 +1,13 @@
-import { useQuery, useMutation, keepPreviousData } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  keepPreviousData,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { messagesService } from "@/lib/api/services/messages.service";
 import { MessageFilters } from "@/lib/api/types";
 import { toast } from "react-toastify";
+import { CreateMessageFormData } from "@/lib/schemas/message.shema";
 
 export function useMessages(filters?: MessageFilters) {
   return useQuery({
@@ -15,6 +21,22 @@ export function useMessage(messageId: string) {
   return useQuery({
     queryKey: ["messages", messageId],
     queryFn: () => messagesService.getMessage(messageId),
+  });
+}
+
+export function useCreateMessage() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (message: CreateMessageFormData) =>
+      messagesService.createMessage(message),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["messages"] });
+      toast.success("Message envoyé avec succès");
+    },
+    onError: () => {
+      toast.error("Erreur lors de l'envoi du message");
+    },
   });
 }
 

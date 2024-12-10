@@ -26,7 +26,7 @@ export function PhoneForm({ initialPhone }: PhoneFormProps) {
   const form = useForm<PhoneFormData>({
     resolver: zodResolver(phoneSchema),
     defaultValues: {
-      phone: initialPhone,
+      phone:initialPhone,
     },
   });
 

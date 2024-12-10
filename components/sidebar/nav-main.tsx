@@ -42,9 +42,9 @@ export function NavMain({ items }: NavMainProps) {
         {items.map((item) => {
           const hasSubitems = item.items && item.items.length > 0;
           const isActive =
-            pathname.startsWith(item.url) ||
+            pathname === item.url ||
             (hasSubitems &&
-              item?.items!.some((subItem) => pathname.startsWith(subItem.url)));
+              item?.items!.some((subItem) => pathname === subItem.url));
 
           return (
             <Collapsible

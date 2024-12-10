@@ -7,11 +7,20 @@ import { useState } from "react";
 import { DatePickerWithRange } from "@/components/date-range-picker";
 import { DateRange } from "react-day-picker";
 import { useMessages } from "@/hooks/api/use-messages";
-import { Skeleton } from "@/components/ui/skeleton";
 import { PaginationState, SortingState } from "@tanstack/react-table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useSenders } from "@/hooks/api/use-senders";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function HistoryPage() {
   const [date, setDate] = useState<DateRange>();
+  const [sender, setSender] = useState("");
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -25,7 +34,14 @@ export default function HistoryPage() {
     search,
     start_date: date?.from?.toISOString(),
     end_date: date?.to?.toISOString(),
-    ordering: sorting.length > 0 ? `${sorting[0].desc ? "-" : ""}${sorting[0].id}` : undefined,
+    ordering:
+      sorting.length > 0
+        ? `${sorting[0].desc ? "-" : ""}${sorting[0].id}`
+        : undefined,
+  });
+
+  const { data: senders, isLoading: isLoadingSenders } = useSenders({
+    status: "accepted",
   });
 
   return (
@@ -38,6 +54,23 @@ export default function HistoryPage() {
         <div className="space-y-4">
           <div className="flex items-center gap-4">
             <DatePickerWithRange date={date} setDate={setDate} />
+
+            {isLoadingSenders ? (
+              <Skeleton className="h-10 w-full" />
+            ) : (
+              <Select value={sender} onValueChange={setSender}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionnez un expéditeur" />
+                </SelectTrigger>
+                <SelectContent className="max-w-64">
+                  {senders?.results.map((sender) => (
+                    <SelectItem key={sender.uid} value={sender.name}>
+                      {sender.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
 
           <DataTable

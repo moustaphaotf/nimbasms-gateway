@@ -28,6 +28,10 @@ export const columns: ColumnDef<Message>[] = [
     header: "Destinataire",
   },
   {
+    accessorKey: "sender",
+    header: "Expéditeur",
+  },
+  {
     accessorKey: "status",
     header: "Statut",
     cell: ({ row }) => {

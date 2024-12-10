@@ -4,6 +4,7 @@ export interface Message {
   id: string;
   contact: string;
   content: string;
+  sender: string;
   status: MessageStatus;
   created_at: string;
 }
@@ -12,6 +13,7 @@ export interface MessageFilters {
   offset?: number;
   limit?: number;
   search?: string;
+  sender?: string;
   status?: string;
   ordering?: string;
   start_date?: string;

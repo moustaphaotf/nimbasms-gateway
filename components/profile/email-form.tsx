@@ -32,7 +32,6 @@ export function EmailForm({ initialEmail }: EmailFormProps) {
   });
 
   useEffect(() => {
-    console.log(initialEmail);
     form.reset({
       email: initialEmail,
     });
