@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { AccessTokenUser } from "@/lib/api/types";
 import { parseToken } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { PUBLIC_ROUTES } from "@/lib/constants";
 
 interface UserContextType {
   user: AccessTokenUser | null;
@@ -26,7 +27,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         // Invalid token, redirect to login
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        router.push("/");
+        router.push(PUBLIC_ROUTES.LANDING);
       }
     }
   }, [router]);
