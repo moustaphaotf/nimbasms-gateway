@@ -13,6 +13,7 @@ import {
   Settings,
   Webhook
 } from "lucide-react";
+import { PROTECTED_ROUTES } from "@/lib/constants";
 
 const features = [
   {
@@ -42,7 +43,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (auth.isAuthenticated()) {
-      router.push("/dashboard");
+      router.push(PROTECTED_ROUTES.DASHBOARD.url);
     }
   }, [router]);
 

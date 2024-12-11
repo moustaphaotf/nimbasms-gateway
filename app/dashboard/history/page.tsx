@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/select";
 import { useSenders } from "@/hooks/api/use-senders";
 import { Skeleton } from "@/components/ui/skeleton";
-import { MAX_ITEMS_PER_PAGE } from "@/lib/constants";
+import { MAX_ITEMS_PER_PAGE, PROTECTED_ROUTES } from "@/lib/constants";
 import { useUser } from "@/providers/user-provider";
 import { PageHeader } from "@/components/layout/app-header";
 
@@ -50,7 +50,7 @@ export default function HistoryPage() {
   });
 
   const breadcrumbs = [
-    { label: "Tableau de bord", href: "/dashboard" },
+    { label: "Tableau de bord", href: PROTECTED_ROUTES.DASHBOARD.url },
     { label: "Historique de consommation" },
   ];
 

@@ -27,6 +27,7 @@ import { Skeleton } from "../ui/skeleton";
 import Link from "next/link";
 import { useState } from "react";
 import { LogoutButton } from "../auth/logout-button";
+import { PROTECTED_ROUTES } from "@/lib/constants";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -49,7 +50,7 @@ export function NavUser() {
                 <Link
                   onMouseEnter={() => setIsHoveringUserIcon(true)}
                   onMouseLeave={() => setIsHoveringUserIcon(false)}
-                  href={"/settings/profile"}
+                  href={PROTECTED_ROUTES.PROFILE.url}
                 >
                   <Avatar className="h-8 w-8 rounded-full">
                     <AvatarFallback className="rounded-lg">
@@ -77,7 +78,7 @@ export function NavUser() {
                   <Link
                     onMouseEnter={() => setIsHoveringUserIcon(true)}
                     onMouseLeave={() => setIsHoveringUserIcon(false)}
-                    href={"/settings/profile"}
+                    href={PROTECTED_ROUTES.PROFILE.url}
                   >
                     <Avatar className="h-8 w-8 rounded-full">
                       <AvatarFallback className="rounded-lg">

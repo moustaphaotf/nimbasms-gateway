@@ -7,6 +7,7 @@ import {
 import { auth } from "@/lib/auth";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { PROTECTED_ROUTES } from "@/lib/constants";
 
 export function useRequestEmailOTP() {
   return useMutation({
@@ -40,7 +41,7 @@ export function useValidateEmailOTP() {
       authService.validateEmailOTP(payload),
     onSuccess: (data) => {
       auth.setTokens(data.access, data.refresh);
-      router.push("/dashboard");
+      router.push(PROTECTED_ROUTES.DASHBOARD.url);
       toast.success("Connexion réussie");
     },
     onError: () => {
@@ -57,7 +58,7 @@ export function useValidateMobileOTP() {
       authService.validateMobileOTP(payload),
     onSuccess: (data) => {
       auth.setTokens(data.access, data.refresh);
-      router.push("/dashboard");
+      router.push(PROTECTED_ROUTES.PROFILE.url);
       toast.success("Connexion réussie");
     },
     onError: () => {

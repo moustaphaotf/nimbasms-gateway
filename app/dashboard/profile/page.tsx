@@ -1,19 +1,18 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
 import { NameForm } from "@/components/profile/name-form";
 import { EmailForm } from "@/components/profile/email-form";
 import { PhoneForm } from "@/components/profile/phone-form";
-import { useAccountInfo } from "@/hooks/api/use-account";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProfileInfo } from "@/hooks/api/use-auth";
 import { PageHeader } from "@/components/layout/app-header";
+import { PROTECTED_ROUTES } from "@/lib/constants";
 
 export default function ProfilePage() {
   const { data: accountInfo, isLoading } = useProfileInfo();
 
   const breadcrumbs = [
-    { label: "Tableau de bord", href: "/dashboard" },
+    { label: "Tableau de bord", href: PROTECTED_ROUTES.DASHBOARD.url },
     { label: "Profil" },
   ];
 

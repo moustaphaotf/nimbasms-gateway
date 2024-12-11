@@ -11,7 +11,7 @@ import { PaginationState, SortingState } from "@tanstack/react-table";
 import { CreateSenderFormData } from "@/lib/schemas/sender.schema";
 import { SenderResponse } from "@/lib/api/types";
 import { useUser } from "@/providers/user-provider";
-import { MAX_ITEMS_PER_PAGE } from "@/lib/constants";
+import { MAX_ITEMS_PER_PAGE, PROTECTED_ROUTES } from "@/lib/constants";
 import { DataSort } from "@/components/ui/data-sort";
 import { PageHeader } from "@/components/layout/app-header";
 
@@ -49,7 +49,7 @@ export default function SendersPage() {
   const { user } = useUser();
 
   const breadcrumbs = [
-    { label: "Tableau de bord", href: "/dashboard" },
+    { label: "Tableau de bord", href: PROTECTED_ROUTES.DASHBOARD.url },
     { label: "Expéditeurs" },
   ];
 

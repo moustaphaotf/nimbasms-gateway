@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useExports } from "@/hooks/api/use-exports";
 import { CreateExportDialog } from "@/components/exports/create-export-dialog";
 import { PaginationState, SortingState } from "@tanstack/react-table";
-import { MAX_ITEMS_PER_PAGE } from "@/lib/constants";
+import { MAX_ITEMS_PER_PAGE, PROTECTED_ROUTES } from "@/lib/constants";
 import { DataSort } from "@/components/ui/data-sort";
 import { PageHeader } from "@/components/layout/app-header";
 
@@ -40,7 +40,7 @@ export default function ExportPage() {
   ];
 
   const breadcrumbs = [
-    { label: "Tableau de bord", href: "/dashboard" },
+    { label: "Tableau de bord", href: DASHBOARD.PROFILE.url },
     { label: "Exportation des données" }
   ];
 

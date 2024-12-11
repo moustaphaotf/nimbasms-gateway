@@ -9,7 +9,7 @@ import { useUsers } from "@/hooks/api/use-users";
 import { UserPlus } from "lucide-react";
 import { useState } from "react";
 import { PaginationState, SortingState } from "@tanstack/react-table";
-import { MAX_ITEMS_PER_PAGE } from "@/lib/constants";
+import { MAX_ITEMS_PER_PAGE, PROTECTED_ROUTES } from "@/lib/constants";
 import { PageHeader } from "@/components/layout/app-header";
 
 export default function UsersPage() {
@@ -32,7 +32,7 @@ export default function UsersPage() {
   });
 
   const breadcrumbs = [
-    { label: "Tableau de bord", href: "/dashboard" },
+    { label: "Tableau de bord", href: PROTECTED_ROUTES.DASHBOARD.url },
     { label: "Utilisateurs" }
   ];
 

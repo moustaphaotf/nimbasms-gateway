@@ -7,12 +7,13 @@ import { WebhookForm } from "@/components/api-keys/webhook-form";
 import { ApiDocumentation } from "@/components/api-keys/api-documentation";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { PageHeader } from "@/components/layout/app-header";
+import { PROTECTED_ROUTES } from "@/lib/constants";
 
 export default function ApiKeysPage() {
   const { data: accountInfo, isLoading } = useAccountInfo();
 
   const breadcrumbs = [
-    { label: "Tableau de bord", href: "/dashboard" },
+    { label: "Tableau de bord", href: PROTECTED_ROUTES.DASHBOARD.url },
     { label: "Clés API et Webhooks" },
   ];
 

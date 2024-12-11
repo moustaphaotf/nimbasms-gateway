@@ -11,7 +11,7 @@ import {
 
 export const PUBLIC_ROUTES = ["/"] as const;
 
-const PROTECTED_ROUTES: Record<string, NavItem> = {
+export const PROTECTED_ROUTES: Record<string, NavItem> = {
   DASHBOARD: {
     icon: LayoutDashboard,
     title: "Tableau de Bord",
