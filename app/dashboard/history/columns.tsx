@@ -29,6 +29,12 @@ export const columns: ColumnDef<Message>[] = [
     },
   },
   {
+    accessorKey: "message_len",
+    header: "Longueur",
+    accessorFn: ({ message_len }) =>
+      (message_len !== null ? message_len + " SMS" : "-"),
+  },
+  {
     accessorKey: "contact",
     header: "Destinataire",
   },
@@ -65,5 +71,5 @@ export const columns: ColumnDef<Message>[] = [
   {
     id: "actions",
     cell: ({ row }) => <MessageActions message={row.original} />,
-  }
+  },
 ];

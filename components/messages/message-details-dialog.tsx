@@ -7,9 +7,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import { Message } from "@/lib/api/types/messages";
+import { formatDate } from "date-fns";
 
 interface MessageDetailDialogProps {
   message: Message | null;
@@ -37,10 +36,6 @@ export function MessageDetailDialog({
     }
   };
 
-  const formatDate = (date: string) => {
-    return format(new Date(date), "PPP 'à' HH:mm", { locale: fr });
-  };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
@@ -58,18 +53,14 @@ export function MessageDetailDialog({
               <p className="font-medium">{message.contact}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Date de création</p>
-              <p className="font-medium">{formatDate(message.created_at)}</p>
-            </div>
-            <div>
               <p className="text-sm text-muted-foreground">Date d&apos;envoi</p>
               <p className="font-medium">
-                {message.sent_at ? formatDate(message.sent_at) : "-"}
+                {message.sent_at ? formatDate(message.sent_at, "P HH:mm") : "-"}
               </p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Longueur</p>
-              <p className="font-medium">{message.message_len} SMS</p>
+              <p className="font-medium">{message.message_len !== null ? message.message_len + " SMS" : "-"}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Statut</p>
