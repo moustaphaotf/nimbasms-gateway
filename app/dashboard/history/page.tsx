@@ -19,6 +19,7 @@ import { useSenders } from "@/hooks/api/use-senders";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MAX_ITEMS_PER_PAGE } from "@/lib/constants";
 import { useUser } from "@/providers/user-provider";
+import { PageHeader } from "@/components/layout/app-header";
 
 export default function HistoryPage() {
   const [date, setDate] = useState<DateRange>();
@@ -48,11 +49,17 @@ export default function HistoryPage() {
     status: "accepted",
   });
 
+  const breadcrumbs = [
+    { label: "Tableau de bord", href: "/dashboard" },
+    { label: "Historique de consommation" },
+  ];
+
   return (
     <div className="space-y-6 p-6">
-      <header className="border-b pb-4">
-        <h1 className="text-2xl font-semibold">Historique de consommation</h1>
-      </header>
+      <PageHeader
+        title="Historique de consommation"
+        breadcrumbs={breadcrumbs}
+      />
 
       <Card className="p-6">
         <div className="space-y-4">

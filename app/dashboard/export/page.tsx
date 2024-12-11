@@ -11,6 +11,7 @@ import { CreateExportDialog } from "@/components/exports/create-export-dialog";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { MAX_ITEMS_PER_PAGE } from "@/lib/constants";
 import { DataSort } from "@/components/ui/data-sort";
+import { PageHeader } from "@/components/layout/app-header";
 
 export default function ExportPage() {
   const [showCreateExport, setShowCreateExport] = useState(false);
@@ -38,15 +39,19 @@ export default function ExportPage() {
     { label: "Taille (Décroissant)", value: "-file_size" },
   ];
 
+  const breadcrumbs = [
+    { label: "Tableau de bord", href: "/dashboard" },
+    { label: "Exportation des données" }
+  ];
+
   return (
     <div className="space-y-6 p-6">
-      <header className="border-b pb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Exportation de données</h1>
+      <PageHeader title="Exportation des données" breadcrumbs={breadcrumbs}>
         <Button onClick={() => setShowCreateExport(true)}>
           <FileDown className="mr-2 h-4 w-4" />
           Nouvelle exportation
         </Button>
-      </header>
+      </PageHeader>
 
       <div className="flex justify-end">
         <DataSort

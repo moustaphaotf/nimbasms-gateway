@@ -10,6 +10,7 @@ import { UserPlus } from "lucide-react";
 import { useState } from "react";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { MAX_ITEMS_PER_PAGE } from "@/lib/constants";
+import { PageHeader } from "@/components/layout/app-header";
 
 export default function UsersPage() {
   const [showAddUser, setShowAddUser] = useState(false);
@@ -30,11 +31,14 @@ export default function UsersPage() {
         : undefined,
   });
 
+  const breadcrumbs = [
+    { label: "Tableau de bord", href: "/dashboard" },
+    { label: "Utilisateurs" }
+  ];
+
   return (
     <div className="space-y-6 p-6">
-      <header className="border-b pb-4">
-        <h1 className="text-2xl font-semibold">Gestion des utilisateurs</h1>
-      </header>
+      <PageHeader title="Gestion des Utilisateurs" breadcrumbs={breadcrumbs} />
 
       <div className="flex justify-end">
         <Button onClick={() => setShowAddUser(true)}>

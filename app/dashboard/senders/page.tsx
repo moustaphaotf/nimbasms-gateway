@@ -13,6 +13,7 @@ import { SenderResponse } from "@/lib/api/types";
 import { useUser } from "@/providers/user-provider";
 import { MAX_ITEMS_PER_PAGE } from "@/lib/constants";
 import { DataSort } from "@/components/ui/data-sort";
+import { PageHeader } from "@/components/layout/app-header";
 
 export default function SendersPage() {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -20,7 +21,7 @@ export default function SendersPage() {
     pageSize: MAX_ITEMS_PER_PAGE,
   });
 
-  const [ordering, setOrdering] = useState("")
+  const [ordering, setOrdering] = useState("");
   const [search, setSearch] = useState("");
 
   const { data, isLoading } = useSenders({
@@ -46,11 +47,15 @@ export default function SendersPage() {
   ];
 
   const { user } = useUser();
+
+  const breadcrumbs = [
+    { label: "Tableau de bord", href: "/dashboard" },
+    { label: "Expéditeurs" },
+  ];
+
   return (
     <div className="space-y-6 p-6">
-      <header className="border-b pb-4">
-        <h1 className="text-2xl font-semibold">Noms d&apos;expéditeur</h1>
-      </header>
+      <PageHeader title="Expéditeurs" breadcrumbs={breadcrumbs} />
 
       <Card className="p-6">
         <SenderForm

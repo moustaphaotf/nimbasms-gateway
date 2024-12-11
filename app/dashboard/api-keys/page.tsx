@@ -5,16 +5,26 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ApiKeyForm } from "@/components/api-keys/api-keys-form";
 import { WebhookForm } from "@/components/api-keys/webhook-form";
 import { ApiDocumentation } from "@/components/api-keys/api-documentation";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { PageHeader } from "@/components/layout/app-header";
 
 export default function ApiKeysPage() {
   const { data: accountInfo, isLoading } = useAccountInfo();
 
+  const breadcrumbs = [
+    { label: "Tableau de bord", href: "/dashboard" },
+    { label: "Clés API et Webhooks" },
+  ];
+
+  const header = (
+    <PageHeader breadcrumbs={breadcrumbs} title="Clés API et Webhooks" />
+  );
+
   if (isLoading) {
     return (
       <div className="space-y-6 p-6">
-        <header className="border-b pb-4">
-          <h1 className="text-2xl font-semibold">Clés API et Webhooks</h1>
-        </header>
+        {header}
+
         <div className="space-y-4">
           <Skeleton className="h-[200px]" />
           <Skeleton className="h-[200px]" />
@@ -26,9 +36,7 @@ export default function ApiKeysPage() {
 
   return (
     <div className="space-y-6 p-6">
-      <header className="border-b pb-4">
-        <h1 className="text-2xl font-semibold">Clés API et Webhooks</h1>
-      </header>
+      {header}
 
       <div className="space-y-4">
         <ApiDocumentation />

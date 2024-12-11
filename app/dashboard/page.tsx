@@ -9,6 +9,7 @@ import { useMessages } from "@/hooks/api/use-messages";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UsageChart } from "@/components/dashboard/usage-chart";
 import { useStatistics } from "@/hooks/api/use-statistics";
+import { PageHeader } from "@/components/layout/app-header";
 
 const chartData = [
   { name: "Jan", sent: 4000, received: 2400 },
@@ -28,32 +29,32 @@ export default function DashboardPage() {
     ordering: "-created_at",
   });
 
+  const breadcrumbs = [{ label: "Tableau de bord" }];
+
   return (
     <div className="space-y-6 p-6">
-      <header className="border-b pb-4">
-        <h1 className="text-2xl font-semibold">Tableau de Bord</h1>
-      </header>
+      <PageHeader title="Tableau de bord" breadcrumbs={breadcrumbs} />
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatsCard 
+        <StatsCard
           change={0}
-          title="Messages envoyés" 
+          title="Messages envoyés"
           value={statistics?.total_messages_sent.toString() || "0"}
         />
-        <StatsCard 
+        <StatsCard
           change={0}
-          title="Messages reçus" 
+          title="Messages reçus"
           value={statistics?.total_messages_received.toString() || "0"}
         />
-        <StatsCard 
+        <StatsCard
           change={0}
-          title="Utilisateurs" 
+          title="Utilisateurs"
           value={statistics?.total_users.toString() || "0"}
         />
-        <StatsCard 
+        <StatsCard
           change={0}
-          title="Noms d'expéditeur" 
+          title="Noms d'expéditeur"
           value={statistics?.total_senders.toString() || "0"}
         />
       </div>

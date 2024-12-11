@@ -7,16 +7,22 @@ import { PhoneForm } from "@/components/profile/phone-form";
 import { useAccountInfo } from "@/hooks/api/use-account";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProfileInfo } from "@/hooks/api/use-auth";
+import { PageHeader } from "@/components/layout/app-header";
 
 export default function ProfilePage() {
   const { data: accountInfo, isLoading } = useProfileInfo();
 
+  const breadcrumbs = [
+    { label: "Tableau de bord", href: "/dashboard" },
+    { label: "Profil" },
+  ];
+
+  const header = <PageHeader title="Mon Profil" breadcrumbs={breadcrumbs} />;
+
   if (isLoading) {
     return (
       <div className="space-y-6 p-6">
-        <header className="border-b pb-4">
-          <h1 className="text-2xl font-semibold">Mon Profil</h1>
-        </header>
+        {header}
         <div className="space-y-4">
           <Skeleton className="h-[200px]" />
           <Skeleton className="h-[200px]" />
@@ -28,12 +34,10 @@ export default function ProfilePage() {
 
   return (
     <div className="space-y-6 p-6">
-      <header className="border-b pb-4">
-        <h1 className="text-2xl font-semibold">Mon Profil</h1>
-      </header>
+      {header}
 
       <div className="space-y-6">
-        <NameForm 
+        <NameForm
           initialFirstName={accountInfo?.first_name || ""}
           initialLastName={accountInfo?.last_name || ""}
         />
