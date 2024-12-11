@@ -48,8 +48,8 @@ export const PROTECTED_ROUTES: Record<string, NavItem> = {
   },
   PROFILE: {
     icon: UserCircle2,
-    title: "Mon Profile",
-    url: "/dashboard/profil",
+    title: "Mon Profil",
+    url: "/dashboard/profile",
   },
 };
 
@@ -77,5 +77,3 @@ export type NavItem = {
   isVisible?: string;
   items?: NavItem[];
 };
-
-
