@@ -40,7 +40,7 @@ export default function ExportPage() {
   ];
 
   const breadcrumbs = [
-    { label: "Tableau de bord", href: DASHBOARD.PROFILE.url },
+    { label: "Tableau de bord", href: PROTECTED_ROUTES.DASHBOARD.url },
     { label: "Exportation des données" }
   ];
 
