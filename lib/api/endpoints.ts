@@ -26,9 +26,6 @@ export const API_ENDPOINTS = {
     DETAIL: (senderId: string) => `/senders/${senderId}/`,
   },
   DASHBOARD: {
-    STATS: "/dashboard/stats/",
-    RECENT_CONTACTS: "/dashboard/recent-contacts/",
-    SMS_BALANCE: "/dashboard/sms-balance/",
-    USAGE_CHART: "/dashboard/usage-chart/",
+    STATS: "/statistics/",
   },
 } as const;

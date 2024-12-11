@@ -45,20 +45,23 @@ export function RecentMessages({ messages }: RecentMessagesProps) {
         <TableBody>
           {messages.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={4} className="text-center py-6 text-muted-foreground">
+              <TableCell
+                colSpan={4}
+                className="text-center py-6 text-muted-foreground"
+              >
                 Aucun message envoyé récemment
               </TableCell>
             </TableRow>
           ) : (
             messages.map((message) => (
-              <TableRow key={message.id}>
+              <TableRow key={message.messageid}>
                 <TableCell>
                   {format(new Date(message.created_at), "Pp", { locale: fr })}
                 </TableCell>
                 <TableCell>
-                  {message.content.length > 30
-                    ? `${message.content.substring(0, 30)}...`
-                    : message.content}
+                  {message.message.length > 30
+                    ? `${message.message.substring(0, 30)}...`
+                    : message.message}
                 </TableCell>
                 <TableCell>{message.contact}</TableCell>
                 <TableCell>{getStatusBadge(message.status)}</TableCell>

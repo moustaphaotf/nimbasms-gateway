@@ -1,10 +1,8 @@
 "use client";
 
 import { AppSidebar } from "@/components/sidebar";
-import {
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { UserProvider } from "@/providers/user-provider";
 
 export default function DashboardLayout({
   children,
@@ -12,12 +10,14 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <main className="flex-1 w-full">
-        <SidebarTrigger />
-        {children}
-      </main>
-    </SidebarProvider>
+    <UserProvider>
+      <SidebarProvider>
+        <AppSidebar />
+        <main className="flex-1 w-full">
+          <SidebarTrigger />
+          {children}
+        </main>
+      </SidebarProvider>
+    </UserProvider>
   );
 }

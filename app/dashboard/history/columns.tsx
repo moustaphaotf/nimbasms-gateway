@@ -6,6 +6,11 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { createSortableHeader } from "@/components/ui/data-table/columns";
 import { Message } from "@/lib/api/types";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Eye } from "lucide-react";
+import { MessageDetailDialog } from "@/components/messages/message-details-dialog";
+import { MessageActions } from "@/components/messages/messages-actions";
 
 export const columns: ColumnDef<Message>[] = [
   {
@@ -16,11 +21,11 @@ export const columns: ColumnDef<Message>[] = [
     },
   },
   {
-    accessorKey: "content",
+    accessorKey: "message",
     header: "Message",
     cell: ({ row }) => {
-      const content = row.getValue("content") as string;
-      return content.length > 50 ? `${content.substring(0, 50)}...` : content;
+      const message = row.getValue("message") as string;
+      return message.length > 50 ? `${message.substring(0, 50)}...` : message;
     },
   },
   {
@@ -57,4 +62,8 @@ export const columns: ColumnDef<Message>[] = [
       );
     },
   },
+  {
+    id: "actions",
+    cell: ({ row }) => <MessageActions message={row.original} />,
+  }
 ];

@@ -7,6 +7,8 @@ import {
   useReactTable,
   SortingState,
   PaginationState,
+  VisibilityState,
+  OnChangeFn,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -31,6 +33,8 @@ interface DataTableProps<TData, TValue> {
   onSearch?: (value: string) => void;
   searchPlaceholder?: string;
   isLoading?: boolean;
+  columnVisibility?: Record<string, boolean>;
+  onColumnVisibilityChange?: OnChangeFn<VisibilityState>;
 }
 
 export function DataTable<TData, TValue>({
@@ -40,6 +44,8 @@ export function DataTable<TData, TValue>({
   onSearch,
   searchPlaceholder,
   isLoading,
+  columnVisibility,
+  onColumnVisibilityChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -47,7 +53,6 @@ export function DataTable<TData, TValue>({
     pageSize: 10,
   });
   const [searchQuery, setSearchQuery] = useState("");
-  
 
   const table = useReactTable({
     data,
@@ -59,9 +64,11 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       pagination,
+      columnVisibility
     },
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
+    onColumnVisibilityChange: onColumnVisibilityChange,
   });
 
   useEffect(() => {
@@ -86,7 +93,7 @@ export function DataTable<TData, TValue>({
         </div>
       )}
 
-      { isLoading && (
+      {isLoading && (
         <>
           <div className="rounded-md border">
             <Table>
@@ -119,7 +126,7 @@ export function DataTable<TData, TValue>({
         </>
       )}
 
-      { !isLoading && (
+      {!isLoading && (
         <>
           <div className="rounded-md border">
             <Table>
@@ -204,7 +211,6 @@ export function DataTable<TData, TValue>({
             </div>
           </div>
         </>
-
       )}
     </div>
   );

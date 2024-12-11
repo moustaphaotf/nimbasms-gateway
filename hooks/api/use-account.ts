@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { accountService } from "@/lib/api/services/account.service";
+import { accountService } from "@/lib/api/services";
 import { toast } from "react-toastify";
 
 export function useAccountInfo() {

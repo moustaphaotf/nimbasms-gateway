@@ -8,6 +8,28 @@ export interface User {
   updated_at: string;
 }
 
+export interface AccessTokenUser {
+  userId: string;
+  isStaff: boolean;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+}
+
+export interface DecodedToken {
+  token_type: "access";
+  exp: number;
+  iat: number;
+  jti: string;
+  user_id: string;
+  is_staff: boolean;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+}
+
 export interface AuthTokens {
   access: string;
   refresh: string;

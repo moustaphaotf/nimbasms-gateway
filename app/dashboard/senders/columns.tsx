@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Sender, SenderResponse, SenderStatus } from "@/lib/api/types";
+import { SenderResponse, SenderStatus } from "@/lib/api/types";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { createSortableHeader } from "@/components/ui/data-table/columns";

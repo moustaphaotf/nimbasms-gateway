@@ -9,7 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Message } from "@/lib/api/types";
+import { Message } from "@/lib/api/types/messages";
 
 interface MessageDetailDialogProps {
   message: Message | null;
@@ -37,33 +37,50 @@ export function MessageDetailDialog({
     }
   };
 
+  const formatDate = (date: string) => {
+    return format(new Date(date), "PPP 'à' HH:mm", { locale: fr });
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Détails du message</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-muted-foreground">Contact</p>
+              <p className="text-sm text-muted-foreground">Expéditeur</p>
+              <p className="font-medium">{message.sender}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Destinataire</p>
               <p className="font-medium">{message.contact}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Date de création</p>
+              <p className="font-medium">{formatDate(message.created_at)}</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Date d&apos;envoi</p>
               <p className="font-medium">
-                {format(new Date(message.created_at), "PPP 'à' HH:mm", { locale: fr })}
+                {message.sent_at ? formatDate(message.sent_at) : "-"}
               </p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Longueur</p>
+              <p className="font-medium">{message.message_len} SMS</p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Statut</p>
               <div className="mt-1">{getStatusBadge(message.status)}</div>
             </div>
           </div>
+
           <div>
             <p className="text-sm text-muted-foreground mb-2">Contenu</p>
             <div className="p-4 bg-muted rounded-lg">
-              <p className="whitespace-pre-wrap">{message.content}</p>
+              <p className="whitespace-pre-wrap">{message.message}</p>
             </div>
           </div>
         </div>

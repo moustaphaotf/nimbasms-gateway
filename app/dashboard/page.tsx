@@ -7,6 +7,8 @@ import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { useAccountInfo } from "@/hooks/api/use-account";
 import { useMessages } from "@/hooks/api/use-messages";
 import { Skeleton } from "@/components/ui/skeleton";
+import { UsageChart } from "@/components/dashboard/usage-chart";
+import { useStatistics } from "@/hooks/api/use-statistics";
 
 const chartData = [
   { name: "Jan", sent: 4000, received: 2400 },
@@ -20,6 +22,7 @@ const chartData = [
 
 export default function DashboardPage() {
   const { data: accountInfo, isLoading: isLoadingAccount } = useAccountInfo();
+  const { data: statistics, isLoading: isLoadingStats } = useStatistics();
   const { data: messages, isLoading: isLoadingMessages } = useMessages({
     limit: 5,
     ordering: "-created_at",
@@ -33,14 +36,26 @@ export default function DashboardPage() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatsCard
-          title="Nombre de messages envoyés"
-          value={messages?.count.toString() || "0"}
-          change={42}
+        <StatsCard 
+          change={0}
+          title="Messages envoyés" 
+          value={statistics?.total_messages_sent.toString() || "0"}
         />
-        <StatsCard title="Contacts" value="52403" change={22} />
-        <StatsCard title="Campagnes" value="32" change={-32} />
-        <StatsCard title="DSO Moyen" value="7 jours" change={12} />
+        <StatsCard 
+          change={0}
+          title="Messages reçus" 
+          value={statistics?.total_messages_received.toString() || "0"}
+        />
+        <StatsCard 
+          change={0}
+          title="Utilisateurs" 
+          value={statistics?.total_users.toString() || "0"}
+        />
+        <StatsCard 
+          change={0}
+          title="Noms d'expéditeur" 
+          value={statistics?.total_senders.toString() || "0"}
+        />
       </div>
 
       {/* Recent Messages and SMS Balance */}
@@ -67,30 +82,13 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Chart */}
-      <div>
-        <h2 className="text-lg font-semibold mb-4">Rapports</h2>
-        <div className="h-[400px] rounded-lg border bg-card p-6">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData}>
-              <XAxis dataKey="name" stroke="#888888" />
-              <YAxis stroke="#888888" />
-              <Line
-                type="monotone"
-                dataKey="sent"
-                stroke="hsl(var(--primary))"
-                strokeWidth={2}
-              />
-              <Line
-                type="monotone"
-                dataKey="received"
-                stroke="hsl(var(--muted-foreground))"
-                strokeWidth={2}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
+      {/* Usage Chart */}
+
+      {isLoadingStats ? (
+        <Skeleton className="h-[400px]" />
+      ) : (
+        <UsageChart data={statistics?.daily_usage || []} />
+      )}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
-import { sendersService } from "@/lib/api/services/senders.service";
+import { sendersService } from "@/lib/api/services";
 import {
   CreateSenderRequest,
   SenderFilters,

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
-import { usersService, UserFilters } from "@/lib/api/services/users.service";
+import { usersService, UserFilters } from "@/lib/api/services";
 import { CreateUserFormData } from "@/lib/schemas/user.schema";
 import { toast } from "react-toastify";
 

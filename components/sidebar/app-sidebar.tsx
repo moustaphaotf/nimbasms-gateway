@@ -1,15 +1,6 @@
 "use client";
 
 import * as React from "react";
-import {
-  Building2,
-  FileDown,
-  History,
-  Key,
-  LayoutDashboard,
-  MessageSquare,
-  UserCircle2,
-} from "lucide-react";
 
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
@@ -23,49 +14,14 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { NavGetStarted } from "./get-started";
-
-const data = {
-  navMain: [
-    {
-      icon: LayoutDashboard,
-      title: "Tableau de Bord",
-      url: "/dashboard",
-    },
-    {
-      icon: History,
-      title: "Consommation",
-      url: "/dashboard/history",
-    },
-    {
-      icon: MessageSquare,
-      title: "Noms d'expéditeur",
-      url: "/dashboard/senders",
-    },
-    {
-      icon: Key,
-      title: "Clés API et webhooks",
-      url: "/dashboard/api-keys",
-    },
-    {
-      icon: FileDown,
-      title: "Exportation de données",
-      url: "/dashboard/export",
-    },
-    {
-      icon: Building2,
-      title: "Comptes Client",
-      url: "/dashboard/users",
-    },
-    {
-      icon: UserCircle2,
-      title: "Mon Profile",
-      url: "/dashboard/profile",
-    },
-  ],
-};
+import { useUser } from "@/providers/user-provider";
+import { ADMIN_ROUTES, CLIENT_ROUTES } from "@/lib/constants";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { open } = useSidebar();
+  const { user } = useUser();
+
+  const routes = user?.isStaff ? ADMIN_ROUTES : CLIENT_ROUTES;
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -73,8 +29,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <CompanyLogo />
       </SidebarHeader>
       <SidebarContent>
-        {open && <NavGetStarted />}
-        <NavMain items={data.navMain} />
+        {!user?.isStaff && open && <NavGetStarted />}
+        <NavMain items={routes} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

@@ -8,6 +8,17 @@ import { Copy, Eye, EyeOff, RefreshCw, Check } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useRegenerateApiKey } from "@/hooks/api/use-account";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { ApiDocumentation } from "./api-documentation";
 
 interface ApiKeyFormProps {
   apiKey: string;
@@ -17,6 +28,7 @@ export function ApiKeyForm({ apiKey }: ApiKeyFormProps) {
   const regenerateApiKey = useRegenerateApiKey();
   const [showApiKey, setShowApiKey] = useState(false);
   const [apiKeyCopied, setApiKeyCopied] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleRegenerateKey = () => {
     regenerateApiKey.mutate();
@@ -47,7 +59,7 @@ export function ApiKeyForm({ apiKey }: ApiKeyFormProps) {
           </div>
           <Button 
             variant="outline" 
-            onClick={handleRegenerateKey}
+            onClick={() => setShowConfirmation(true)}
             disabled={regenerateApiKey.isPending}
           >
             <RefreshCw className="mr-2 h-4 w-4" />
@@ -83,6 +95,24 @@ export function ApiKeyForm({ apiKey }: ApiKeyFormProps) {
           </div>
         </div>
       </div>
+
+      <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmer la régénération</AlertDialogTitle>
+            <AlertDialogDescription>
+              Êtes-vous sûr de vouloir régénérer votre clé API ? 
+              L&apos;ancienne clé ne sera plus valide et tous les systèmes utilisant cette clé devront être mis à jour.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={handleRegenerateKey}>
+              Confirmer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 }

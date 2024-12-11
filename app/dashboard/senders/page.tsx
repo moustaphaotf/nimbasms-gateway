@@ -10,6 +10,7 @@ import { useState } from "react";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { CreateSenderFormData } from "@/lib/schemas/sender.schema";
 import { SenderResponse } from "@/lib/api/types";
+import { useUser } from "@/providers/user-provider";
 
 export default function SendersPage() {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -32,6 +33,7 @@ export default function SendersPage() {
     });
   };
 
+  const { user } = useUser();
   return (
     <div className="space-y-6 p-6">
       <header className="border-b pb-4">
@@ -54,6 +56,9 @@ export default function SendersPage() {
           onPaginationChange={setPagination}
           onSearch={setSearch}
           searchPlaceholder="Rechercher un nom d'expéditeur..."
+          columnVisibility={{
+            actions: user !== null && user.isStaff,
+          }}
         />
       </Card>
     </div>

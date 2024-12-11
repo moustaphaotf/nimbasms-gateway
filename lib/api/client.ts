@@ -1,6 +1,6 @@
 import axios, { Axios, AxiosError } from "axios";
 import { auth } from "@/lib/auth";
-import { authService } from "./services/auth.service";
+import { authService } from "./services";
 import { toast } from "react-toastify";
 
 // Create base API client

@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { authService } from "@/lib/api/services/auth.service";
+import { authService } from "@/lib/api/services";
 import {
   ValidateOTPRequest,
   ChangePasswordRequest,

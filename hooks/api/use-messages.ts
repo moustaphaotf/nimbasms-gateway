@@ -4,7 +4,7 @@ import {
   keepPreviousData,
   useQueryClient,
 } from "@tanstack/react-query";
-import { messagesService } from "@/lib/api/services/messages.service";
+import { messagesService } from "@/lib/api/services";
 import { MessageFilters } from "@/lib/api/types";
 import { toast } from "react-toastify";
 import { CreateMessageFormData } from "@/lib/schemas/message.shema";
