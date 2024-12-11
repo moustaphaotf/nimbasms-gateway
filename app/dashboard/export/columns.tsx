@@ -5,28 +5,48 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { Export } from "@/lib/api/types";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
+import { formatDate } from "date-fns";
+import { filesize } from "filesize";
 
 export const columns: ColumnDef<Export>[] = [
   {
     accessorKey: "created_at",
     header: "Date",
-    cell: ({ row }) => {
-      return format(new Date(row.getValue("created_at")), "Pp", { locale: fr });
-    },
+    accessorFn: ({ created_at }) => formatDate(created_at, "P H:mm"),
+  },
+  {
+    accessorKey: "period",
+    header: "Période",
+    cell: ({
+      row: {
+        original: { start_date, end_date },
+      },
+    }) => (
+      <span className="flex flex-col text-xs">
+        <span className="text-muted">
+          Du{" "}
+          <span className="text-muted-foreground">
+            {formatDate(start_date, "P")}
+          </span>
+        </span>
+        <span className="text-muted">
+          Au{" "}
+          <span className="text-muted-foreground">
+            {formatDate(end_date, "P")}
+          </span>
+        </span>
+      </span>
+    ),
   },
   {
     accessorKey: "report_type",
     header: "Type",
   },
   {
-    accessorKey: "file_name",
-    header: "Fichier",
-  },
-  {
     accessorKey: "file_size",
     header: "Taille",
+    accessorFn: ({ file_size }) =>
+      file_size !== null ? filesize(file_size) : "-",
   },
   {
     id: "actions",

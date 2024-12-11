@@ -52,6 +52,7 @@
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.3.0",
     "eslint-config-next": "14.2.2",
+    "filesize": "^10.1.6",
     "framer-motion": "^11.0.8",
     "input-otp": "^1.2.4",
     "jwt-decode": "^4.0.0",

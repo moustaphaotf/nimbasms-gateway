@@ -33,15 +33,13 @@ export default function ExportPage() {
   const sortOptions = [
     { label: "Date (Plus récent)", value: "-created_at" },
     { label: "Date (Plus ancien)", value: "created_at" },
-    { label: "Nom de fichier (A-Z)", value: "file_name" },
-    { label: "Nom de fichier (Z-A)", value: "-file_name" },
     { label: "Taille (Croissant)", value: "file_size" },
     { label: "Taille (Décroissant)", value: "-file_size" },
   ];
 
   const breadcrumbs = [
     { label: "Tableau de bord", href: PROTECTED_ROUTES.DASHBOARD.url },
-    { label: "Exportation des données" }
+    { label: "Exportation des données" },
   ];
 
   return (
