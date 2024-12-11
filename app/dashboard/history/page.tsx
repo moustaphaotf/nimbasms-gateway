@@ -17,16 +17,20 @@ import {
 } from "@/components/ui/select";
 import { useSenders } from "@/hooks/api/use-senders";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MAX_ITEMS_PER_PAGE } from "@/lib/constants";
+import { useUser } from "@/providers/user-provider";
 
 export default function HistoryPage() {
   const [date, setDate] = useState<DateRange>();
   const [sender, setSender] = useState("");
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: MAX_ITEMS_PER_PAGE,
   });
   const [sorting, setSorting] = useState<SortingState>([]);
   const [search, setSearch] = useState("");
+
+  const { user } = useUser();
 
   const { data: messages, isLoading } = useMessages({
     offset: pagination.pageIndex * pagination.pageSize,
@@ -68,6 +72,13 @@ export default function HistoryPage() {
                       {sender.name}
                     </SelectItem>
                   ))}
+                  {senders?.results?.length === 0 && (
+                    <SelectItem value="NO_SENDER_ID" disabled>
+                      {user?.isStaff
+                        ? "Aucun nom d'expéditeur trouvé"
+                        : "Vous n&apos;avez pas un nom d&apos;expéditeur actif"}
+                    </SelectItem>
+                  )}
                 </SelectContent>
               </Select>
             )}
@@ -79,6 +90,7 @@ export default function HistoryPage() {
             data={messages?.results || []}
             pageCount={Math.ceil((messages?.count || 0) / pagination.pageSize)}
             onPaginationChange={setPagination}
+            pagination={pagination}
             onSortingChange={setSorting}
             onSearch={setSearch}
             searchPlaceholder="Rechercher un message..."

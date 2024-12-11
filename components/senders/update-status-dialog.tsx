@@ -27,21 +27,18 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Sender, SenderStatus } from "@/lib/api/types";
+import { Sender, SenderResponse, SenderStatus } from "@/lib/api/types";
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import { useUpdateSenderStatus } from "@/hooks/api/use-senders";
 
 interface UpdateStatusDialogProps {
-  sender: Sender | null;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onConfirm: (status: SenderStatus) => void;
+  sender: SenderResponse | null;
 }
 
 export function UpdateStatusDialog({
   sender,
-  open,
-  onOpenChange,
-  onConfirm,
 }: UpdateStatusDialogProps) {
+  const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<SenderStatus>(
     sender?.status || "pending"
   );
@@ -56,9 +53,9 @@ export function UpdateStatusDialog({
   };
 
   const handleConfirmationConfirm = () => {
-    onConfirm(status);
+    handleUpdateStatus(status);
     setShowConfirmation(false);
-    onOpenChange(false);
+    setOpen(false);
   };
 
   const getStatusLabel = (status: SenderStatus) => {
@@ -72,9 +69,23 @@ export function UpdateStatusDialog({
     }
   };
 
+    const updateStatus = useUpdateSenderStatus();
+
+    const handleUpdateStatus = (status: Sender["status"]) => {
+      updateStatus.mutate({
+        senderId: sender?.uid!,
+        status: { status },
+      });
+    };
+
   return (
     <>
-      <Dialog open={open} onOpenChange={onOpenChange}>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button size={"sm"} variant={"outline"}>
+            Modifier le Statut
+          </Button>
+        </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Modifier le statut</DialogTitle>
@@ -98,7 +109,7 @@ export function UpdateStatusDialog({
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => onOpenChange(false)}>
+            <Button variant="outline" onClick={() => setOpen(false)}>
               Annuler
             </Button>
             <Button onClick={handleConfirm}>Confirmer</Button>
@@ -120,7 +131,7 @@ export function UpdateStatusDialog({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Annuler</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmationConfirm}>
+            <AlertDialogAction disabled={updateStatus.isPending} onClick={handleConfirmationConfirm}>
               Confirmer
             </AlertDialogAction>
           </AlertDialogFooter>

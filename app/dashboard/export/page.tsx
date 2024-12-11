@@ -2,90 +2,77 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { DatePickerWithRange } from "@/components/date-range-picker";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Download, FileSpreadsheet, FileText } from "lucide-react";
+import { DataTable } from "@/components/ui/data-table/data-table";
+import { columns } from "./columns";
+import { FileDown } from "lucide-react";
 import { useState } from "react";
-import { DateRange } from "react-day-picker";
+import { useExports } from "@/hooks/api/use-exports";
+import { CreateExportDialog } from "@/components/exports/create-export-dialog";
+import { PaginationState, SortingState } from "@tanstack/react-table";
+import { MAX_ITEMS_PER_PAGE } from "@/lib/constants";
+import { DataSort } from "@/components/ui/data-sort";
 
 export default function ExportPage() {
-  const [date, setDate] = useState<DateRange | undefined>();
+  const [showCreateExport, setShowCreateExport] = useState(false);
+  const [ordering, setOrdering] = useState("");
+
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: MAX_ITEMS_PER_PAGE,
+  });
+  const [search, setSearch] = useState("");
+
+  const { data, isLoading } = useExports({
+    offset: pagination.pageIndex * pagination.pageSize,
+    limit: pagination.pageSize,
+    search,
+    ordering,
+  });
+
+  const sortOptions = [
+    { label: "Date (Plus récent)", value: "created_at" },
+    { label: "Date (Plus ancien)", value: "-created_at" },
+    { label: "Nom de fichier (A-Z)", value: "file_name" },
+    { label: "Nom de fichier (Z-A)", value: "-file_name" },
+    { label: "Taille (Croissant)", value: "file_size" },
+    { label: "Taille (Décroissant)", value: "-file_size" },
+  ];
 
   return (
     <div className="space-y-6 p-6">
-      <header className="border-b pb-4">
+      <header className="border-b pb-4 flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Exportation de données</h1>
+        <Button onClick={() => setShowCreateExport(true)}>
+          <FileDown className="mr-2 h-4 w-4" />
+          Nouvelle exportation
+        </Button>
       </header>
 
-      <Card className="p-6">
-        <div className="space-y-6">
-          <div className="space-y-1">
-            <h2 className="text-lg font-semibold">Paramètres d&apos;exportation</h2>
-            <p className="text-sm text-muted-foreground">
-              Sélectionnez la période et le format d&apos;exportation
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <DatePickerWithRange date={date} setDate={setDate} />
-            </div>
-            <div>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Type de données" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="messages">Messages envoyés</SelectItem>
-                  <SelectItem value="contacts">Contacts</SelectItem>
-                  <SelectItem value="campaigns">Campagnes</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Button className="w-full" variant="outline">
-              <FileSpreadsheet className="mr-2 h-4 w-4" />
-              Exporter en Excel
-            </Button>
-            <Button className="w-full" variant="outline">
-              <FileText className="mr-2 h-4 w-4" />
-              Exporter en CSV
-            </Button>
-          </div>
-        </div>
-      </Card>
+      <div className="flex justify-end">
+        <DataSort
+          value={ordering}
+          onValueChange={setOrdering}
+          options={sortOptions}
+        />
+      </div>
 
       <Card className="p-6">
-        <div className="space-y-4">
-          <div className="space-y-1">
-            <h2 className="text-lg font-semibold">Exports récents</h2>
-            <p className="text-sm text-muted-foreground">
-              Téléchargez vos exports des 30 derniers jours
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between p-4 border rounded-lg"
-              >
-                <div className="space-y-1">
-                  <p className="font-medium">Export_20240320_{i}.xlsx</p>
-                  <p className="text-sm text-muted-foreground">
-                    20 Mars 2024 • 2.3 MB
-                  </p>
-                </div>
-                <Button size="sm" variant="ghost">
-                  <Download className="h-4 w-4" />
-                </Button>
-              </div>
-            ))}
-          </div>
-        </div>
+        <DataTable
+          columns={columns}
+          data={data?.results || []}
+          pageCount={Math.ceil((data?.count || 0) / pagination.pageSize)}
+          onPaginationChange={setPagination}
+          pagination={pagination}
+          onSearch={setSearch}
+          searchPlaceholder="Rechercher dans les exportations..."
+          isLoading={isLoading}
+        />
       </Card>
+
+      <CreateExportDialog
+        open={showCreateExport}
+        onOpenChange={setShowCreateExport}
+      />
     </div>
   );
 }

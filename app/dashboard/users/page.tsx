@@ -9,12 +9,13 @@ import { useUsers } from "@/hooks/api/use-users";
 import { UserPlus } from "lucide-react";
 import { useState } from "react";
 import { PaginationState, SortingState } from "@tanstack/react-table";
+import { MAX_ITEMS_PER_PAGE } from "@/lib/constants";
 
 export default function UsersPage() {
   const [showAddUser, setShowAddUser] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: MAX_ITEMS_PER_PAGE,
   });
   const [sorting, setSorting] = useState<SortingState>([]);
   const [search, setSearch] = useState("");
@@ -23,7 +24,10 @@ export default function UsersPage() {
     offset: pagination.pageIndex * pagination.pageSize,
     limit: pagination.pageSize,
     search,
-    ordering: sorting.length > 0 ? `${sorting[0].desc ? "-" : ""}${sorting[0].id}` : undefined,
+    ordering:
+      sorting.length > 0
+        ? `${sorting[0].desc ? "-" : ""}${sorting[0].id}`
+        : undefined,
   });
 
   return (
@@ -46,6 +50,7 @@ export default function UsersPage() {
           data={data?.results || []}
           pageCount={Math.ceil((data?.count || 0) / pagination.pageSize)}
           onPaginationChange={setPagination}
+          pagination={pagination}
           onSortingChange={setSorting}
           onSearch={setSearch}
           searchPlaceholder="Rechercher un utilisateur..."

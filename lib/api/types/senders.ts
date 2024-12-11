@@ -28,4 +28,5 @@ export interface SenderFilters {
   limit?: number;
   search?: string;
   status?: SenderStatus;
+  ordering?: string;
 }

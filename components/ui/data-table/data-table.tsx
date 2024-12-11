@@ -28,7 +28,8 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   pageCount?: number;
-  onPaginationChange?: (pagination: PaginationState) => void;
+  pagination?: PaginationState;
+  onPaginationChange?: OnChangeFn<PaginationState>;
   onSortingChange?: (sorting: SortingState) => void;
   onSearch?: (value: string) => void;
   searchPlaceholder?: string;
@@ -46,12 +47,10 @@ export function DataTable<TData, TValue>({
   isLoading,
   columnVisibility,
   onColumnVisibilityChange,
+  onPaginationChange,
+  pagination
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
   const [searchQuery, setSearchQuery] = useState("");
 
   const table = useReactTable({
@@ -67,7 +66,7 @@ export function DataTable<TData, TValue>({
       columnVisibility
     },
     onSortingChange: setSorting,
-    onPaginationChange: setPagination,
+    onPaginationChange: onPaginationChange,
     onColumnVisibilityChange: onColumnVisibilityChange,
   });
 

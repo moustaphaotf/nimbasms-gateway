@@ -11,18 +11,23 @@ import { PaginationState, SortingState } from "@tanstack/react-table";
 import { CreateSenderFormData } from "@/lib/schemas/sender.schema";
 import { SenderResponse } from "@/lib/api/types";
 import { useUser } from "@/providers/user-provider";
+import { MAX_ITEMS_PER_PAGE } from "@/lib/constants";
+import { DataSort } from "@/components/ui/data-sort";
 
 export default function SendersPage() {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: MAX_ITEMS_PER_PAGE,
   });
+
+  const [ordering, setOrdering] = useState("")
   const [search, setSearch] = useState("");
 
   const { data, isLoading } = useSenders({
     offset: pagination.pageIndex * pagination.pageSize,
     limit: pagination.pageSize,
     search,
+    ordering,
   });
 
   const createSender = useCreateSender();
@@ -32,6 +37,13 @@ export default function SendersPage() {
       name: data.name,
     });
   };
+
+  const sortOptions = [
+    { label: "Date (Plus récent)", value: "added_at" },
+    { label: "Date (Plus ancien)", value: "-added_at" },
+    { label: "Nom d'expéditeur (A-Z)", value: "name" },
+    { label: "Nom d'expéditeur (Z-A)", value: "-name" },
+  ];
 
   const { user } = useUser();
   return (
@@ -47,6 +59,14 @@ export default function SendersPage() {
         />
       </Card>
 
+      <div className="flex justify-end">
+        <DataSort
+          value={ordering}
+          onValueChange={setOrdering}
+          options={sortOptions}
+        />
+      </div>
+
       <Card className="p-6">
         <DataTable
           columns={columns}
@@ -54,6 +74,7 @@ export default function SendersPage() {
           data={(data?.results as SenderResponse[]) || []}
           pageCount={Math.ceil((data?.count || 0) / pagination.pageSize)}
           onPaginationChange={setPagination}
+          pagination={pagination}
           onSearch={setSearch}
           searchPlaceholder="Rechercher un nom d'expéditeur..."
           columnVisibility={{

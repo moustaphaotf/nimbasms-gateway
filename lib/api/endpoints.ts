@@ -28,4 +28,8 @@ export const API_ENDPOINTS = {
   DASHBOARD: {
     STATS: "/statistics/",
   },
+  EXPORTS: {
+    LIST: "/exports/",
+    CREATE: "/exports/",
+  }
 } as const;

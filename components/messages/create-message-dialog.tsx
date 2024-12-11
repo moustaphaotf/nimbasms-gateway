@@ -121,6 +121,10 @@ export function CreateMessageDialog({}: CreateMessageDialogProps) {
                               {sender.name}
                             </SelectItem>
                           ))}
+
+                          {senders?.results?.length === 0 && (
+                            <SelectItem value="NO_SENDER_ID" disabled >Vous n&apos;avez pas un nom d&apos;expéditeur actif</SelectItem>
+                          )}
                         </SelectContent>
                       </Select>
                     )}

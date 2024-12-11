@@ -2,14 +2,10 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { SenderResponse, SenderStatus } from "@/lib/api/types";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { createSortableHeader } from "@/components/ui/data-table/columns";
-import { useState } from "react";
 import { UpdateStatusDialog } from "@/components/senders/update-status-dialog";
-import { useUpdateSenderStatus } from "@/hooks/api/use-senders";
 
 export const columns: ColumnDef<SenderResponse>[] = [
   {
@@ -67,36 +63,6 @@ export const columns: ColumnDef<SenderResponse>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      const sender = row.original;
-      //   const [showUpdateStatus, setShowUpdateStatus] = useState(false);
-      //   const updateStatus = useUpdateSenderStatus();
-
-      //   const handleUpdateStatus = (status: Sender["status"]) => {
-      //     updateStatus.mutate({
-      //       senderId: sender.uid,
-      //       status: { status },
-      //     });
-      //   };
-
-      return (
-        <>
-          <Button
-            variant="outline"
-            size="sm"
-            // onClick={() => setShowUpdateStatus(true)}
-          >
-            Modifier le statut
-          </Button>
-
-          {/* <UpdateStatusDialog
-            sender={sender}
-            open={showUpdateStatus}
-            onOpenChange={setShowUpdateStatus}
-            onConfirm={handleUpdateStatus}
-          /> */}
-        </>
-      );
-    },
+    cell: ({ row: { original } }) => <UpdateStatusDialog sender={original} />,
   },
 ];
