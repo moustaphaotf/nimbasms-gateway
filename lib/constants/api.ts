@@ -1,7 +1,7 @@
 export const API_CONSTANTS = {
     // Retry configuration
     MAX_RETRIES: 3,
-    INITIAL_RETRY_DELAY: 1000, // 1 second
+    INITIAL_RETRY_DELAY: 500, // 500ms
     MAX_RETRY_DELAY: 10000, // 10 seconds
     RETRY_BACKOFF_FACTOR: 2,
     RETRY_RANDOM_FACTOR: 0.2, // ±20% random jitter

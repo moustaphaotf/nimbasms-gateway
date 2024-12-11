@@ -9,12 +9,9 @@ export interface ExtendedRequestConfig extends InternalAxiosRequestConfig {
 }
 
 export interface ApiErrorResponse {
-  status: number;
-  data?: {
-    detail?: string;
-    message?: string;
-    [key: string]: unknown;
-  };
+  detail?: string;
+  message?: string;
+  [key: string]: unknown;
 }
 
 export interface ApiError extends Error {

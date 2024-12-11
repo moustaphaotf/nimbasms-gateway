@@ -3,10 +3,9 @@ import { auth } from "@/lib/auth";
 import { API_CONSTANTS } from "@/lib/constants/api";
 import { shouldRetry, calculateRetryDelay } from "../utils/retry";
 import { rateLimiter } from "../utils/rate-limit";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 import { ExtendedRequestConfig } from "../types/api";
-import { ApiErrorResponse, RefreshTokenResponse } from "../types";
-import { API_ENDPOINTS } from "../endpoints";
+import { ApiErrorResponse } from "../types";
 import { authService } from "../services";
 import { PUBLIC_ROUTES } from "@/lib/constants";
 

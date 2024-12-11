@@ -51,7 +51,7 @@ export function CreateExportDialog({
     status: "accepted",
   });
   const [date, setDate] = useState<DateRange | undefined>();
-  const { user } = useUser()
+  const { user } = useUser();
   const form = useForm<CreateExportFormData>({
     resolver: zodResolver(createExportSchema),
     defaultValues: {
@@ -62,7 +62,13 @@ export function CreateExportDialog({
   });
 
   const onSubmit = (data: CreateExportFormData) => {
-    createExport.mutate(data, {
+    const exportData = {
+      ...(data.sender_name && { sender_name: data.sender_name }),
+      start_date: data.start_date,
+      end_date: data.end_date,
+    };
+
+    createExport.mutate(exportData, {
       onSuccess: () => {
         form.reset();
         onOpenChange(false);
