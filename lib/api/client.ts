@@ -13,7 +13,7 @@ const apiClient = axios.create({
 
 // Create v1 API client that includes the v1 prefix
 export const v1ApiClient = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL}${process.env.NEXT_PUBLIC_API_V1_PREFIX}`,
+  baseURL: process.env.NEXT_PUBLIC_API_V1_PREFIX,
   headers: {
     "Content-Type": "application/json",
   },
