@@ -45,9 +45,7 @@ export default function HistoryPage() {
         : undefined,
   });
 
-  const { data: senders, isLoading: isLoadingSenders } = useSenders({
-    status: "accepted",
-  });
+  const { data: senders, isLoading: isLoadingSenders } = useSenders();
 
   const breadcrumbs = [
     { label: "Tableau de bord", href: PROTECTED_ROUTES.DASHBOARD.url },
@@ -83,7 +81,7 @@ export default function HistoryPage() {
                     <SelectItem value="NO_SENDER_ID" disabled>
                       {user?.isStaff
                         ? "Aucun nom d'expéditeur trouvé"
-                        : "Vous n&apos;avez pas un nom d&apos;expéditeur actif"}
+                        : "Vous n'avez pas de nom d'expéditeur"}
                     </SelectItem>
                   )}
                 </SelectContent>

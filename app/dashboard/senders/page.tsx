@@ -40,8 +40,8 @@ export default function SendersPage() {
   };
 
   const sortOptions = [
-    { label: "Date (Plus récent)", value: "added_at" },
-    { label: "Date (Plus ancien)", value: "-added_at" },
+    { label: "Date (Plus récent)", value: "-added_at" },
+    { label: "Date (Plus ancien)", value: "added_at" },
     { label: "Nom d'expéditeur (A-Z)", value: "name" },
     { label: "Nom d'expéditeur (Z-A)", value: "-name" },
   ];

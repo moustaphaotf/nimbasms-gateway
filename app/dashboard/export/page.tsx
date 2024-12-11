@@ -31,8 +31,8 @@ export default function ExportPage() {
   });
 
   const sortOptions = [
-    { label: "Date (Plus récent)", value: "created_at" },
-    { label: "Date (Plus ancien)", value: "-created_at" },
+    { label: "Date (Plus récent)", value: "-created_at" },
+    { label: "Date (Plus ancien)", value: "created_at" },
     { label: "Nom de fichier (A-Z)", value: "file_name" },
     { label: "Nom de fichier (Z-A)", value: "-file_name" },
     { label: "Taille (Croissant)", value: "file_size" },
