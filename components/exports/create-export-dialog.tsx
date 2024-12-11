@@ -47,9 +47,7 @@ export function CreateExportDialog({
   onOpenChange,
 }: CreateExportDialogProps) {
   const createExport = useCreateExport();
-  const { data: senders, isLoading: isLoadingSenders } = useSenders({
-    status: "accepted",
-  });
+  const { data: senders, isLoading: isLoadingSenders } = useSenders();
   const [date, setDate] = useState<DateRange | undefined>();
   const { user } = useUser();
   const form = useForm<CreateExportFormData>({
@@ -131,7 +129,7 @@ export function CreateExportDialog({
                           <SelectItem value="NO_SENDER_ID" disabled>
                             {user?.isStaff
                               ? "Aucun nom d'expéditeur trouvé"
-                              : "Vous n&apos;avez pas un nom d&apos;expéditeur actif"}
+                              : "Vous n'avez pas de nom d'expéditeur"}
                           </SelectItem>
                         )}
                       </SelectContent>
