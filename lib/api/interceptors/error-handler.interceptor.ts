@@ -6,6 +6,9 @@ import { rateLimiter } from "../utils/rate-limit";
 import { toast } from "sonner";
 import { ExtendedRequestConfig } from "../types/api";
 import { ApiErrorResponse, RefreshTokenResponse } from "../types";
+import { API_ENDPOINTS } from "../endpoints";
+import { authService } from "../services";
+import { PUBLIC_ROUTES } from "@/lib/constants";
 
 export async function handleApiError(
   error: AxiosError<ApiErrorResponse>,
@@ -39,14 +42,14 @@ export async function handleApiError(
 
       case API_CONSTANTS.HTTP_STATUS.FORBIDDEN: {
         if (typeof window !== "undefined") {
-          window.location.href = "/forbidden";
+          window.location.href = PUBLIC_ROUTES.FORBIDDEN;
         }
         return Promise.reject(error);
       }
 
       case API_CONSTANTS.HTTP_STATUS.NOT_FOUND: {
         if (typeof window !== "undefined") {
-          window.location.href = "/not-found";
+          window.location.href = PUBLIC_ROUTES.NOT_FOUND;
         }
         return Promise.reject(error);
       }
@@ -78,17 +81,14 @@ async function handleUnauthorizedError(
       throw new Error("No refresh token");
     }
 
-    const { data } = await instance.post<RefreshTokenResponse>(
-      "/auth/refresh-token/",
-      { refresh: refreshToken }
-    );
+    const { access } = await authService.refreshToken(refreshToken);
 
-    auth.setTokens(data.access, refreshToken);
+    auth.setTokens(access, refreshToken);
 
     if (!config.headers) {
       config.headers = new AxiosHeaders();
     }
-    config.headers.Authorization = `Bearer ${data.access}`;
+    config.headers.Authorization = `Bearer ${access}`;
 
     return instance(config);
   } catch (refreshError) {

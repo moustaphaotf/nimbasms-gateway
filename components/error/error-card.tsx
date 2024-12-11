@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { PROTECTED_ROUTES } from "@/lib/constants";
 
 interface ErrorCardProps {
   title?: string;
@@ -51,7 +52,7 @@ export function ErrorCard({
             )}
             {showDashboardLink && (
               <Button asChild>
-                <Link href="/dashboard">
+                <Link href={PROTECTED_ROUTES.DASHBOARD.url}>
                   Retour au tableau de bord
                 </Link>
               </Button>

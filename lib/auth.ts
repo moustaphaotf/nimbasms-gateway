@@ -1,4 +1,5 @@
 import { jwtDecode } from "jwt-decode";
+import { PUBLIC_ROUTES } from "./constants";
 
 interface JWTPayload {
   exp?: number;
@@ -25,7 +26,7 @@ export const auth = {
 
   logout: () => {
     auth.clearTokens();
-    window.location.href = "/";
+    window.location.href = PUBLIC_ROUTES.LANDING;
   },
 
   isAuthenticated: () => {

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { FileQuestion } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { PROTECTED_ROUTES } from "@/lib/constants";
 
 export default function NotFound() {
   return (
@@ -31,14 +32,15 @@ export default function NotFound() {
           <div className="space-y-2">
             <h1 className="text-4xl font-bold">Page introuvable</h1>
             <p className="text-muted-foreground">
-              Désolé, la page que vous recherchez n&apos;existe pas ou a été déplacée.
+              Désolé, la page que vous recherchez n&apos;existe pas ou a été
+              déplacée.
             </p>
           </div>
 
           {/* Actions */}
           <div className="flex justify-center gap-4">
             <Button asChild>
-              <Link href="/dashboard">
+              <Link href={PROTECTED_ROUTES.DASHBOARD.url}>
                 Retour au tableau de bord
               </Link>
             </Button>

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { PROTECTED_ROUTES } from "@/lib/constants";
 
 export default function ForbiddenPage() {
   return (
@@ -29,13 +30,14 @@ export default function ForbiddenPage() {
           <div className="space-y-2">
             <h1 className="text-4xl font-bold">Accès refusé</h1>
             <p className="text-muted-foreground">
-              Désolé, vous n&apos;avez pas les autorisations nécessaires pour accéder à cette page.
+              Désolé, vous n&apos;avez pas les autorisations nécessaires pour
+              accéder à cette page.
             </p>
           </div>
 
           <div className="flex justify-center gap-4">
             <Button asChild>
-              <Link href="/dashboard">
+              <Link href={PROTECTED_ROUTES.DASHBOARD.url}>
                 Retour au tableau de bord
               </Link>
             </Button>

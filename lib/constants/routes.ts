@@ -9,7 +9,11 @@ import {
   UserCircle2,
 } from "lucide-react";
 
-export const PUBLIC_ROUTES = ["/"] as const;
+export const PUBLIC_ROUTES = {
+  LANDING: "/",
+  NOT_FOUND: "/not-found",
+  FORBIDDEN: "/forbidden",
+} as const;
 
 export const PROTECTED_ROUTES: Record<string, NavItem> = {
   DASHBOARD: {
