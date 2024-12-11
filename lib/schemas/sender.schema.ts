@@ -4,9 +4,9 @@ export const createSenderSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(3, "Le nom doit contenir au moins 3 caractères")
+    .min(2, "Le nom doit contenir au moins 2 caractères")
     .max(11, "Le nom ne peut pas dépasser 11 caractères")
-    .regex(/^[a-zA-Z0-9]+$/, "Le nom ne peut contenir que des lettres et des chiffres"),
+    .regex(/^[a-zA-Z0-9\s-]+$/, "Le nom doit contenir uniquement lettres, chiffres, - et _"),
 });
 
 export type CreateSenderFormData = z.infer<typeof createSenderSchema>;
