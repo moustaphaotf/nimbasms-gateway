@@ -45,7 +45,7 @@ export const PROTECTED_ROUTES: Record<string, NavItem> = {
   PROFILE: {
     icon: UserCircle2,
     title: "Mon Profile",
-    url: "/dashboard/profile",
+    url: "/dashboard/profil",
   },
 };
 

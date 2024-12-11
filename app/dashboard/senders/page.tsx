@@ -50,12 +50,12 @@ export default function SendersPage() {
 
   const breadcrumbs = [
     { label: "Tableau de bord", href: PROTECTED_ROUTES.DASHBOARD.url },
-    { label: "Expéditeurs" },
+    { label: "Noms d'expéditeur" },
   ];
 
   return (
     <div className="space-y-6 p-6">
-      <PageHeader title="Expéditeurs" breadcrumbs={breadcrumbs} />
+      <PageHeader title="Noms d'expéditeur" breadcrumbs={breadcrumbs} />
 
       <Card className="p-6">
         <SenderForm
