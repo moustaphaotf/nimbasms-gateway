@@ -8,5 +8,6 @@ export interface Statistics {
   total_senders: number;
   total_messages_sent: number;
   total_messages_received: number;
+  total_messages_failure: number;
   daily_usage: DailyUsage[];
 }

@@ -3,15 +3,9 @@
 import { DailyUsage } from "@/lib/api/types/statistics";
 
 import * as React from "react";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { CartesianGrid, Label, Line, LineChart, XAxis, YAxis } from "recharts";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
@@ -26,8 +20,8 @@ interface UsageChartProps {
 const chartConfig = {
   count: {
     label: "Total",
-    color: "hsl(var(--chart-3))"
-  }
+    color: "hsl(var(--chart-3))",
+  },
 } satisfies ChartConfig;
 
 export function UsageChart({ data }: UsageChartProps) {
@@ -40,22 +34,30 @@ export function UsageChart({ data }: UsageChartProps) {
         >
           <LineChart
             accessibilityLayer
-            data={data}
+            data={data.map((item) => ({ ...item, count: item.count || 0 }))}
             margin={{
               left: 12,
               right: 12,
             }}
           >
             <CartesianGrid vertical={false} />
+            <YAxis dataKey={"count"} allowDecimals={false}>
+              <Label
+                angle={-90}
+                position="center"
+                offset={10}
+                value={"SMS Envoyés"}
+              />
+            </YAxis>
             <XAxis
               dataKey="day"
-              tickLine={false}
-              axisLine={false}
+              // tickLine={false}
+              // axisLine={false}
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
                 const date = new Date(value);
-                return date.toLocaleDateString("en-US", {
+                return date.toLocaleDateString("fr-FR", {
                   month: "short",
                   day: "numeric",
                 });
@@ -82,8 +84,7 @@ export function UsageChart({ data }: UsageChartProps) {
               type="monotone"
               stroke={`var(--color-count)`}
               strokeWidth={2}
-              
-              dot={false}
+              dot={true}
             />
           </LineChart>
         </ChartContainer>

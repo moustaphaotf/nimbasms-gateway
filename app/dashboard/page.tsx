@@ -39,22 +39,22 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatsCard
           change={0}
-          title="Messages envoyés"
+          title="Messages Envoyés"
           value={statistics?.total_messages_sent.toString() || "0"}
         />
         <StatsCard
           change={0}
-          title="Messages reçus"
+          title="Messages Reçus"
           value={statistics?.total_messages_received.toString() || "0"}
         />
         <StatsCard
           change={0}
-          title="Utilisateurs"
-          value={statistics?.total_users.toString() || "0"}
+          title="Messages Echoués"
+          value={statistics?.total_messages_failure.toString() || "0"}
         />
         <StatsCard
           change={0}
-          title="Noms d'expéditeur"
+          title="Noms d'Expéditeur"
           value={statistics?.total_senders.toString() || "0"}
         />
       </div>
@@ -84,12 +84,17 @@ export default function DashboardPage() {
       </div>
 
       {/* Usage Chart */}
+      <div className="">
+        <h2 className="text-lg font-semibold mb-4">
+          Nombre de SMS envoyés par jour
+        </h2>
 
-      {isLoadingStats ? (
-        <Skeleton className="h-[400px]" />
-      ) : (
-        <UsageChart data={statistics?.daily_usage || []} />
-      )}
+        {isLoadingStats ? (
+          <Skeleton className="h-[400px]" />
+        ) : (
+          <UsageChart data={statistics?.daily_usage || []} />
+        )}
+      </div>
     </div>
   );
 }
