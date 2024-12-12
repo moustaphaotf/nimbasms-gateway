@@ -43,6 +43,7 @@ export default function HistoryPage() {
       sorting.length > 0
         ? `${sorting[0].desc ? "-" : ""}${sorting[0].id}`
         : undefined,
+    sender,
   });
 
   const { data: senders, isLoading: isLoadingSenders } = useSenders();
