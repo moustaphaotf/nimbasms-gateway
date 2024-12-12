@@ -23,9 +23,12 @@ export function useCreateExport() {
     mutationFn: exportsService.createExport,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["exports"] });
-      toast.success("La requête d'exportation créé avec succès");
-      toast.success(
-        "Vous serez notifié par email dès que le processus sera terminé!"
+      toast.info("La requête d'exportation créé avec succès");
+      toast.info(
+        "Vous serez notifié par email dès que le processus sera terminé!",
+        {
+          delay: 2000,
+        }
       );
     },
     onError: () => {
