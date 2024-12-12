@@ -14,7 +14,6 @@ import { DataSort } from "@/components/ui/data-sort";
 import { PageHeader } from "@/components/layout/app-header";
 
 export default function ExportPage() {
-  const [showCreateExport, setShowCreateExport] = useState(false);
   const [ordering, setOrdering] = useState("");
 
   const [pagination, setPagination] = useState<PaginationState>({
@@ -45,10 +44,7 @@ export default function ExportPage() {
   return (
     <div className="space-y-6 p-6">
       <PageHeader title="Exportation des données" breadcrumbs={breadcrumbs}>
-        <Button onClick={() => setShowCreateExport(true)}>
-          <FileDown className="mr-2 h-4 w-4" />
-          Nouvelle exportation
-        </Button>
+        <CreateExportDialog />
       </PageHeader>
 
       <div className="flex justify-end">
@@ -71,11 +67,6 @@ export default function ExportPage() {
           isLoading={isLoading}
         />
       </Card>
-
-      <CreateExportDialog
-        open={showCreateExport}
-        onOpenChange={setShowCreateExport}
-      />
     </div>
   );
 }

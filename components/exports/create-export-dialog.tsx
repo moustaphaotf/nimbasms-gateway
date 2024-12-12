@@ -36,18 +36,15 @@ import {
   createExportSchema,
 } from "@/lib/schemas/export.schema";
 import { useUser } from "@/providers/user-provider";
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import { FileDown } from "lucide-react";
 
-interface CreateExportDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
+interface CreateExportDialogProps {}
 
-export function CreateExportDialog({
-  open,
-  onOpenChange,
-}: CreateExportDialogProps) {
+export function CreateExportDialog({}: CreateExportDialogProps) {
   const createExport = useCreateExport();
   const { data: senders, isLoading: isLoadingSenders } = useSenders();
+  const [open, setOpen] = useState(false);
   const [date, setDate] = useState<DateRange | undefined>();
   const { user } = useUser();
   const form = useForm<CreateExportFormData>({
@@ -69,7 +66,7 @@ export function CreateExportDialog({
     createExport.mutate(exportData, {
       onSuccess: () => {
         form.reset();
-        onOpenChange(false);
+        setOpen(false);
       },
     });
   };
@@ -86,7 +83,13 @@ export function CreateExportDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button>
+          <FileDown className="mr-2 h-4 w-4" />
+          Nouvelle exportation
+        </Button>
+      </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Créer un export</DialogTitle>
