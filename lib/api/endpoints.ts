@@ -1,9 +1,11 @@
 export const API_ENDPOINTS = {
   AUTH: {
     REQUEST_EMAIL_OTP: "/auth/email-token",
+    REQUEST_GOOGLE_OTP: "/auth/google-token",
     REQUEST_MOBILE_OTP: "/auth/mobile-token",
     VALIDATE_EMAIL_OTP: "/auth/email-token/validate",
     VALIDATE_MOBILE_OTP: "/auth/mobile-token/confirm",
+    VALIDATE_GOOGLE_OTP: "/auth/google-token/verify",
     REFRESH_TOKEN: "/auth/revoke-token",
     CHANGE_PASSWORD: "/auth/change-password",
     CREATE_USER: "/auth/create",
@@ -31,5 +33,5 @@ export const API_ENDPOINTS = {
   EXPORTS: {
     LIST: "/exports/",
     CREATE: "/exports/",
-  }
+  },
 } as const;

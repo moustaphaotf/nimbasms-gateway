@@ -5,6 +5,7 @@ import {
   RefreshTokenResponse,
   UpdateProfileRequest,
   ProfileInfo,
+  CheckUserResponse,
 } from "../types";
 import { API_ENDPOINTS } from "../endpoints";
 import apiClient from "../client";
@@ -18,10 +19,18 @@ export const authService = {
     return data;
   },
 
-  requestMobileOTP: async (phone: string) => {
-    const { data } = await apiClient.post<RequestOTPResponse>(
-      API_ENDPOINTS.AUTH.REQUEST_MOBILE_OTP,
-      { phone }
+  requestGoogleOTP: async (email: string) => {
+    const { data } = await apiClient.post<CheckUserResponse>(
+      API_ENDPOINTS.AUTH.REQUEST_GOOGLE_OTP,
+      { email }
+    );
+    return data;
+  },
+
+  validateGoogleOTP: async (payload: ValidateOTPRequest) => {
+    const { data } = await apiClient.post<AuthTokens>(
+      API_ENDPOINTS.AUTH.VALIDATE_GOOGLE_OTP,
+      payload
     );
     return data;
   },
@@ -29,14 +38,6 @@ export const authService = {
   validateEmailOTP: async (payload: ValidateOTPRequest) => {
     const { data } = await apiClient.post<AuthTokens>(
       API_ENDPOINTS.AUTH.VALIDATE_EMAIL_OTP,
-      payload
-    );
-    return data;
-  },
-
-  validateMobileOTP: async (payload: ValidateOTPRequest) => {
-    const { data } = await apiClient.post<AuthTokens>(
-      API_ENDPOINTS.AUTH.VALIDATE_MOBILE_OTP,
       payload
     );
     return data;

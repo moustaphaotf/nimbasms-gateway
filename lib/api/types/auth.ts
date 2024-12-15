@@ -40,6 +40,12 @@ export interface RequestOTPResponse {
   message: string;
 }
 
+export interface CheckUserResponse {
+  is_new_user: boolean;
+  pin_uid: string;
+  qr_code: string;
+}
+
 export interface ValidateOTPRequest {
   pin_uid: string;
   otp: string;
