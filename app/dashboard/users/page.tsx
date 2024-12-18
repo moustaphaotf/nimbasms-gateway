@@ -11,6 +11,7 @@ import { useState } from "react";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { MAX_ITEMS_PER_PAGE, PROTECTED_ROUTES } from "@/lib/constants";
 import { PageHeader } from "@/components/layout/app-header";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function UsersPage() {
   const [showAddUser, setShowAddUser] = useState(false);
@@ -33,19 +34,26 @@ export default function UsersPage() {
 
   const breadcrumbs = [
     { label: "Tableau de bord", href: PROTECTED_ROUTES.DASHBOARD.url },
-    { label: "Utilisateurs" }
+    { label: "Utilisateurs" },
   ];
 
   return (
     <div className="space-y-6 p-6">
       <PageHeader title="Gestion des Utilisateurs" breadcrumbs={breadcrumbs} />
 
-      <div className="flex justify-end">
-        <Button onClick={() => setShowAddUser(true)}>
-          <UserPlus className="mr-2 h-4 w-4" />
-          Ajouter un utilisateur
-        </Button>
-      </div>
+      <Tabs defaultValue="active-accounts">
+        <TabsList>
+          <TabsTrigger value="active-accounts">Comptes Actifs</TabsTrigger>
+          <TabsTrigger value="ongoing-requests">Demandes en Cours</TabsTrigger>
+          <TabsTrigger value="unactive-accounts">Comptes Inactifs</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="active-accounts"></TabsContent>
+
+        <TabsContent value="ongoing-requests"></TabsContent>
+
+        <TabsContent value="unactive-accounts"></TabsContent>
+      </Tabs>
 
       <Card className="p-6">
         <DataTable
@@ -60,8 +68,6 @@ export default function UsersPage() {
           searchPlaceholder="Rechercher un utilisateur..."
         />
       </Card>
-
-      <AddUserDialog open={showAddUser} onOpenChange={setShowAddUser} />
     </div>
   );
 }
