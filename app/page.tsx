@@ -81,12 +81,6 @@ export default function Home() {
       <footer className="border-t mt-20">
         <div className="container mx-auto px-4 py-6 text-center text-sm text-muted-foreground">
           <p>© 2024 MTN. Tous droits réservés.</p>
-          <p>
-            Powered by{" "}
-            <a href="#" className="underline hover:text-primary">
-              NimbaSMS
-            </a>
-          </p>
         </div>
       </footer>
     </div>
