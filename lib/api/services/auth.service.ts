@@ -6,11 +6,21 @@ import {
   UpdateProfileRequest,
   ProfileInfo,
   CheckUserResponse,
+  ValidateGoogleOTPRequest,
 } from "../types";
 import { API_ENDPOINTS } from "../endpoints";
 import apiClient from "../client";
+import { RegisterFormData } from "@/lib/schemas/auth.schema";
 
 export const authService = {
+  registerUser: async (userData: RegisterFormData) => {
+    const { data } = await apiClient.post(
+      API_ENDPOINTS.AUTH.CREATE_USER,
+      userData
+    );
+    return data;
+  },
+
   requestEmailOTP: async (email: string) => {
     const { data } = await apiClient.post<RequestOTPResponse>(
       API_ENDPOINTS.AUTH.REQUEST_EMAIL_OTP,
@@ -27,7 +37,7 @@ export const authService = {
     return data;
   },
 
-  validateGoogleOTP: async (payload: ValidateOTPRequest) => {
+  validateGoogleOTP: async (payload: ValidateGoogleOTPRequest) => {
     const { data } = await apiClient.post<AuthTokens>(
       API_ENDPOINTS.AUTH.VALIDATE_GOOGLE_OTP,
       payload

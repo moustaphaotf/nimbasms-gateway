@@ -1,10 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { authService } from "@/lib/api/services";
-import { ValidateOTPRequest, ChangePasswordRequest } from "@/lib/api/types";
+import {
+  ValidateOTPRequest,
+  ChangePasswordRequest,
+  ValidateGoogleOTPRequest,
+} from "@/lib/api/types";
 import { auth } from "@/lib/auth";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { PROTECTED_ROUTES } from "@/lib/constants";
+import { RegisterFormData } from "@/lib/schemas/auth.schema";
 
 export function useRequestEmailOTP() {
   return useMutation({
@@ -30,6 +35,21 @@ export function useRequestGoogleOTP() {
   });
 }
 
+export function useRegisterUser() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (user: RegisterFormData) => authService.registerUser(user),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("Votre compte utilisateur a été créé avec succès");
+    },
+    onError: () => {
+      toast.error("Erreur lors de la création de votre compte utilisateur");
+    },
+  });
+}
+
 export function useValidateEmailOTP() {
   const router = useRouter();
 
@@ -51,7 +71,7 @@ export function useValidateGoogleOTP() {
   const router = useRouter();
 
   return useMutation({
-    mutationFn: (payload: ValidateOTPRequest) =>
+    mutationFn: (payload: ValidateGoogleOTPRequest) =>
       authService.validateGoogleOTP(payload),
     onSuccess: (data) => {
       auth.setTokens(data.access, data.refresh);

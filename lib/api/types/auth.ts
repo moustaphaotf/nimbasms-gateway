@@ -41,13 +41,18 @@ export interface RequestOTPResponse {
 }
 
 export interface CheckUserResponse {
-  is_new_user: boolean;
-  pin_uid: string;
-  qr_code: string;
+  is_2fa_enabled: boolean;
+  email: string;
+  qr_code?: string;
 }
 
 export interface ValidateOTPRequest {
   pin_uid: string;
+  otp: string;
+}
+
+export interface ValidateGoogleOTPRequest {
+  email: string;
   otp: string;
 }
 
@@ -77,3 +82,5 @@ export interface UpdateProfileRequest {
   email?: string;
   phone?: string;
 }
+
+export type AuthStep = "request" | "verify" | "setup-2fa";
