@@ -69,76 +69,42 @@ export function LoginForm() {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <Tabs
-              defaultValue="email"
-              className="w-full"
-              onValueChange={(value) => setMethod(value as "email" | "phone")}
-            >
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="email">
-                  <Mail className="mr-2 h-4 w-4" />
-                  Email
-                </TabsTrigger>
-                <TabsTrigger value="phone">
-                  <Phone className="mr-2 h-4 w-4" />
-                  Téléphone
-                </TabsTrigger>
-              </TabsList>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4 mt-4"
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="exemple@mtn.com"
+                          type="email"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
-                  <TabsContent value="email">
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="exemple@mtn.com"
-                              type="email"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </TabsContent>
-
-                  <TabsContent value="phone">
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Numéro de téléphone</FormLabel>
-                          <FormControl>
-                            <PhoneInputField
-                              value={field.value!}
-                              onChange={(value) => field.onChange(value)}
-                              error={!!form.formState.errors.phone}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </TabsContent>
-
-                  <Button
-                    type="submit"
-                    className="w-full"
-                    disabled={requestEmailOTP.isPending || requestMobileOTP.isPending}
-                  >
-                    {requestEmailOTP.isPending || requestMobileOTP.isPending
-                      ? "Envoi en cours..."
-                      : "Recevoir le code"}
-                  </Button>
-                </form>
-              </Form>
-            </Tabs>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={
+                    requestEmailOTP.isPending || requestMobileOTP.isPending
+                  }
+                >
+                  {requestEmailOTP.isPending || requestMobileOTP.isPending
+                    ? "Envoi en cours..."
+                    : "Recevoir le code"}
+                </Button>
+              </form>
+            </Form>
           </motion.div>
         ) : (
           <motion.div
