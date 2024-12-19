@@ -8,24 +8,28 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useValidateEmailOTP } from "@/hooks/api/use-auth";
+import {
+  useValidateEmailOTP,
+  useValidateMobileOTP,
+} from "@/hooks/api/use-auth";
 import { ArrowLeft } from "lucide-react";
-import { CheckUserResponse } from "@/lib/api/types";
-import { LoginStep } from "./login-form";
 
 interface OTPVerificationProps {
-  requestOTPResponse: CheckUserResponse;
-  setStep: (step: LoginStep) => void;
+  pinUid: string;
+  method: "email" | "phone";
+  onBack: () => void;
 }
 
 export function OTPVerification({
-  requestOTPResponse,
-  setStep,
+  pinUid,
+  method,
+  onBack,
 }: OTPVerificationProps) {
   const [otp, setOtp] = useState("");
   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
 
   const validateEmailOTP = useValidateEmailOTP();
+  const validateMobileOTP = useValidateMobileOTP();
 
   useEffect(() => {
     if (timeLeft <= 0) return;
@@ -40,10 +44,15 @@ export function OTPVerification({
   const handleVerify = async () => {
     try {
       const payload = {
-        pin_uid: requestOTPResponse.pin_uid,
+        pin_uid: pinUid,
         otp,
       };
-      await validateEmailOTP.mutateAsync(payload);
+
+      if (method === "email") {
+        await validateEmailOTP.mutateAsync(payload);
+      } else {
+        await validateMobileOTP.mutateAsync(payload);
+      }
     } catch (error) {
       // Error is handled by the mutation
     }
@@ -57,21 +66,22 @@ export function OTPVerification({
 
   return (
     <div className="space-y-6">
+      <div className="flex items-center space-x-4">
+        <Button variant="ghost" size="icon" onClick={onBack}>
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+        <h2 className="text-lg font-semibold">Vérification du code</h2>
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col gap-4 items-center"
       >
-        <div className="flex items-center space-x-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setStep("request")}
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-          <h2 className="text-lg font-semibold">Vérification du code</h2>
-        </div>
+        <p className="text-sm text-muted-foreground">
+          Saisissez le code à 6 chiffres envoyé à votre{" "}
+          {method === "email" ? "email" : "téléphone"}
+        </p>
 
         <InputOTP
           // @ts-ignore
@@ -100,10 +110,15 @@ export function OTPVerification({
           className="w-full"
           onClick={handleVerify}
           disabled={
-            otp.length !== 6 || timeLeft <= 0 || validateEmailOTP.isPending
+            otp.length !== 6 ||
+            timeLeft <= 0 ||
+            validateEmailOTP.isPending ||
+            validateMobileOTP.isPending
           }
         >
-          {validateEmailOTP.isPending ? "Vérification..." : "Vérifier"}
+          {validateEmailOTP.isPending || validateMobileOTP.isPending
+            ? "Vérification..."
+            : "Vérifier"}
         </Button>
       </motion.div>
     </div>
