@@ -8,34 +8,51 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useValidateGoogleOTP } from "@/hooks/api/use-auth";
+import {
+  useValidateEmailOTP,
+  useValidateMobileOTP,
+} from "@/hooks/api/use-auth";
 import { ArrowLeft } from "lucide-react";
-import { AuthStep, CheckUserResponse } from "@/lib/api/types";
-import { useRouter } from "next/navigation";
-import { PROTECTED_ROUTES } from "@/lib/constants";
 
 interface OTPVerificationProps {
-  requestOTPResponse: CheckUserResponse;
-  setStep: (step: AuthStep) => void;
+  pinUid: string;
+  method: "email" | "phone";
+  onBack: () => void;
 }
 
 export function OTPVerification({
-  requestOTPResponse,
-  setStep,
+  pinUid,
+  method,
+  onBack,
 }: OTPVerificationProps) {
   const [otp, setOtp] = useState("");
-  const router = useRouter();
+  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
 
-  const validateGoogleOTP = useValidateGoogleOTP();
+  const validateEmailOTP = useValidateEmailOTP();
+  const validateMobileOTP = useValidateMobileOTP();
+
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
 
   const handleVerify = async () => {
     try {
       const payload = {
-        email: requestOTPResponse.email,
+        pin_uid: pinUid,
         otp,
       };
-      await validateGoogleOTP.mutateAsync(payload);
-      router.push(PROTECTED_ROUTES.DASHBOARD.url);
+
+      if (method === "email") {
+        await validateEmailOTP.mutateAsync(payload);
+      } else {
+        await validateMobileOTP.mutateAsync(payload);
+      }
     } catch (error) {
       // Error is handled by the mutation
     }
@@ -49,21 +66,22 @@ export function OTPVerification({
 
   return (
     <div className="space-y-6">
+      <div className="flex items-center space-x-4">
+        <Button variant="ghost" size="icon" onClick={onBack}>
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+        <h2 className="text-lg font-semibold">Vérification du code</h2>
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col gap-4 items-center"
       >
-        <div className="flex items-center space-x-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setStep("request")}
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-          <h2 className="text-lg font-semibold">Vérification du code</h2>
-        </div>
+        <p className="text-sm text-muted-foreground">
+          Saisissez le code à 6 chiffres envoyé à votre{" "}
+          {method === "email" ? "email" : "téléphone"}
+        </p>
 
         <InputOTP
           // @ts-ignore
@@ -80,12 +98,27 @@ export function OTPVerification({
           )}
         />
 
+        <div className="text-center text-sm text-muted-foreground">
+          {timeLeft > 0 ? (
+            <p>Le code expire dans {formatTime(timeLeft)}</p>
+          ) : (
+            <p className="text-destructive">Le code a expiré</p>
+          )}
+        </div>
+
         <Button
           className="w-full"
           onClick={handleVerify}
-          disabled={otp.length !== 6 || validateGoogleOTP.isPending}
+          disabled={
+            otp.length !== 6 ||
+            timeLeft <= 0 ||
+            validateEmailOTP.isPending ||
+            validateMobileOTP.isPending
+          }
         >
-          {validateGoogleOTP.isPending ? "Vérification..." : "Vérifier"}
+          {validateEmailOTP.isPending || validateMobileOTP.isPending
+            ? "Vérification..."
+            : "Vérifier"}
         </Button>
       </motion.div>
     </div>

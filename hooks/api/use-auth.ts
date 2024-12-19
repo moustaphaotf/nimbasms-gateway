@@ -3,13 +3,11 @@ import { authService } from "@/lib/api/services";
 import {
   ValidateOTPRequest,
   ChangePasswordRequest,
-  ValidateGoogleOTPRequest,
 } from "@/lib/api/types";
 import { auth } from "@/lib/auth";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { PROTECTED_ROUTES } from "@/lib/constants";
-import { RegisterFormData } from "@/lib/schemas/auth.schema";
 
 export function useRequestEmailOTP() {
   return useMutation({
@@ -23,29 +21,14 @@ export function useRequestEmailOTP() {
   });
 }
 
-export function useRequestGoogleOTP() {
+export function useRequestMobileOTP() {
   return useMutation({
-    mutationFn: authService.requestGoogleOTP,
+    mutationFn: authService.requestMobileOTP,
     onSuccess: () => {
-      // toast.success("");
+      toast.success("Code de vérification envoyé par SMS");
     },
     onError: () => {
-      toast.error("Erreur lors de la vérification de l'email");
-    },
-  });
-}
-
-export function useRegisterUser() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (user: RegisterFormData) => authService.registerUser(user),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      toast.success("Votre compte utilisateur a été créé avec succès");
-    },
-    onError: () => {
-      toast.error("Erreur lors de la création de votre compte utilisateur");
+      toast.error("Erreur lors de l'envoi du code");
     },
   });
 }
@@ -67,15 +50,15 @@ export function useValidateEmailOTP() {
   });
 }
 
-export function useValidateGoogleOTP() {
+export function useValidateMobileOTP() {
   const router = useRouter();
 
   return useMutation({
-    mutationFn: (payload: ValidateGoogleOTPRequest) =>
-      authService.validateGoogleOTP(payload),
+    mutationFn: (payload: ValidateOTPRequest) =>
+      authService.validateMobileOTP(payload),
     onSuccess: (data) => {
       auth.setTokens(data.access, data.refresh);
-      router.push(PROTECTED_ROUTES.DASHBOARD.url);
+      router.push(PROTECTED_ROUTES.PROFILE.url);
       toast.success("Connexion réussie");
     },
     onError: () => {
@@ -86,10 +69,11 @@ export function useValidateGoogleOTP() {
 
 export function useProfileInfo() {
   return useQuery({
-    queryKey: ["profile"],
+    queryKey: ['profile'],
     queryFn: authService.getProfileInfo,
   });
 }
+
 
 export function useUpdateProfile() {
   const queryClient = useQueryClient();
@@ -97,11 +81,11 @@ export function useUpdateProfile() {
   return useMutation({
     mutationFn: authService.updateProfile,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["profile"] });
-      toast.success("Profil mis à jour avec succès");
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      toast.success('Profil mis à jour avec succès');
     },
     onError: () => {
-      toast.error("Erreur lors de la mise à jour du profil");
+      toast.error('Erreur lors de la mise à jour du profil');
     },
   });
 }

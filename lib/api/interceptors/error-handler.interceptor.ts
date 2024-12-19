@@ -31,6 +31,21 @@ export async function handleApiError(
     return Promise.reject(error);
   }
 
+  if (error.response?.data?.detail) {
+    let errorMessage = "";
+    if (typeof error.response?.data.detail === "string") {
+      errorMessage = error.response?.data.detail;
+    } else if (Array.isArray(error.response?.data.detail)) {
+      errorMessage = error.response?.data.detail[0];
+    }
+
+    if (errorMessage) {
+      toast.error(errorMessage, {
+        delay: 2000,
+      });
+    }
+  }
+
   if (error.response) {
     const status = error.response.status;
 
@@ -42,13 +57,6 @@ export async function handleApiError(
       case API_CONSTANTS.HTTP_STATUS.FORBIDDEN: {
         if (typeof window !== "undefined") {
           window.location.href = PUBLIC_ROUTES.FORBIDDEN;
-        }
-        return Promise.reject(error);
-      }
-
-      case API_CONSTANTS.HTTP_STATUS.NOT_FOUND: {
-        if (typeof window !== "undefined") {
-          window.location.href = PUBLIC_ROUTES.NOT_FOUND;
         }
         return Promise.reject(error);
       }

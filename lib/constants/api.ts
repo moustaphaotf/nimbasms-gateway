@@ -15,6 +15,7 @@ export const API_CONSTANTS = {
       UNAUTHORIZED: 401,
       FORBIDDEN: 403,
       NOT_FOUND: 404,
+      BAD_REQUEST: 400,
       SERVER_ERROR_START: 500,
       SERVER_ERROR_END: 599
     }
