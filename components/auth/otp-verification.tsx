@@ -8,15 +8,14 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useValidateGoogleOTP } from "@/hooks/api/use-auth";
+import { useValidateEmailOTP } from "@/hooks/api/use-auth";
 import { ArrowLeft } from "lucide-react";
-import { AuthStep, CheckUserResponse } from "@/lib/api/types";
-import { useRouter } from "next/navigation";
-import { PROTECTED_ROUTES } from "@/lib/constants";
+import { CheckUserResponse } from "@/lib/api/types";
+import { LoginStep } from "./login-form";
 
 interface OTPVerificationProps {
   requestOTPResponse: CheckUserResponse;
-  setStep: (step: AuthStep) => void;
+  setStep: (step: LoginStep) => void;
 }
 
 export function OTPVerification({
@@ -24,18 +23,27 @@ export function OTPVerification({
   setStep,
 }: OTPVerificationProps) {
   const [otp, setOtp] = useState("");
-  const router = useRouter();
+  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
 
-  const validateGoogleOTP = useValidateGoogleOTP();
+  const validateEmailOTP = useValidateEmailOTP();
+
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
 
   const handleVerify = async () => {
     try {
       const payload = {
-        email: requestOTPResponse.email,
+        pin_uid: requestOTPResponse.pin_uid,
         otp,
       };
-      await validateGoogleOTP.mutateAsync(payload);
-      router.push(PROTECTED_ROUTES.DASHBOARD.url);
+      await validateEmailOTP.mutateAsync(payload);
     } catch (error) {
       // Error is handled by the mutation
     }
@@ -80,12 +88,22 @@ export function OTPVerification({
           )}
         />
 
+        <div className="text-center text-sm text-muted-foreground">
+          {timeLeft > 0 ? (
+            <p>Le code expire dans {formatTime(timeLeft)}</p>
+          ) : (
+            <p className="text-destructive">Le code a expiré</p>
+          )}
+        </div>
+
         <Button
           className="w-full"
           onClick={handleVerify}
-          disabled={otp.length !== 6 || validateGoogleOTP.isPending}
+          disabled={
+            otp.length !== 6 || timeLeft <= 0 || validateEmailOTP.isPending
+          }
         >
-          {validateGoogleOTP.isPending ? "Vérification..." : "Vérifier"}
+          {validateEmailOTP.isPending ? "Vérification..." : "Vérifier"}
         </Button>
       </motion.div>
     </div>
