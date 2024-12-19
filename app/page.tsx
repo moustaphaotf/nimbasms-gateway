@@ -126,6 +126,12 @@ export default function LoginPage() {
             <LoginForm />
           </Card>
         </motion.div>
+        {/* Footer */}
+        <footer className="m">
+          <div className="container mx-auto px-4 py-6 text-center text-xs text-muted-foreground">
+            <p>© 2024 MTN. Tous droits réservés.</p>
+          </div>
+        </footer>
       </div>
     </div>
   );
