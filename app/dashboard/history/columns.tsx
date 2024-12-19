@@ -32,7 +32,7 @@ export const columns: ColumnDef<Message>[] = [
     accessorKey: "message_len",
     header: "Longueur",
     accessorFn: ({ message_len }) =>
-      (message_len !== null ? message_len + " SMS" : "-"),
+      message_len !== null ? message_len + " SMS" : "-",
   },
   {
     accessorKey: "contact",
@@ -50,11 +50,13 @@ export const columns: ColumnDef<Message>[] = [
       return (
         <Badge
           variant={
-            status === "sent" || status === "delivered"
+            status === "sent"
+              ? "secondary"
+              : status === "delivered"
               ? "success"
               : status === "failure"
               ? "destructive"
-              : "secondary"
+              : "outline"
           }
         >
           {status === "sent"
@@ -62,7 +64,7 @@ export const columns: ColumnDef<Message>[] = [
             : status === "failure"
             ? "Échoué"
             : status === "delivered"
-            ? "Livré"
+            ? "Reçu"
             : "En attente"}
         </Badge>
       );
