@@ -72,8 +72,9 @@ export function LoginForm() {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4 mt-4"
+                className="space-y-4"
               >
+                <h2 className="text-lg">Entrez votre email pour vous connecter</h2>
                 <FormField
                   control={form.control}
                   name="email"
