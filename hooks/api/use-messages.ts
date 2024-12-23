@@ -7,7 +7,10 @@ import {
 import { messagesService } from "@/lib/api/services";
 import { MessageFilters } from "@/lib/api/types";
 import { toast } from "react-toastify";
-import { CreateMessageFormData } from "@/lib/schemas/message.shema";
+import {
+  CreateMessageFormData,
+  UploadSendMessagesFormData,
+} from "@/lib/schemas/message.shema";
 
 export function useMessages(filters?: MessageFilters) {
   return useQuery({
@@ -36,6 +39,25 @@ export function useCreateMessage() {
     },
     onError: () => {
       toast.error("Erreur lors de l'envoi du message");
+    },
+  });
+}
+
+export function useUploadSendMessages() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (body: UploadSendMessagesFormData) =>
+      messagesService.uploadSendMessages(body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["messages"] });
+      toast.info("L'envoi des messages peu prendre un peu de temps.");
+      toast.info("Vous serez notifié par email à la fin du processus", {
+        delay: 2000,
+      });
+    },
+    onError: () => {
+      toast.error("Erreur lors de l'envoi des messages");
     },
   });
 }

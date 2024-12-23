@@ -16,3 +16,8 @@ export const createMessageSchema = z.object({
 });
 
 export type CreateMessageFormData = z.infer<typeof createMessageSchema>;
+
+export type UploadSendMessagesFormData = {
+  file: File | null;
+  column_mapping: Record<string, number>;
+};

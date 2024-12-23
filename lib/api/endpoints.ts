@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
     LIST: "/messages/",
     DETAIL: (messageId: string) => `/messages/${messageId}/`,
     EXPORT: "/messages/export/",
+    UPLOAD_SEND: "/messages/csv_bulk_message/",
   },
   SENDERS: {
     LIST: "/senders/",
@@ -31,5 +32,5 @@ export const API_ENDPOINTS = {
   EXPORTS: {
     LIST: "/exports/",
     CREATE: "/exports/",
-  }
+  },
 } as const;

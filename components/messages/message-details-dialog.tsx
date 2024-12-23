@@ -26,13 +26,13 @@ export function MessageDetailDialog({
   const getStatusBadge = (status: Message["status"]) => {
     switch (status) {
       case "sent":
-        return <Badge variant="success">Envoyé</Badge>;
+        return <Badge variant="secondary">Envoyé</Badge>;
       case "failure":
         return <Badge variant="destructive">Échoué</Badge>;
       case "delivered":
-        return <Badge variant="success">Livré</Badge>;
+        return <Badge variant="success">Reçu</Badge>;
       default:
-        return <Badge variant="secondary">En attente</Badge>;
+        return <Badge variant="outline">En attente</Badge>;
     }
   };
 
@@ -60,7 +60,11 @@ export function MessageDetailDialog({
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Longueur</p>
-              <p className="font-medium">{message.message_len !== null ? message.message_len + " SMS" : "-"}</p>
+              <p className="font-medium">
+                {message.message_len !== null
+                  ? message.message_len + " SMS"
+                  : "-"}
+              </p>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Statut</p>
