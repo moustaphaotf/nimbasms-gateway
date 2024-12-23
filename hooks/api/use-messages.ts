@@ -51,7 +51,7 @@ export function useUploadSendMessages() {
       messagesService.uploadSendMessages(body),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["messages"] });
-      toast.info("L'envoi des messages peu prendre un peu de temps.");
+      toast.info("L'envoi des messages est en cours...");
       toast.info("Vous serez notifié par email à la fin du processus", {
         delay: 2000,
       });
