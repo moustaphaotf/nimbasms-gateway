@@ -44,10 +44,10 @@ export function DataPreview({
   setOpen,
 }: DataPreviewProps) {
   const { mutate: sendMessages, isPending } = useUploadSendMessages();
-  // const headers = Object.keys(data[0] || {});
+
   const headers = hasHeaderRow
     ? data[0]
-    : data[0].map((_, index) => `Column ${index + 1}`);
+    : data[0].map((_, index) => `Colonne ${index + 1}`);
   const rows = hasHeaderRow ? data.slice(1) : data;
 
   const handleMappingChange = (columnIndex: number, value: string) => {
@@ -78,8 +78,12 @@ export function DataPreview({
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-4">
+    <div className="space-y-4">
+      <div className="text-sm">
+        Veuillez sélectionner les colonnes correspondant au nom
+        d&apos;expéditeur au message et au contact du detinataire.
+      </div>
+      <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Checkbox
             id="hasHeaderRow"
@@ -95,12 +99,16 @@ export function DataPreview({
           <X className="w-4 h-4" /> Effacer
         </Button>
       </div>
+
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow className="bg-secondary">
               {headers.map((header, index) => (
-                <TableHead key={index}>
+                <TableHead
+                  key={index}
+                  className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[200px] py-2"
+                >
                   <div className="flex flex-col  space-y-2 py-2">
                     <Select
                       value={
@@ -134,7 +142,7 @@ export function DataPreview({
               <TableRow key={rowIndex}>
                 {row.map((cell, cellIndex) => (
                   <TableCell
-                    className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[200px]"
+                    className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[200px] py-2"
                     key={cellIndex}
                   >
                     {cell && cell}
@@ -145,8 +153,16 @@ export function DataPreview({
           </TableBody>
         </Table>
       </div>
-      <div className="mt-4 flex justify-between">
-        <Button onClick={onBack}>Back</Button>
+      <div className="text-sm text-end">
+        <p>
+          {rows.length} ligne{rows.length > 1 ? "s" : ""}{" "}
+          {rows.length > 1 ? "ont au total" : "a"} été retrouvée
+          {rows.length > 1 ? "s" : ""}
+        </p>
+      </div>
+
+      <div className="flex justify-between">
+        <Button onClick={onBack}>Retour</Button>
         <Button
           disabled={isSubmitDisabled() || isPending}
           onClick={handleSubmit}

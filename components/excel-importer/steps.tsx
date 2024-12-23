@@ -7,7 +7,7 @@ interface StepsProps {
 
 export function Steps({ currentStep, totalSteps }: StepsProps) {
   return (
-    <div className="flex items-center space-x-4 mb-8">
+    <div className="flex items-center space-x-4">
       {Array.from({ length: totalSteps }, (_, i) => i + 1).map((step) => (
         <React.Fragment key={step}>
           <div

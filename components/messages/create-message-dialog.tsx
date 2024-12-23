@@ -42,7 +42,7 @@ export function CreateMessageDialog({}: CreateMessageDialogProps) {
               <TabsTrigger value="file-upload">Importer un fichier</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="single-message" className="px-4">
+            <TabsContent value="single-message" className="px-2">
               <SingleMessage setOpen={setOpen} />
             </TabsContent>
 
@@ -52,7 +52,7 @@ export function CreateMessageDialog({}: CreateMessageDialogProps) {
 
 
 
-            <TabsContent value="file-upload" className="px-4">
+            <TabsContent value="file-upload" className="px-2">
               <UploadSMS setOpen={setOpen} />
             </TabsContent>
 

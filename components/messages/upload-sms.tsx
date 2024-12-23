@@ -43,7 +43,7 @@ export function UploadSMS({ setOpen }: UploadSMSProps) {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto my-4 space-y-4">
       <Steps currentStep={step} totalSteps={2} />
       {step === 1 && <FileUpload onFileUpload={handleFileUpload} />}
       {step === 2 && (

@@ -45,9 +45,7 @@ export function ColumnMapping({
         <TableHeader>
           <TableRow>
             {headers.map((header, index) => (
-              <TableHead key={index}>
-                
-              </TableHead>
+              <TableHead key={index}></TableHead>
             ))}
           </TableRow>
         </TableHeader>
@@ -55,7 +53,7 @@ export function ColumnMapping({
           <TableRow>
             {headers.map((header, index) => (
               <TableCell key={index}>
-                {hasHeaderRow ? data[0][header] : `Column ${index + 1}`}
+                {hasHeaderRow ? data[0][header] : `Colonne ${index + 1}`}
               </TableCell>
             ))}
           </TableRow>
@@ -71,7 +69,7 @@ export function ColumnMapping({
         </TableBody>
       </Table>
       <div className="mt-4 flex justify-start">
-        <Button onClick={onBack}>Back</Button>
+        <Button onClick={onBack}>Retour</Button>
       </div>
     </div>
   );
