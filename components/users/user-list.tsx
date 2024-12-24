@@ -61,7 +61,7 @@ export function UserList({ users }: UserListProps) {
           </TableHeader>
           <TableBody>
             {displayedUsers.map((user) => (
-              <TableRow key={user.id}>
+              <TableRow key={user.uid}>
                 <TableCell>{`${user.first_name} ${user.last_name}`}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.phone}</TableCell>

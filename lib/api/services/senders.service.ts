@@ -1,13 +1,12 @@
 import {
   Sender,
-  CreateSenderRequest,
-  SenderStatus,
   UpdateSenderStatusRequest,
   PaginatedResponse,
   SenderFilters,
 } from "../types";
 import { API_ENDPOINTS } from "../endpoints";
 import { v1ApiClient } from "../client";
+import { CreateSenderFormData } from "@/lib/schemas/sender.schema";
 
 export const sendersService = {
   getSenders: async (filters?: SenderFilters) => {
@@ -18,7 +17,7 @@ export const sendersService = {
     return data;
   },
 
-  createSender: async (sender: CreateSenderRequest) => {
+  createSender: async (sender: CreateSenderFormData) => {
     const { data } = await v1ApiClient.post<Sender>(
       API_ENDPOINTS.SENDERS.CREATE,
       sender

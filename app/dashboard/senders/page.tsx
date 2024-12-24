@@ -14,6 +14,7 @@ import { useUser } from "@/providers/user-provider";
 import { MAX_ITEMS_PER_PAGE, PROTECTED_ROUTES } from "@/lib/constants";
 import { DataSort } from "@/components/ui/data-sort";
 import { PageHeader } from "@/components/layout/app-header";
+import { AdminSenderForm } from "@/components/senders/admin-sender-form";
 
 export default function SendersPage() {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -57,12 +58,18 @@ export default function SendersPage() {
     <div className="space-y-6 p-6">
       <PageHeader title="Noms d'expéditeur" breadcrumbs={breadcrumbs} />
 
-      <Card className="p-6">
-        <SenderForm
-          onSubmit={handleCreateSender}
-          isSubmitting={createSender.isPending}
-        />
-      </Card>
+      {user && !user.isStaff ? (
+        <Card className="p-6">
+          <SenderForm
+            onSubmit={handleCreateSender}
+            isSubmitting={createSender.isPending}
+          />
+        </Card>
+      ) : (
+        <div className="text-end">
+          <AdminSenderForm />
+        </div>
+      )}
 
       <div className="flex justify-end">
         <DataSort

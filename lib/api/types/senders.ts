@@ -7,10 +7,6 @@ export interface Sender {
   added_at: string;
 }
 
-export interface CreateSenderRequest {
-  name: string;
-}
-
 export interface SenderResponse extends Sender {
   owner: {
     email: string;

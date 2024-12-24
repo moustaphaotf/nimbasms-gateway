@@ -31,21 +31,6 @@ export async function handleApiError(
     return Promise.reject(error);
   }
 
-  if (error.response?.data?.detail) {
-    let errorMessage = "";
-    if (typeof error.response?.data.detail === "string") {
-      errorMessage = error.response?.data.detail;
-    } else if (Array.isArray(error.response?.data.detail)) {
-      errorMessage = error.response?.data.detail[0];
-    }
-
-    if (errorMessage) {
-      toast.error(errorMessage, {
-        delay: 2000,
-      });
-    }
-  }
-
   if (error.response) {
     const status = error.response.status;
 
@@ -105,7 +90,7 @@ async function handleUnauthorizedError(
 }
 
 async function handleRetryableError(
-  error: AxiosError,
+  error: AxiosError<ApiErrorResponse>,
   instance: AxiosInstance,
   status: number,
   config: ExtendedRequestConfig,
@@ -116,6 +101,21 @@ async function handleRetryableError(
     const delay = calculateRetryDelay(retryCount);
     await new Promise((resolve) => setTimeout(resolve, delay));
     return instance(config);
+  }
+
+  if (error.response?.data?.detail) {
+    let errorMessage = "";
+    if (typeof error.response?.data.detail === "string") {
+      errorMessage = error.response?.data.detail;
+    } else if (Array.isArray(error.response?.data.detail)) {
+      errorMessage = error.response?.data.detail[0];
+    }
+
+    if (errorMessage) {
+      toast.error(errorMessage, {
+        delay: 2000,
+      });
+    }
   }
   return Promise.reject(error);
 }

@@ -1,11 +1,11 @@
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { sendersService } from "@/lib/api/services";
 import {
-  CreateSenderRequest,
   SenderFilters,
   UpdateSenderStatusRequest,
 } from "@/lib/api/types";
 import { toast } from "react-toastify";
+import { CreateSenderFormData } from "@/lib/schemas/sender.schema";
 
 export function useSenders(filters?: SenderFilters) {
   return useQuery({
@@ -19,7 +19,7 @@ export function useCreateSender() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (sender: CreateSenderRequest) =>
+    mutationFn: (sender: CreateSenderFormData) =>
       sendersService.createSender(sender),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["senders"] });

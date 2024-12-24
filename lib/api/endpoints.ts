@@ -7,7 +7,7 @@ export const API_ENDPOINTS = {
     REFRESH_TOKEN: "/auth/revoke-token",
     CHANGE_PASSWORD: "/auth/change-password",
     CREATE_USER: "/auth/create",
-    USER_LIST: "/auth/user-list",
+    USER_LIST: "/auth/user-list/",
     PROFILE_INFO: "/auth/profile-info",
   },
   ACCOUNT: {
