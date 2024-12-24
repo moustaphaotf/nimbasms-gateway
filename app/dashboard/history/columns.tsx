@@ -4,20 +4,42 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { createSortableHeader } from "@/components/ui/data-table/columns";
 import { Message } from "@/lib/api/types";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Eye } from "lucide-react";
-import { MessageDetailDialog } from "@/components/messages/message-details-dialog";
 import { MessageActions } from "@/components/messages/messages-actions";
 
 export const columns: ColumnDef<Message>[] = [
   {
     accessorKey: "created_at",
     header: "Date",
-    cell: ({ row }) => {
-      return format(new Date(row.getValue("created_at")), "Pp", { locale: fr });
+    cell: ({
+      row: {
+        original: { created_at },
+      },
+    }) => {
+      return (
+        <span className="flex flex-col text-xs text-muted-foreground">
+          <span className="whitespace-nowrap">{format(created_at, "PP", { locale: fr })}</span>
+          <span>{format(created_at, "p", { locale: fr })}</span>
+        </span>
+      );
+    },
+  },
+  {
+    accessorKey: "owner",
+    header: "Utilisateur",
+    cell: ({
+      row: {
+        original: { owner },
+      },
+    }) => {
+      return (
+        <span className="flex flex-col text-xs text-muted-foreground">
+          <span>{owner.email}</span>
+          <span className="font-semibold">
+            {owner.first_name} {owner.last_name}
+          </span>
+        </span>
+      );
     },
   },
   {
@@ -37,6 +59,11 @@ export const columns: ColumnDef<Message>[] = [
   {
     accessorKey: "contact",
     header: "Destinataire",
+    cell: ({
+      row: {
+        original: { contact },
+      },
+    }) => <span className="text-xs whitespace-nowrap">{contact} </span>,
   },
   {
     accessorKey: "sender",

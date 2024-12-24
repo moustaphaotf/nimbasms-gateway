@@ -10,7 +10,11 @@ export interface Message {
   operator: string;
   sent_at: string;
   message_len: number;
-  owner: number;
+  owner: {
+    email: string;
+    first_name: string;
+    last_name: string;
+  };
 }
 
 export interface MessageFilters {

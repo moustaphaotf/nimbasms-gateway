@@ -9,6 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Message } from "@/lib/api/types/messages";
 import { formatDate } from "date-fns";
+import { useUser } from "@/providers/user-provider";
 
 interface MessageDetailDialogProps {
   message: Message | null;
@@ -21,6 +22,8 @@ export function MessageDetailDialog({
   open,
   onOpenChange,
 }: MessageDetailDialogProps) {
+  const { user } = useUser();
+
   if (!message) return null;
 
   const getStatusBadge = (status: Message["status"]) => {
@@ -70,6 +73,16 @@ export function MessageDetailDialog({
               <p className="text-sm text-muted-foreground">Statut</p>
               <div className="mt-1">{getStatusBadge(message.status)}</div>
             </div>
+
+            {user && user.isStaff ? (
+              <div>
+                <p className="text-sm text-muted-foreground">Utilisateur</p>
+                <div className="mt-1 text-xs">{message.owner.email}</div>
+                <div className="mt-1 text-xs">
+                  {message.owner.first_name} {message.owner.last_name}
+                </div>
+              </div>
+            ) : null}
           </div>
 
           <div>

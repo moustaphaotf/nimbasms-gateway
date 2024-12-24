@@ -103,7 +103,10 @@ async function handleRetryableError(
     return instance(config);
   }
 
-  if (error.response?.data?.detail) {
+  if (
+    status !== API_CONSTANTS.HTTP_STATUS.UNAUTHORIZED &&
+    error.response?.data?.detail
+  ) {
     let errorMessage = "";
     if (typeof error.response?.data.detail === "string") {
       errorMessage = error.response?.data.detail;

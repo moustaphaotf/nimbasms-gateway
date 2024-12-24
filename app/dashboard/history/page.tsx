@@ -100,6 +100,9 @@ export default function HistoryPage() {
             onSortingChange={setSorting}
             onSearch={setSearch}
             searchPlaceholder="Rechercher un message..."
+            columnVisibility={{
+              owner: user !== null && user.isStaff,
+            }}
           />
         </div>
       </Card>
