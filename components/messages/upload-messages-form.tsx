@@ -1,16 +1,12 @@
 "use client";
 
 import React, { useCallback, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { FileUpload } from "../ui/file-upload";
 import { Steps } from "../excel-importer/steps";
 import { DataPreview } from "../excel-importer/data-preview";
-import { ColumnMapping } from "../excel-importer/column-mapping";
-import * as XLSX from "xlsx";
 import { xlsx2json } from "@/lib/utils/xlsx-to-json";
 
-interface UploadSMSProps {
+interface UploadMessagesFormProps {
   setOpen: (open: boolean) => void;
 }
 
@@ -20,7 +16,7 @@ const availableOptions = [
   { label: "Message", value: "message" },
 ];
 
-export function UploadSMS({ setOpen }: UploadSMSProps) {
+export function UploadMessagesForm({ setOpen }: UploadMessagesFormProps) {
   const [step, setStep] = useState(1);
   const [file, setFile] = useState<File | null>(null);
   const [data, setData] = useState<any[]>([]);

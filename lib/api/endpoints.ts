@@ -20,6 +20,7 @@ export const API_ENDPOINTS = {
     DETAIL: (messageId: string) => `/messages/${messageId}/`,
     EXPORT: "/messages/export/",
     UPLOAD_SEND: "/messages/csv_bulk_message/",
+    GROUP_SEND: "/messages/groups_message/",
   },
   SENDERS: {
     LIST: "/senders/",

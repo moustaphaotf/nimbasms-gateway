@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { X } from "lucide-react";
-import { useUploadSendMessages } from "@/hooks/api/use-messages";
+import { useSendUploadedMessages } from "@/hooks/api/use-messages";
 
 interface DataPreviewProps {
   data: any[][];
@@ -43,7 +43,7 @@ export function DataPreview({
   setMapping,
   setOpen,
 }: DataPreviewProps) {
-  const { mutate: sendMessages, isPending } = useUploadSendMessages();
+  const { mutate: sendMessages, isPending } = useSendUploadedMessages();
 
   const headers = hasHeaderRow
     ? data[0]

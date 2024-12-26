@@ -11,16 +11,17 @@ import {
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { MessageSquarePlus } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { SingleMessage } from "./single-message";
+import { SingleMessageForm } from "./single-message-form";
 import { ScrollArea } from "../ui/scroll-area";
-import { UploadSMS } from "./upload-sms";
+import { UploadMessagesForm } from "./upload-messages-form";
+import { GroupMessagesForm } from "./group-messages-form";
 
 interface CreateMessageDialogProps {}
 
 export function CreateMessageDialog({}: CreateMessageDialogProps) {
   const [open, setOpen] = useState(false);
 
-  return ( 
+  return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="w-full">
@@ -38,24 +39,21 @@ export function CreateMessageDialog({}: CreateMessageDialogProps) {
               <TabsTrigger value="single-message">
                 Message individuel
               </TabsTrigger>
-              {/* <TabsTrigger value="bulk-sms">Message groupé</TabsTrigger> */}
+              <TabsTrigger value="bulk-sms">Message groupé</TabsTrigger>
               <TabsTrigger value="file-upload">Importer un fichier</TabsTrigger>
             </TabsList>
 
             <TabsContent value="single-message" className="px-2">
-              <SingleMessage setOpen={setOpen} />
+              <SingleMessageForm setOpen={setOpen} />
             </TabsContent>
 
-            {/* <TabsContent value="bulk-sms" className="px-4">
-              <BulkSMS setOpen={setOpen} />
-            </TabsContent> */}
-
-
+            <TabsContent value="bulk-sms" className="px-4">
+              <GroupMessagesForm setOpen={setOpen} />
+            </TabsContent>
 
             <TabsContent value="file-upload" className="px-2">
-              <UploadSMS setOpen={setOpen} />
+              <UploadMessagesForm setOpen={setOpen} />
             </TabsContent>
-
           </Tabs>
         </ScrollArea>
       </DialogContent>

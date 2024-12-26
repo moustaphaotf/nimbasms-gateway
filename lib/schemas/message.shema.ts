@@ -15,7 +15,23 @@ export const createMessageSchema = z.object({
     .regex(/^\+?[0-9\s-]+$/, "Format de numéro invalide"),
 });
 
-export type CreateMessageFormData = z.infer<typeof createMessageSchema>;
+export const createGrouppedMessageSchema = z.object({
+  sender: z
+    .string()
+    .min(1, "Le nom d'expéditeur est requis")
+    .max(11, "Le nom d'expéditeur ne peut pas dépasser 11 caractères"),
+  message: z
+    .string()
+    .min(1, "Le message est requis")
+    .max(160, "Le message ne peut pas dépasser 160 caractères"),
+  contacts: z.string().min(1, "La liste de contact est requise"),
+  // .regex(/^\+?[0-9\s-]+$/, "Format de numéro invalide"),
+});
+
+export type SingleMessageFormData = z.infer<typeof createMessageSchema>;
+export type GrouppedMessageFormData = z.infer<
+  typeof createGrouppedMessageSchema
+>;
 
 export type UploadSendMessagesFormData = {
   file: File | null;

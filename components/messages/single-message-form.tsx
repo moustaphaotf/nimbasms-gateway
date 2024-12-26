@@ -25,11 +25,11 @@ import {
 } from "@/components/ui/form";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  CreateMessageFormData,
+  SingleMessageFormData,
   createMessageSchema,
 } from "@/lib/schemas/message.shema";
 
-export function SingleMessage({
+export function SingleMessageForm({
   setOpen,
 }: {
   setOpen: (open: boolean) => void;
@@ -39,7 +39,7 @@ export function SingleMessage({
     status: "accepted",
   });
 
-  const form = useForm<CreateMessageFormData>({
+  const form = useForm<SingleMessageFormData>({
     resolver: zodResolver(createMessageSchema),
     defaultValues: {
       sender: "",
@@ -48,7 +48,7 @@ export function SingleMessage({
     },
   });
 
-  const onSubmit = (data: CreateMessageFormData) => {
+  const onSubmit = (data: SingleMessageFormData) => {
     form.clearErrors();
 
     createMessage.mutate(data, {
@@ -60,7 +60,7 @@ export function SingleMessage({
         if (error.response?.data) {
           Object.entries(error.response.data).forEach(([key, value]) => {
             if (Array.isArray(value)) {
-              form.setError(key as keyof CreateMessageFormData, {
+              form.setError(key as keyof SingleMessageFormData, {
                 type: "server",
                 message: value[0],
               });

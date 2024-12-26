@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCreateMessage } from "@/hooks/api/use-messages";
+import {
+  useCreateMessage,
+  useSendGrouppedMessages,
+} from "@/hooks/api/use-messages";
 import { useSenders } from "@/hooks/api/use-senders";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,46 +28,59 @@ import {
 } from "@/components/ui/form";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  CreateMessageFormData,
+  GrouppedMessageFormData,
+  createGrouppedMessageSchema,
   createMessageSchema,
 } from "@/lib/schemas/message.shema";
 
-export function BulkSMS({ setOpen }: { setOpen: (open: boolean) => void }) {
-  const createMessage = useCreateMessage();
+export function GroupMessagesForm({
+  setOpen,
+}: {
+  setOpen: (open: boolean) => void;
+}) {
+  const sendMessages = useSendGrouppedMessages();
   const { data: senders, isLoading: isLoadingSenders } = useSenders({
     status: "accepted",
   });
 
-  const form = useForm<CreateMessageFormData>({
-    resolver: zodResolver(createMessageSchema),
+  const form = useForm<GrouppedMessageFormData>({
+    resolver: zodResolver(createGrouppedMessageSchema),
     defaultValues: {
       sender: "",
       message: "",
-      contact: "",
+      contacts: "",
     },
   });
-
-  const onSubmit = (data: CreateMessageFormData) => {
+  const onSubmit = (data: GrouppedMessageFormData) => {
     form.clearErrors();
 
-    createMessage.mutate(data, {
-      onSuccess: () => {
-        form.reset();
-        setOpen(false);
-      },
-      onError: (error: any) => {
-        if (error.response?.data) {
-          Object.entries(error.response.data).forEach(([key, value]) => {
-            if (Array.isArray(value)) {
-              form.setError(key as keyof CreateMessageFormData, {
-                type: "server",
-                message: value[0],
-              });
-            }
-          });
-        }
-      },
-    });
+    const contacts = data.contacts
+      .trim()
+      .split("\n")
+      .map((contact) => contact.replace(/\s/g, ""))
+      .filter((row) => row.length > 0);
+
+    sendMessages.mutate(
+      { ...data, contacts },
+      {
+        onSuccess: () => {
+          form.reset();
+          setOpen(false);
+        },
+        onError: (error: any) => {
+          if (error.response?.data) {
+            Object.entries(error.response.data).forEach(([key, value]) => {
+              if (Array.isArray(value)) {
+                form.setError(key as keyof GrouppedMessageFormData, {
+                  type: "server",
+                  message: value[0],
+                });
+              }
+            });
+          }
+        },
+      }
+    );
   };
 
   return (
@@ -127,11 +143,13 @@ export function BulkSMS({ setOpen }: { setOpen: (open: boolean) => void }) {
 
         <FormField
           control={form.control}
-          name="message"
+          name="contacts"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Contacts</FormLabel>
-              <p className="text-xs text-primary/80">Liste des contacts séparés par un saut de ligne...</p>
+              <p className="text-xs text-muted-foreground">
+                Liste des contacts séparés par un saut de ligne...
+              </p>
               <FormControl>
                 <Textarea
                   {...field}
@@ -147,9 +165,9 @@ export function BulkSMS({ setOpen }: { setOpen: (open: boolean) => void }) {
         <div className="flex justify-end">
           <Button
             type="submit"
-            disabled={createMessage.isPending || isLoadingSenders}
+            disabled={sendMessages.isPending || isLoadingSenders}
           >
-            {createMessage.isPending ? "Envoi en cours..." : "Envoyer"}
+            {sendMessages.isPending ? "Envoi en cours..." : "Envoyer"}
           </Button>
         </div>
       </form>
