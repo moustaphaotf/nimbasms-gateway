@@ -5,6 +5,7 @@ import { Membership } from "@/lib/api/types";
 import { format } from "date-fns";
 import { MemberForm } from "@/components/membership/member-form";
 import { Badge } from "@/components/ui/badge";
+import { MEMBER_ROLES } from "@/lib/schemas/membership.schema";
 
 export const columns: ColumnDef<Membership>[] = [
   {
@@ -14,6 +15,8 @@ export const columns: ColumnDef<Membership>[] = [
   },
   {
     accessorKey: "role",
+    accessorFn: ({ role }) =>
+      MEMBER_ROLES.find((item) => item.value === role)?.label ?? role,
     header: "Rôle",
   },
   {

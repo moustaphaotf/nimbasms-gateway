@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { PROTECTED_ROUTES } from "@/lib/constants";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
+import { MEMBER_ROLES } from "@/lib/schemas/membership.schema";
 
 const OrganizationList: React.FC = () => {
   const { user } = useUser();
@@ -71,8 +72,8 @@ const OrganizationList: React.FC = () => {
                 <span className="text-foreground block">
                   {org.company_name}
                 </span>
-                <span className="text-sm text-muted-foreground block">
-                  {org.role}
+                <span className="text-xs text-muted-foreground block">
+                  {MEMBER_ROLES.find((item) => item.value === org.role)?.label ?? org.role}
                 </span>
               </Button>
             </li>

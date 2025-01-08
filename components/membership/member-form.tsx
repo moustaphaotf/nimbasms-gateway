@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import { Edit2, PlusIcon } from "lucide-react";
 import {
   createMembershipSchema,
+  MEMBER_ROLES,
   MembershipFormData,
 } from "@/lib/schemas/membership.schema";
 import { useForm } from "react-hook-form";
@@ -103,11 +104,7 @@ export const MemberForm = withFormDialogProvider(
                 <ComboBox
                   value={role}
                   onChange={(value) => field.onChange(value)}
-                  options={[
-                    { value: "Member", label: "Membre" },
-                    { value: "Developer", label: "Développeur" },
-                    { value: "Owner", label: "Propriétaire" },
-                  ]}
+                  options={MEMBER_ROLES}
                   placeholder="Sélectionnez le rôle du membre"
                 />
                 <FormMessage />
