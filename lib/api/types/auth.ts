@@ -15,6 +15,12 @@ export interface AccessTokenUser {
   lastName: string;
   email: string;
   phone: string;
+  organizations: {
+    uid: string;
+    is_active: boolean;
+    company_name: string;
+    role: "Member" | "Developer" | "Owner";
+  }[]
 }
 
 export interface DecodedToken {
@@ -28,6 +34,12 @@ export interface DecodedToken {
   last_name: string;
   email: string;
   phone: string;
+  organizations: {
+    uid: string;
+    is_active: boolean;
+    company_name: string;
+    role: "Member" | "Developer" | "Owner";
+  }[];
 }
 
 export interface AuthTokens {

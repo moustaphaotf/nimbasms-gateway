@@ -4,6 +4,7 @@ import {
   handleApiError,
   rateLimitInterceptor,
 } from "./interceptors";
+import { membershipInterceptor } from "./interceptors/membership.interceptor";
 
 function createApiClient(baseURL: string): AxiosInstance {
   const client = axios.create({
@@ -19,7 +20,8 @@ function createApiClient(baseURL: string): AxiosInstance {
       // Apply interceptors in sequence
       return Promise.resolve(config)
         .then(rateLimitInterceptor)
-        .then(authInterceptor);
+        .then(authInterceptor)
+        .then(membershipInterceptor);
     },
     (error) => Promise.reject(error)
   );

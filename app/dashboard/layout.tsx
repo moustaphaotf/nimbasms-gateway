@@ -1,8 +1,13 @@
-"use client";
-
-import { AppSidebar } from "@/components/sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { UserProvider } from "@/providers/user-provider";
+import dynamic from "next/dynamic";
+
+const AppSidebar = dynamic(
+  () => import("../../components/sidebar/app-sidebar"),
+  {
+    ssr: false,
+  }
+);
 
 export default function DashboardLayout({
   children,

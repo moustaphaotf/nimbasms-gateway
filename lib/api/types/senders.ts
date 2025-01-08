@@ -5,6 +5,9 @@ export interface Sender {
   name: string;
   status: SenderStatus;
   added_at: string;
+  owner: {
+    email: string;
+  }
 }
 
 export interface SenderResponse extends Sender {

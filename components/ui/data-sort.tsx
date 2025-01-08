@@ -13,7 +13,7 @@ export interface SortOption {
   value: string;
 }
 
-interface DataSortProps {
+interface ComboBoxProps {
   value: string;
   onValueChange: (value: string) => void;
   options: SortOption[];
@@ -21,13 +21,13 @@ interface DataSortProps {
   className?: string;
 }
 
-export function DataSort({
+export function ComboBox({
   value,
   onValueChange,
   options,
-  placeholder = "Trier par...",
+  placeholder = "Sélectionnez une option...",
   className,
-}: DataSortProps) {
+}: ComboBoxProps) {
   return (
     <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger className={className || "w-[200px]"}>

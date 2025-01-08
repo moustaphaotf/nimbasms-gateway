@@ -15,13 +15,18 @@ import {
 } from "@/components/ui/sidebar";
 import { NavGetStarted } from "./get-started";
 import { useUser } from "@/providers/user-provider";
-import { ADMIN_ROUTES, CLIENT_ROUTES } from "@/lib/constants";
+import { getUserRoutes } from "@/lib/constants";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { open } = useSidebar();
   const { user } = useUser();
+  const routes = getUserRoutes(user);
+  const orgId = localStorage.getItem("orgId");
 
-  const routes = user?.isStaff ? ADMIN_ROUTES : CLIENT_ROUTES;
+  const isDeveloper = user?.organizations.find(
+    (item) => item.uid === orgId && item.role === "Developer"
+  );
+  const messageSender = user && !user.isStaff && !isDeveloper;
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -29,7 +34,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <CompanyLogo />
       </SidebarHeader>
       <SidebarContent>
-        {!user?.isStaff && open && <NavGetStarted />}
+        {messageSender && open ? <NavGetStarted /> : null}
         <NavMain items={routes} />
       </SidebarContent>
       <SidebarFooter>

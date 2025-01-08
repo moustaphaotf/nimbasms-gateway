@@ -22,6 +22,7 @@ export const auth = {
   clearTokens: () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("orgId");
   },
 
   logout: () => {

@@ -34,4 +34,10 @@ export const API_ENDPOINTS = {
     LIST: "/exports/",
     CREATE: "/exports/",
   },
+  MEMBERSHIP: {
+    CREATE: "/auth/v1/memberships",
+    LIST: "/auth/v1/memberships",
+    DETAIL: (id: string) => `/auth/v1/memberships/${id}`,
+    CHANGE_ROLE: (id: string) => `/auth/v1/memberships/${id}/change_role`,
+  },
 } as const;

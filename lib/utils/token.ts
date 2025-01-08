@@ -4,7 +4,7 @@ import { DecodedToken, AccessTokenUser } from "@/lib/api/types";
 export function parseToken(token: string): AccessTokenUser | null {
   try {
     const decoded = jwtDecode<DecodedToken>(token);
-    
+
     return {
       userId: decoded.user_id,
       isStaff: decoded.is_staff,
@@ -12,6 +12,7 @@ export function parseToken(token: string): AccessTokenUser | null {
       lastName: decoded.last_name,
       email: decoded.email,
       phone: decoded.phone,
+      organizations: decoded.organizations,
     };
   } catch (error) {
     console.error("Error parsing token:", error);
