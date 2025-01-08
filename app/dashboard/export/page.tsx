@@ -10,7 +10,7 @@ import { useExports } from "@/hooks/api/use-exports";
 import { CreateExportDialog } from "@/components/exports/create-export-dialog";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { MAX_ITEMS_PER_PAGE, PROTECTED_ROUTES } from "@/lib/constants";
-import { DataSort } from "@/components/ui/data-sort";
+import { ComboBox } from "@/components/ui/combobox-select";
 import { PageHeader } from "@/components/layout/app-header";
 
 export default function ExportPage() {
@@ -48,7 +48,8 @@ export default function ExportPage() {
       </PageHeader>
 
       <div className="flex justify-end">
-        <DataSort
+        <ComboBox
+          placeholder="Trier par..."
           value={ordering}
           onValueChange={setOrdering}
           options={sortOptions}
