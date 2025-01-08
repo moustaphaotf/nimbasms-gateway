@@ -3,23 +3,16 @@
 import { StatsCard } from "@/components/dashboard/stats-card";
 import { RecentMessages } from "@/components/dashboard/recent-messages";
 import { SMSBalance } from "@/components/dashboard/sms-balance";
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { useAccountInfo } from "@/hooks/api/use-account";
 import { useMessages } from "@/hooks/api/use-messages";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UsageChart } from "@/components/dashboard/usage-chart";
 import { useStatistics } from "@/hooks/api/use-statistics";
 import { PageHeader } from "@/components/layout/app-header";
-
-const chartData = [
-  { name: "Jan", sent: 4000, received: 2400 },
-  { name: "Feb", sent: 3000, received: 1398 },
-  { name: "Mar", sent: 2000, received: 9800 },
-  { name: "Apr", sent: 2780, received: 3908 },
-  { name: "May", sent: 1890, received: 4800 },
-  { name: "Jun", sent: 2390, received: 3800 },
-  { name: "Jul", sent: 3490, received: 4300 },
-];
+import { useSearchParams } from "next/navigation";
+import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog";
+import OrganizationList from "@/components/dashboard/change-organization";
+import { Suspense } from "react";
 
 export default function DashboardPage() {
   const { data: accountInfo, isLoading: isLoadingAccount } = useAccountInfo();
@@ -95,6 +88,23 @@ export default function DashboardPage() {
           <UsageChart data={statistics?.daily_usage || []} />
         )}
       </div>
+
+      <Suspense>
+        <MyOrganizationsDialog />
+      </Suspense>
     </div>
+  );
+}
+
+function MyOrganizationsDialog() {
+  const searchParams = useSearchParams();
+  const showDialog = searchParams.has("change-organization");
+
+  return (
+    <AlertDialog open={showDialog}>
+      <AlertDialogContent>
+        <OrganizationList />
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

@@ -23,11 +23,6 @@ export const PROTECTED_ROUTES: Record<string, NavItem> = {
     title: "Tableau de Bord",
     url: "/dashboard",
   },
-  MY_ORGS: {
-    icon: LayoutDashboard,
-    title: "",
-    url: "/my-organizations",
-  },
   HISTORY: {
     icon: History,
     title: "Consommation",

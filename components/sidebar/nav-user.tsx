@@ -95,7 +95,7 @@ export function NavUser() {
               <DropdownMenuSeparator />
               {user && user?.organizations.length > 0 ? (
                 <DropdownMenuItem asChild>
-                  <Link href={PROTECTED_ROUTES.MY_ORGS.url}>
+                  <Link href={PROTECTED_ROUTES.DASHBOARD.url + '?change-organization'}>
                     Changer d&apos;organisation
                   </Link>
                 </DropdownMenuItem>

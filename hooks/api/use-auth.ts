@@ -38,7 +38,7 @@ export function useValidateEmailOTP() {
       authService.validateEmailOTP(payload),
     onSuccess: (data) => {
       auth.setTokens(data.access, data.refresh);
-      router.push(PROTECTED_ROUTES.MY_ORGS.url);
+      router.push(PROTECTED_ROUTES.DASHBOARD.url + "?change-organization");
       toast.success("Connexion réussie");
     },
     onError: () => {
