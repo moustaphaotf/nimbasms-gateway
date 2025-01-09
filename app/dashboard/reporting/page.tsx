@@ -1,36 +1,42 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { SenderForm } from "@/components/senders/sender-form";
 import { DataTable } from "@/components/ui/data-table/data-table";
 import { columns } from "./columns";
-import { useCreateSender, useSenders } from "@/hooks/api/use-senders";
+import { useSenders } from "@/hooks/api/use-senders";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
-import { PaginationState, SortingState } from "@tanstack/react-table";
-import { CreateSenderFormData } from "@/lib/schemas/sender.schema";
-import { SenderResponse, SenderStatus } from "@/lib/api/types";
-import { useUser } from "@/providers/user-provider";
-import { MAX_ITEMS_PER_PAGE, PROTECTED_ROUTES } from "@/lib/constants";
+import { PROTECTED_ROUTES } from "@/lib/constants";
 import { ComboBox } from "@/components/ui/combobox-select";
 import { PageHeader } from "@/components/layout/app-header";
-import { AdminSenderForm } from "@/components/senders/admin-sender-form";
 import { useCompanyUsage } from "@/hooks/api/use-statistics";
-import { FilterCompanyUsage } from "@/components/reporting/filter-company-usage";
 import { DatePickerWithRange } from "@/components/date-range-picker";
-import { CompanyUsageFilters } from "@/lib/api/types/statistics";
-import { useForm } from "react-hook-form";
+import { CompanyUsage } from "@/lib/api/types/statistics";
 import { DateRange } from "react-day-picker";
 import { format } from "date-fns";
 import { useUsers } from "@/hooks/api/use-users";
 import { CompanyUsageStackedChart } from "@/components/reporting/stacked-bar-chart";
 import { Button } from "@/components/ui/button";
-import { Download, FileDown } from "lucide-react";
+import { FileDown } from "lucide-react";
 
-const exportToCsv = (data: any[], filename: string) => {
+const exportToCsv = (data: CompanyUsage[], filename: string) => {
+  const columns: { key: keyof CompanyUsage; label: string }[] = [
+    { key: "owner__uid", label: "Company ID" },
+    { key: "owner__email", label: "Company owner email" },
+    { key: "owner__company_name", label: "Company email" },
+    { key: "message_count_delivered", label: "Delivered Count" },
+    { key: "message_count_failure", label: "Failure Count" },
+    { key: "message_count_sent", label: "Unknown status Count" },
+  ];
+
+  const headers = columns.map((column) => column.label).join(",");
+
+  const rows = data.map((row) =>
+    columns.map((column) => row[column.key]).join(",")
+  );
+
   const csvContent =
-    "data:text/csv;charset=utf-8," +
-    data.map((row) => Object.values(row).join(",")).join("\n");
+    "data:text/csv;charset=utf-8," + headers + "\n" + rows.join("\n");
 
   const encodedUri = encodeURI(csvContent);
 
@@ -45,16 +51,14 @@ const exportToCsv = (data: any[], filename: string) => {
 };
 
 export default function SendersPage() {
-  const [ordering, setOrdering] = useState("");
-  const [status, setStatus] = useState<SenderStatus>();
   const [sender, setSender] = useState("");
   const [ownerEmail, setOwnerEmail] = useState("");
   const [date, setDate] = useState<DateRange | undefined>();
-  const { data: users, isLoading: usersLoading } = useUsers();
+  const { data: users } = useUsers();
 
   const owner = users?.results.find((item) => item.email === ownerEmail);
 
-  const { data: senders, isLoading: isLoadingSenders } = useSenders({
+  const { data: senders } = useSenders({
     ...(ownerEmail && { owner__email: ownerEmail }),
   });
 
@@ -97,8 +101,8 @@ export default function SendersPage() {
           onValueChange={(value) => setSender(value)}
           options={
             senders?.results.map((item) => ({
-              value: item.uid,
-              label: `${item?.name} [${item.owner.email}]`,
+              value: item.name,
+              label: item.name,
             })) || []
           }
           value={sender}
