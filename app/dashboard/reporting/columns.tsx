@@ -1,17 +1,12 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Badge } from "@/components/ui/badge";
-import { SenderResponse, SenderStatus } from "@/lib/api/types";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
-import { UpdateStatusDialog } from "@/components/senders/update-status-dialog";
 import { CompanyUsage } from "@/lib/api/types/statistics";
 
 export const columns: ColumnDef<CompanyUsage>[] = [
   {
     accessorKey: "owner",
-    header: "Propriétaire",
+    header: "Client",
     cell: ({
       row: {
         original: { owner__company_name, owner__email },

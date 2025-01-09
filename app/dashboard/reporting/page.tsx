@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 import { PROTECTED_ROUTES } from "@/lib/constants";
 import { ComboBox } from "@/components/ui/combobox-select";
+import { ComboBox as ComboBoxCommand } from "@/components/ui/combobox";
 import { PageHeader } from "@/components/layout/app-header";
 import { useCompanyUsage } from "@/hooks/api/use-statistics";
 import { DatePickerWithRange } from "@/components/date-range-picker";
@@ -54,8 +55,11 @@ export default function SendersPage() {
   const [sender, setSender] = useState("");
   const [ownerEmail, setOwnerEmail] = useState("");
   const [date, setDate] = useState<DateRange | undefined>();
-  const { data: users } = useUsers();
+  const [userSearch, setUserSearch] = useState("");
 
+  const { data: users } = useUsers({
+    ...(userSearch && { search: userSearch }),
+  });
   const owner = users?.results.find((item) => item.email === ownerEmail);
 
   const { data: senders } = useSenders({
@@ -81,14 +85,14 @@ export default function SendersPage() {
       <div className="flex gap-4 justify-end">
         <DatePickerWithRange date={date} setDate={setDate} />
 
-        <ComboBox
-          emptyText="Aucun compte client retrouvé"
+        <ComboBoxCommand
           placeholder="Filtrer par client"
-          onValueChange={(value) => setOwnerEmail(value)}
+          onChange={(value) => setOwnerEmail(value)}
+          onSearch={setUserSearch}
           options={
             users?.results.map((item) => ({
               value: item.email,
-              label: `${item?.first_name} ${item.last_name} [${item.email}]`,
+              label: item.email,
             })) || []
           }
           value={ownerEmail}
