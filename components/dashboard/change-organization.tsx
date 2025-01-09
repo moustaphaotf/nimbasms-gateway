@@ -29,8 +29,9 @@ const OrganizationList: React.FC = () => {
     } else {
       localStorage.removeItem("orgId");
     }
-    queryClient.invalidateQueries()
+    queryClient.invalidateQueries();
     router.push(PROTECTED_ROUTES.DASHBOARD.url);
+    router.refresh();
   };
 
   if (!user)
@@ -73,7 +74,8 @@ const OrganizationList: React.FC = () => {
                   {org.company_name}
                 </span>
                 <span className="text-xs text-muted-foreground block">
-                  {MEMBER_ROLES.find((item) => item.value === org.role)?.label ?? org.role}
+                  {MEMBER_ROLES.find((item) => item.value === org.role)
+                    ?.label ?? org.role}
                 </span>
               </Button>
             </li>

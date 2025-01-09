@@ -29,6 +29,7 @@ export const API_ENDPOINTS = {
   },
   DASHBOARD: {
     STATS: "/statistics/",
+    REPORTING: "/statistics/reporting/",
   },
   EXPORTS: {
     LIST: "/exports/",

@@ -48,7 +48,7 @@ export function DataTable<TData, TValue>({
   columnVisibility,
   onColumnVisibilityChange,
   onPaginationChange,
-  pagination
+  pagination,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -62,8 +62,8 @@ export function DataTable<TData, TValue>({
     pageCount,
     state: {
       sorting,
-      pagination,
-      columnVisibility
+      ...(pagination && { pagination }),
+      columnVisibility,
     },
     onSortingChange: setSorting,
     onPaginationChange: onPaginationChange,

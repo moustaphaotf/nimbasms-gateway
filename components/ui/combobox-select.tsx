@@ -21,6 +21,7 @@ interface ComboBoxProps {
   placeholder?: string;
   className?: string;
   emptyText?: string;
+  disabled?: boolean;
 }
 
 export function ComboBox({
@@ -29,19 +30,30 @@ export function ComboBox({
   options,
   placeholder = "Sélectionnez une option",
   className,
+  emptyText = "Aucun résultat",
+  disabled = false,
 }: ComboBoxProps) {
   return (
     <div className="relative max-w-xs">
       <Select value={value} onValueChange={onValueChange}>
-        <SelectTrigger className={className || "w-[200px]"}>
+        <SelectTrigger
+          disabled={disabled}
+          className={className || "w-[200px] text-left"}
+        >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
-          {options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
+          {options.length === 0 && (
+            <SelectItem value={"NO_DATA"}>{emptyText}</SelectItem>
+          )}
+
+          {options.length > 0
+            ? options.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))
+            : null}
         </SelectContent>
       </Select>
       {value && (

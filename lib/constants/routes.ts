@@ -1,5 +1,6 @@
 import {
   Building2,
+  ChartSpline,
   FileDown,
   History,
   Key,
@@ -43,6 +44,11 @@ export const PROTECTED_ROUTES: Record<string, NavItem> = {
     title: "Exportation de données",
     url: "/dashboard/export",
   },
+  REPORTING: {
+    icon: ChartSpline,
+    title: "Reporting",
+    url: "/dashboard/reporting",
+  },
   USERS: {
     icon: Building2,
     title: "Comptes Client",
@@ -65,6 +71,7 @@ export const ADMIN_ROUTES = [
   PROTECTED_ROUTES.HISTORY,
   PROTECTED_ROUTES.SENDERS,
   PROTECTED_ROUTES.EXPORT,
+  PROTECTED_ROUTES.REPORTING,
   PROTECTED_ROUTES.USERS,
 ];
 
@@ -75,6 +82,7 @@ export const CLIENT_ROUTES = [
   PROTECTED_ROUTES.API_KEYS,
   PROTECTED_ROUTES.MEMBERSHIP,
   PROTECTED_ROUTES.EXPORT,
+  PROTECTED_ROUTES.REPORTING,
   PROTECTED_ROUTES.PROFILE,
 ];
 

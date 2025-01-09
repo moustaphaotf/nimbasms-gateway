@@ -28,4 +28,5 @@ export interface SenderFilters {
   search?: string;
   status?: SenderStatus;
   ordering?: string;
+  owner__email?: string;
 }
