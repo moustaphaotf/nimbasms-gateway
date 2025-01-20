@@ -13,5 +13,6 @@ export function useCompanyUsage(filters?: CompanyUsageFilters) {
   return useQuery({
     queryKey: ["reporting", filters],
     queryFn: () => statisticsService.getCompanyUsage(filters),
+    enabled: false
   });
 }

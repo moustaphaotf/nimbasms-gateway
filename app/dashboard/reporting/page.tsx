@@ -1,39 +1,59 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-import { DataTable } from "@/components/ui/data-table/data-table";
-import { columns } from "./columns";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useSenders } from "@/hooks/api/use-senders";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PROTECTED_ROUTES } from "@/lib/constants";
 import { ComboBox } from "@/components/ui/combobox-select";
 import { ComboBox as ComboBoxCommand } from "@/components/ui/combobox";
 import { PageHeader } from "@/components/layout/app-header";
 import { useCompanyUsage } from "@/hooks/api/use-statistics";
-import { DatePickerWithRange } from "@/components/date-range-picker";
 import { CompanyUsage } from "@/lib/api/types/statistics";
-import { DateRange } from "react-day-picker";
 import { format } from "date-fns";
 import { useUsers } from "@/hooks/api/use-users";
-import { CompanyUsageStackedChart } from "@/components/reporting/stacked-bar-chart";
 import { Button } from "@/components/ui/button";
-import { FileDown } from "lucide-react";
+import { FileDown, X } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Label } from "@/components/ui/label";
+import { DatePicker } from "@/components/date-picker";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 const exportToCsv = (data: CompanyUsage[], filename: string) => {
-  const columns: { key: keyof CompanyUsage; label: string }[] = [
-    { key: "owner__uid", label: "Company ID" },
-    { key: "owner__email", label: "Company owner email" },
-    { key: "owner__company_name", label: "Company email" },
-    { key: "message_count_delivered", label: "Delivered Count" },
-    { key: "message_count_failure", label: "Failure Count" },
-    { key: "message_count_sent", label: "Unknown status Count" },
+  const columns: { key: string; label: string }[] = [
+    { key: "owner__email", label: "Email Entreprise" },
+    { key: "owner__company_name", label: "Nom Entreprise" },
+    { key: "operator", label: "Opérateur" },
+    { key: "count", label: "Total SMS (Reçu)" },
   ];
 
   const headers = columns.map((column) => column.label).join(",");
 
-  const rows = data.map((row) =>
-    columns.map((column) => row[column.key]).join(",")
+  const rows = data.flatMap((company) =>
+    company.count.map(
+      ({ operator, count }: { operator: string; count: number }) => {
+        return [
+          company.owner__email,
+          company.owner__company_name,
+          operator === "Areeba" ? "MTN" : operator,
+          count,
+        ].join(",");
+      }
+    )
   );
 
   const csvContent =
@@ -51,11 +71,26 @@ const exportToCsv = (data: CompanyUsage[], filename: string) => {
   document.body.removeChild(link);
 };
 
-export default function SendersPage() {
+export default function Page() {
   const [sender, setSender] = useState("");
   const [ownerEmail, setOwnerEmail] = useState("");
-  const [date, setDate] = useState<DateRange | undefined>();
+  const [displayData, setDisplayData] = useState(false);
+
   const [userSearch, setUserSearch] = useState("");
+  const [startDate, setStartDate] = useState<Date | undefined>();
+  const [endDate, setEndDate] = useState<Date | undefined>();
+
+  useEffect(() => {
+    setDisplayData(false);
+  }, [startDate, endDate, ownerEmail, sender]);
+
+  const clearFilters = () => {
+    setStartDate(undefined);
+    setEndDate(undefined);
+    setOwnerEmail("");
+    setSender("");
+    setDisplayData(false);
+  };
 
   const { data: users } = useUsers({
     ...(userSearch && { search: userSearch }),
@@ -66,9 +101,9 @@ export default function SendersPage() {
     ...(ownerEmail && { owner__email: ownerEmail }),
   });
 
-  const { data, isLoading } = useCompanyUsage({
-    ...(date?.from && { start_date: format(date.from, "yyyy-MM-dd") }),
-    ...(date?.to && { end_date: format(date.to, "yyyy-MM-dd") }),
+  const { data, isLoading, refetch } = useCompanyUsage({
+    ...(startDate && { start_date: format(startDate, "yyyy-MM-dd") }),
+    ...(endDate && { end_date: format(endDate, "yyyy-MM-dd") }),
     ...(sender && { sender }),
     ...(owner && { owners: owner.uid }),
   });
@@ -78,58 +113,173 @@ export default function SendersPage() {
     { label: "Reporting" },
   ];
 
+  const handleSearch = () => {
+    refetch();
+    setDisplayData(true);
+  };
+
   return (
     <div className="space-y-6 p-6">
       <PageHeader title="Reporting" breadcrumbs={breadcrumbs}></PageHeader>
 
-      <div className="flex gap-4 justify-end">
-        <DatePickerWithRange date={date} setDate={setDate} />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle className="flex justify-between items-center">
+              Filtres
+              <Button variant="outline" size="sm" onClick={clearFilters}>
+                <X className="mr-2 h-4 w-4" /> Effacer les filtres
+              </Button>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="start-date">Date début</Label>
+                <DatePicker
+                  id="start-date"
+                  date={startDate}
+                  setDate={setStartDate}
+                />
+              </div>
 
-        <ComboBoxCommand
-          placeholder="Filtrer par client"
-          onChange={(value) => setOwnerEmail(value)}
-          onSearch={setUserSearch}
-          options={
-            users?.results.map((item) => ({
-              value: item.email,
-              label: item.email,
-            })) || []
-          }
-          value={ownerEmail}
-        />
+              <div className="space-y-2">
+                <Label htmlFor="end-date">Date fin</Label>
+                <DatePicker id="end-date" date={endDate} setDate={setEndDate} />
+              </div>
 
-        <ComboBox
-          disabled={!owner}
-          placeholder="Filtrer par expéditeur"
-          emptyText="Aucun nom d'expéditeur trouvé"
-          onValueChange={(value) => setSender(value)}
-          options={
-            senders?.results.map((item) => ({
-              value: item.name,
-              label: item.name,
-            })) || []
-          }
-          value={sender}
-        />
+              <div className="space-y-2">
+                <Label htmlFor="client">Client</Label>
+                <ComboBoxCommand
+                  placeholder="Filtrer par client"
+                  onChange={(value) => setOwnerEmail(value)}
+                  onSearch={setUserSearch}
+                  options={
+                    users?.results.map((item) => ({
+                      value: item.email,
+                      label: item.email,
+                    })) || []
+                  }
+                  value={ownerEmail}
+                />
+              </div>
 
-        <Button
-          onClick={() =>
-            exportToCsv(data ?? [], `company-usage-${Date.now()}.csv`)
-          }
+              <div className="space-y-2">
+                <Label htmlFor="sender">Expéditeur</Label>
+                <ComboBox
+                  disabled={!owner}
+                  placeholder="Nom d'expéditeur"
+                  emptyText="Aucun nom d'expéditeur trouvé"
+                  onValueChange={(value) => setSender(value)}
+                  options={
+                    senders?.results.map((item) => ({
+                      value: item.name,
+                      label: item.name,
+                    })) || []
+                  }
+                  value={sender}
+                />
+              </div>
+            </div>
+
+            <CardFooter className="justify-end">
+              <Button onClick={handleSearch} className="mt-6">
+                Rechercher
+              </Button>
+            </CardFooter>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {displayData && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
         >
-          <FileDown className="mr-2 w-4 h-4" /> Télécharger les données
-        </Button>
-      </div>
+          <Card className="p-6">
+            <CardHeader>
+              <div className="flex gap-4 justify-end">
+                <Button
+                  onClick={() =>
+                    exportToCsv(data ?? [], `company-usage-${Date.now()}.csv`)
+                  }
+                >
+                  <FileDown className="mr-2 w-4 h-4" /> Télécharger les données
+                </Button>
+              </div>
+            </CardHeader>
+            <Table>
+              <TableHeader>
+                <TableRow className="border">
+                  <TableHead>Client</TableHead>
+                  <TableHead>Opérateur</TableHead>
+                  <TableHead>Total SMS (Reçu)</TableHead>
+                  <TableHead>Charges (GNF)</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {isLoading &&
+                  Array.from({ length: 5 }).map((_, index) => (
+                    <TableRow key={index}>
+                      {Array.from({ length: 4 }).map((_, colIndex) => (
+                        <TableCell key={colIndex}>
+                          <Skeleton className="h-4 w-full" />
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
 
-      {data ? (
-        <CompanyUsageStackedChart data={data || []} />
-      ) : (
-        <Skeleton className="w-full h-[250px]" />
+                {!isLoading &&
+                  data?.map(
+                    (
+                      { count, owner__company_name, owner__email, owner__uid },
+                      rowIndex
+                    ) =>
+                      count.map(({ operator, count: total }, index) => (
+                        <TableRow
+                          className={cn(
+                            `hover:bg-unset border`,
+                            rowIndex % 2 === 0 ? "bg-muted/50" : ""
+                          )}
+                          key={`${owner__uid}.${index}`}
+                        >
+                          {index === 0 && (
+                            <TableCell rowSpan={count.length}>
+                              <span className="flex flex-col text-xs text-muted-foreground">
+                                <span>{owner__email}</span>
+                                <span className="font-semibold">
+                                  {owner__company_name}
+                                </span>
+                              </span>
+                            </TableCell>
+                          )}
+
+                          <TableCell>
+                            {operator === "Areeba" ? "MTN" : operator}
+                          </TableCell>
+                          <TableCell>{total}</TableCell>
+                          <TableCell>-</TableCell>
+                        </TableRow>
+                      ))
+                  )}
+
+                {!isLoading && data?.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="h-24 text-center">
+                      Aucun résultat.
+                    </TableCell>
+                  </TableRow>
+                ) : null}
+              </TableBody>
+            </Table>
+          </Card>
+        </motion.div>
       )}
-
-      <Card className="p-6">
-        <DataTable columns={columns} isLoading={isLoading} data={data ?? []} />
-      </Card>
     </div>
   );
 }

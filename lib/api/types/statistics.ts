@@ -23,7 +23,8 @@ export interface CompanyUsage {
   owner__uid: string;
   owner__email: string;
   owner__company_name: string;
-  message_count_sent: number;
-  message_count_delivered: number;
-  message_count_failure: number;
+  count: {
+    operator: string;
+    count: number;
+  }[];
 }
