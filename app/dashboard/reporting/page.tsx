@@ -215,7 +215,7 @@ export default function Page() {
             </CardHeader>
             <Table>
               <TableHeader>
-                <TableRow className="border">
+                <TableRow>
                   <TableHead>Client</TableHead>
                   <TableHead>Opérateur</TableHead>
                   <TableHead>Total SMS (Reçu)</TableHead>
@@ -239,33 +239,39 @@ export default function Page() {
                     (
                       { count, owner__company_name, owner__email, owner__uid },
                       rowIndex
-                    ) =>
-                      count.map(({ operator, count: total }, index) => (
-                        <TableRow
-                          className={cn(
-                            `hover:bg-unset border`,
-                            rowIndex % 2 === 0 ? "bg-muted/50" : ""
-                          )}
-                          key={`${owner__uid}.${index}`}
-                        >
-                          {index === 0 && (
-                            <TableCell rowSpan={count.length}>
-                              <span className="flex flex-col text-xs text-muted-foreground">
-                                <span>{owner__email}</span>
-                                <span className="font-semibold">
-                                  {owner__company_name}
-                                </span>
-                              </span>
-                            </TableCell>
-                          )}
+                    ) => (
+                      <>
+                        {count.map(({ operator, count: total }, index) => (
+                          <>
+                            <TableRow
+                              className={cn(
+                                `hover:bg-unset border rounded`,
+                                rowIndex % 2 === 0 ? "bg-muted/50" : ""
+                              )}
+                              key={`${owner__uid}.${index}`}
+                            >
+                              {index === 0 && (
+                                <TableCell rowSpan={count.length}>
+                                  <span className="flex flex-col text-xs text-muted-foreground">
+                                    <span>{owner__email}</span>
+                                    <span className="font-semibold">
+                                      {owner__company_name}
+                                    </span>
+                                  </span>
+                                </TableCell>
+                              )}
 
-                          <TableCell>
-                            {operator === "Areeba" ? "MTN" : operator}
-                          </TableCell>
-                          <TableCell>{total}</TableCell>
-                          <TableCell>-</TableCell>
-                        </TableRow>
-                      ))
+                              <TableCell>
+                                {operator === "Areeba" ? "MTN" : operator}
+                              </TableCell>
+                              <TableCell>{total}</TableCell>
+                              <TableCell>-</TableCell>
+                            </TableRow>
+                          </>
+                        ))}
+                        <TableRow className="h-4"></TableRow>
+                      </>
+                    )
                   )}
 
                 {!isLoading && data?.length === 0 ? (
