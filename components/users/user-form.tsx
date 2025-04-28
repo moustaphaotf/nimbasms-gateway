@@ -73,7 +73,7 @@ export function UserForm({ onSuccess }: UserFormProps) {
               <FormItem>
                 <FormLabel>Prénom</FormLabel>
                 <FormControl>
-                  <Input placeholder="John" {...field} />
+                  <Input placeholder="Prénom" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -87,7 +87,7 @@ export function UserForm({ onSuccess }: UserFormProps) {
               <FormItem>
                 <FormLabel>Nom</FormLabel>
                 <FormControl>
-                  <Input placeholder="Doe" {...field} />
+                  <Input placeholder="Nom" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -103,7 +103,7 @@ export function UserForm({ onSuccess }: UserFormProps) {
                 <FormControl>
                   <Input
                     type="email"
-                    placeholder="john.doe@example.com"
+                    placeholder="exemple@email.com"
                     {...field}
                   />
                 </FormControl>
