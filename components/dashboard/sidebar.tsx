@@ -26,7 +26,7 @@ export function Sidebar({ className }: SidebarProps) {
         <div className="p-6">
           <Image
             src={logoSrc}
-            alt="Nimba SMS Gateway Logo"
+            alt={process.env.NEXT_PUBLIC_APP_NAME + " Logo"}
             width={60}
             height={30}
             priority

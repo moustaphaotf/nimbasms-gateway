@@ -61,7 +61,7 @@ export const MOCK_USERS: Record<
       {
         uid: "org-nimba-001",
         is_active: true,
-        company_name: "Nimba SMS Gateway Platform",
+        company_name: process.env.NEXT_PUBLIC_APP_NAME!,
         role: "Owner",
       },
     ],
@@ -77,7 +77,7 @@ export const MOCK_USERS: Record<
       {
         uid: "org-nimba-001",
         is_active: true,
-        company_name: "Nimba SMS Gateway Platform",
+        company_name: process.env.NEXT_PUBLIC_APP_NAME!,
         role: "Owner",
       },
     ],
@@ -93,7 +93,7 @@ export const MOCK_USERS: Record<
       {
         uid: "org-nimba-001",
         is_active: true,
-        company_name: "Nimba SMS Gateway Platform",
+        company_name: process.env.NEXT_PUBLIC_APP_NAME!,
         role: "Developer",
       },
     ],
@@ -109,7 +109,7 @@ export const MOCK_USERS: Record<
       {
         uid: "org-nimba-001",
         is_active: true,
-        company_name: "Nimba SMS Gateway Platform",
+        company_name: process.env.NEXT_PUBLIC_APP_NAME!,
         role: "Member",
       },
     ],
