@@ -1,10 +1,10 @@
-# MTN SMS Administration Platform
+# Nimba SMS Gateway Administration Platform
 
-Plateforme d'administration pour la gestion des services SMS MTN.
+Plateforme d'administration pour la gestion des services SMS Nimba SMS Gateway.
 
 ## 📱 Présentation
 
-Cette plateforme permet aux administrateurs MTN de :
+Cette plateforme permet aux administrateurs Nimba SMS Gateway de :
 - Suivre l'utilisation des services SMS en temps réel
 - Gérer les clés API et webhooks des clients
 - Valider les noms d'expéditeur
@@ -31,9 +31,9 @@ cp .env.example .env.local
 
 Variables requises :
 ```env
-NEXT_PUBLIC_API_URL=https://app.mtn.nimbasms.com
-NEXT_PUBLIC_API_V1_PREFIX=https://app.mtn.nimbasms.com/v1
-NEXT_PUBLIC_DEVELOPERS_URL=http://developers.mtn.nimbasms.com
+NEXT_PUBLIC_API_URL=https://app.Nimba SMS Gateway.nimbasms.com
+NEXT_PUBLIC_API_V1_PREFIX=https://app.Nimba SMS Gateway.nimbasms.com/v1
+NEXT_PUBLIC_DEVELOPERS_URL=http://developers.Nimba SMS Gateway.nimbasms.com
 ```
 
 3. Lancez le serveur de développement :

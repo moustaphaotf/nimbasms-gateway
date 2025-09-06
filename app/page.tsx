@@ -58,8 +58,8 @@ export default function LoginPage() {
           >
             <div className="space-y-4">
               <Image
-                src="/mtn-logo.png"
-                alt="MTN Logo"
+                src="/logo.png"
+                alt="Nimba SMS Gateway Logo"
                 width={120}
                 height={60}
                 priority
@@ -111,8 +111,8 @@ export default function LoginPage() {
         >
           <div className="flex flex-col items-center space-y-2 lg:hidden">
             <Image
-              src="/mtn-logo.png"
-              alt="MTN Logo"
+              src="/logo.png"
+              alt="Nimba SMS Gateway Logo"
               width={80}
               height={40}
               priority
