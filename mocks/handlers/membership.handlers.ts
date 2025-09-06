@@ -79,15 +79,14 @@ export const membershipHandlers = [
   http.post(
     `${BASE_URL}/v1${API_ENDPOINTS.MEMBERSHIP.CREATE}`,
     async ({ request }) => {
-      const memberData = await request.json();
-
+      const memberData: any = await request.json();
       return HttpResponse.json({
         id: Math.floor(Math.random() * 1000) + 100,
         user: {
           id: Math.floor(Math.random() * 1000) + 100,
-          email: memberData.email,
-          first_name: memberData.first_name,
-          last_name: memberData.last_name,
+          email: memberData?.email!,
+          first_name: memberData?.first_name!,
+          last_name: memberData?.last_name!,
           is_active: true,
         },
         organization: {
@@ -108,7 +107,7 @@ export const membershipHandlers = [
     `${BASE_URL}/auth/v1/memberships/:id/change_role`,
     async ({ params, request }) => {
       const membershipId = parseInt(params.id as string);
-      const { role } = await request.json();
+      const { role }: any = await request.json();
 
       if (isNaN(membershipId)) {
         return HttpResponse.json(
