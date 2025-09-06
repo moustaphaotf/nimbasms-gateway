@@ -91,8 +91,8 @@ export const membershipHandlers = [
         },
         organization: {
           id: 1,
-          name: "MTN Gateway Demo",
-          slug: "mtn-gateway-demo",
+          name: "Gateway Demo",
+          slug: "gateway-demo",
         },
         role: memberData.role || "member",
         is_active: true,

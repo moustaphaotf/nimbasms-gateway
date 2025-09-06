@@ -118,7 +118,7 @@ export default function LoginPage() {
               priority
             />
             <h1 className="text-2xl font-semibold text-center">
-              Administration SMS MTN
+              Administration Nimba SMS Gateway
             </h1>
           </div>
 
@@ -129,7 +129,7 @@ export default function LoginPage() {
         {/* Footer */}
         <footer className="m">
           <div className="container mx-auto px-4 py-6 text-center text-xs text-muted-foreground">
-            <p>© 2024 MTN. Tous droits réservés.</p>
+            <p>© 2025 Nimba SMS. Tous droits réservés.</p>
           </div>
         </footer>
       </div>
