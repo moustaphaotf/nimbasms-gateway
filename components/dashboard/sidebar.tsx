@@ -4,11 +4,17 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { LayoutDashboard, History, Key, FileDown, LogOut } from "lucide-react";
+import { useTheme } from "next-themes";
 import Image from "next/image";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function Sidebar({ className }: SidebarProps) {
+  const { theme } = useTheme();
+  
+  // Détermine le logo à utiliser selon le thème
+  const logoSrc = theme === "dark" ? "/logo.png" : "/logo-black.png";
+
   return (
     <div
       className={cn(
@@ -19,12 +25,11 @@ export function Sidebar({ className }: SidebarProps) {
       <div className="flex flex-col h-full">
         <div className="p-6">
           <Image
-            src="/logo.png"
+            src={logoSrc}
             alt="Nimba SMS Gateway Logo"
             width={60}
             height={30}
             priority
-            className="dark:brightness-0 dark:invert"
           />
         </div>
         <ScrollArea className="flex-1 px-3">

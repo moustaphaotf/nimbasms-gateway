@@ -6,6 +6,7 @@ import { LoginForm } from "@/components/auth/login-form";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import { auth } from "@/lib/auth";
 import { BarChart3, Key, Settings, Webhook } from "lucide-react";
 import { PROTECTED_ROUTES } from "@/lib/constants";
@@ -38,12 +39,16 @@ const features = [
 
 export default function LoginPage() {
   const router = useRouter();
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (auth.isAuthenticated()) {
       router.push(PROTECTED_ROUTES.DASHBOARD.url);
     }
   }, [router]);
+
+  // Détermine le logo à utiliser selon le thème
+  const logoSrc = theme === "dark" ? "/logo.png" : "/logo-black.png";
 
   return (
     <div className="min-h-screen flex bg-background">
@@ -58,7 +63,7 @@ export default function LoginPage() {
           >
             <div className="space-y-4">
               <Image
-                src="/logo.png"
+                src={logoSrc}
                 alt="Nimba SMS Gateway Logo"
                 width={120}
                 height={60}
@@ -111,7 +116,7 @@ export default function LoginPage() {
         >
           <div className="flex flex-col items-center space-y-2 lg:hidden">
             <Image
-              src="/logo.png"
+              src={logoSrc}
               alt="Nimba SMS Gateway Logo"
               width={80}
               height={40}
