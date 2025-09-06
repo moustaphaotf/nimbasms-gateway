@@ -9,11 +9,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { CreateSenderFormData } from "@/lib/schemas/sender.schema";
-import { SenderResponse } from "@/lib/api/types";
+import { SenderResponse, SenderStatus } from "@/lib/api/types";
 import { useUser } from "@/providers/user-provider";
 import { MAX_ITEMS_PER_PAGE, PROTECTED_ROUTES } from "@/lib/constants";
-import { DataSort } from "@/components/ui/data-sort";
+import { ComboBox } from "@/components/ui/combobox-select";
 import { PageHeader } from "@/components/layout/app-header";
+import { AdminSenderForm } from "@/components/senders/admin-sender-form";
 
 export default function SendersPage() {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -22,13 +23,15 @@ export default function SendersPage() {
   });
 
   const [ordering, setOrdering] = useState("");
+  const [status, setStatus] = useState<SenderStatus>();
   const [search, setSearch] = useState("");
 
   const { data, isLoading } = useSenders({
     offset: pagination.pageIndex * pagination.pageSize,
     limit: pagination.pageSize,
-    search,
-    ordering,
+    ...(search && { search }),
+    ...(ordering && { ordering }),
+    ...(status && { status }),
   });
 
   const createSender = useCreateSender();
@@ -42,8 +45,14 @@ export default function SendersPage() {
   const sortOptions = [
     { label: "Date (Plus récent)", value: "-added_at" },
     { label: "Date (Plus ancien)", value: "added_at" },
-    { label: "Nom d'expéditeur (A-Z)", value: "name" },
-    { label: "Nom d'expéditeur (Z-A)", value: "-name" },
+    { label: "Nom (A-Z)", value: "name" },
+    { label: "Nom (Z-A)", value: "-name" },
+  ];
+
+  const filterStatusOptions = [
+    { label: "Approuvé", value: "accepted" },
+    { label: "En attente", value: "pending" },
+    { label: "Rejeté", value: "refused" },
   ];
 
   const { user } = useUser();
@@ -57,15 +66,29 @@ export default function SendersPage() {
     <div className="space-y-6 p-6">
       <PageHeader title="Noms d'expéditeur" breadcrumbs={breadcrumbs} />
 
-      <Card className="p-6">
-        <SenderForm
-          onSubmit={handleCreateSender}
-          isSubmitting={createSender.isPending}
-        />
-      </Card>
+      {user && !user.isStaff ? (
+        <Card className="p-6">
+          <SenderForm
+            onSubmit={handleCreateSender}
+            isSubmitting={createSender.isPending}
+          />
+        </Card>
+      ) : (
+        <div className="text-end">
+          <AdminSenderForm />
+        </div>
+      )}
 
-      <div className="flex justify-end">
-        <DataSort
+      <div className="flex gap-4 justify-end">
+        <ComboBox
+          placeholder="Filtrer par statut"
+          value={status || ""}
+          onValueChange={(value) => setStatus(value as SenderStatus)}
+          options={filterStatusOptions}
+        />
+
+        <ComboBox
+          placeholder="Trier par..."
           value={ordering}
           onValueChange={setOrdering}
           options={sortOptions}

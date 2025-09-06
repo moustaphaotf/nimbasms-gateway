@@ -11,3 +11,20 @@ export interface Statistics {
   total_messages_failure: number;
   daily_usage: DailyUsage[];
 }
+
+export type CompanyUsageFilters = {
+  end_date?: string;
+  start_date?: string;
+  sender?: string;
+  owners?: string;
+};
+
+export interface CompanyUsage {
+  owner__uid: string;
+  owner__email: string;
+  owner__company_name: string;
+  count: {
+    operator: string;
+    count: number;
+  }[];
+}

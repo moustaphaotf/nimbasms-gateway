@@ -58,7 +58,7 @@ export const columns: ColumnDef<SenderResponse>[] = [
     accessorKey: "added_at",
     header: "Date d'ajout",
     cell: ({ row }) => {
-      return format(new Date(row.getValue("added_at")), "Pp", { locale: fr });
+      return format(new Date(row.getValue("added_at")), "PPp", { locale: fr });
     },
   },
   {

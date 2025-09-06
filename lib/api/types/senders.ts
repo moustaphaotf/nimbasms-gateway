@@ -5,10 +5,9 @@ export interface Sender {
   name: string;
   status: SenderStatus;
   added_at: string;
-}
-
-export interface CreateSenderRequest {
-  name: string;
+  owner: {
+    email: string;
+  }
 }
 
 export interface SenderResponse extends Sender {
@@ -29,4 +28,5 @@ export interface SenderFilters {
   search?: string;
   status?: SenderStatus;
   ordering?: string;
+  owner__email?: string;
 }

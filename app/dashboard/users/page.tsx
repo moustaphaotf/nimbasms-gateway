@@ -41,7 +41,11 @@ export default function UsersPage() {
     <div className="space-y-6 p-6">
       <PageHeader title="Gestion des Utilisateurs" breadcrumbs={breadcrumbs} />
 
-      <Tabs defaultValue="active-accounts">
+      <div className="flex justify-end">
+        <AddUserDialog open={showAddUser} onOpenChange={setShowAddUser} />
+      </div>
+
+      {/* <Tabs defaultValue="active-accounts">
         <TabsList>
           <TabsTrigger value="active-accounts">Comptes Actifs</TabsTrigger>
           <TabsTrigger value="ongoing-requests">Demandes en Cours</TabsTrigger>
@@ -53,7 +57,7 @@ export default function UsersPage() {
         <TabsContent value="ongoing-requests"></TabsContent>
 
         <TabsContent value="unactive-accounts"></TabsContent>
-      </Tabs>
+      </Tabs> */}
 
       <Card className="p-6">
         <DataTable
@@ -66,6 +70,7 @@ export default function UsersPage() {
           onSortingChange={setSorting}
           onSearch={setSearch}
           searchPlaceholder="Rechercher un utilisateur..."
+          rowCount={data?.count || 0}
         />
       </Card>
     </div>

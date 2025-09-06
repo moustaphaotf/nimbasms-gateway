@@ -10,43 +10,48 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function Sidebar({ className }: SidebarProps) {
   return (
-    <div className={cn("w-64 bg-sidebar border-r border-sidebar-border", className)}>
+    <div
+      className={cn(
+        "w-64 bg-sidebar border-r border-sidebar-border",
+        className
+      )}
+    >
       <div className="flex flex-col h-full">
         <div className="p-6">
-          <Image 
-            src="/mtn-logo.png" 
-            alt="MTN Logo" 
-            width={60} 
-            height={30} 
-            priority 
-            className="dark:brightness-0 dark:invert" 
+          <Image
+            src="/logo.png"
+            alt="Nimba SMS Gateway Logo"
+            width={60}
+            height={30}
+            priority
+            className="dark:brightness-0 dark:invert"
           />
         </div>
         <ScrollArea className="flex-1 px-3">
           <div className="space-y-2">
-            <Button 
-              variant="secondary" 
+            <Button
+              variant="secondary"
               className="w-full justify-start bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent/90"
             >
               <LayoutDashboard className="mr-2 h-4 w-4" />
               Tableau de Bord
             </Button>
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
             >
               <History className="mr-2 h-4 w-4" />
               Historique de consommation
             </Button>
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
             >
               <Key className="mr-2 h-4 w-4" />
               Clés API et webhooks
             </Button>
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
             >
               <FileDown className="mr-2 h-4 w-4" />
@@ -55,8 +60,8 @@ export function Sidebar({ className }: SidebarProps) {
           </div>
         </ScrollArea>
         <div className="p-6 mt-auto border-t border-sidebar-border">
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
           >
             <LogOut className="mr-2 h-4 w-4" />

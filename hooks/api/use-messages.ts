@@ -7,7 +7,11 @@ import {
 import { messagesService } from "@/lib/api/services";
 import { MessageFilters } from "@/lib/api/types";
 import { toast } from "react-toastify";
-import { CreateMessageFormData } from "@/lib/schemas/message.shema";
+import {
+  GrouppedMessageFormData,
+  SingleMessageFormData,
+  UploadSendMessagesFormData,
+} from "@/lib/schemas/message.shema";
 
 export function useMessages(filters?: MessageFilters) {
   return useQuery({
@@ -28,14 +32,50 @@ export function useCreateMessage() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (message: CreateMessageFormData) =>
+    mutationFn: (message: SingleMessageFormData) =>
       messagesService.createMessage(message),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["messages"] });
+      queryClient.invalidateQueries();
       toast.success("Message envoyé avec succès");
     },
     onError: () => {
       toast.error("Erreur lors de l'envoi du message");
+    },
+  });
+}
+
+export function useSendUploadedMessages() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (body: UploadSendMessagesFormData) =>
+      messagesService.sendUploadedMessages(body),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+      toast.info("L'envoi des messages est en cours...");
+      toast.info("Vous serez notifié par email à la fin du processus", {
+        delay: 2000,
+      });
+    },
+    onError: () => {
+      toast.error("Erreur lors de l'envoi des messages");
+    },
+  });
+}
+
+export function useSendGrouppedMessages() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (
+      data: Omit<GrouppedMessageFormData, "contacts"> & { contacts: string[] }
+    ) => messagesService.sendGrouppedMessages(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+      toast.success("Messages envoyés avec succès");
+    },
+    onError: () => {
+      toast.error("Erreur lors de l'envoi des messages");
     },
   });
 }

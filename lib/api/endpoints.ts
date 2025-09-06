@@ -7,7 +7,7 @@ export const API_ENDPOINTS = {
     REFRESH_TOKEN: "/auth/revoke-token",
     CHANGE_PASSWORD: "/auth/change-password",
     CREATE_USER: "/auth/create",
-    USER_LIST: "/auth/user-list",
+    USER_LIST: "/auth/user-list/",
     PROFILE_INFO: "/auth/profile-info",
   },
   ACCOUNT: {
@@ -19,6 +19,8 @@ export const API_ENDPOINTS = {
     LIST: "/messages/",
     DETAIL: (messageId: string) => `/messages/${messageId}/`,
     EXPORT: "/messages/export/",
+    UPLOAD_SEND: "/messages/csv_bulk_message/",
+    GROUP_SEND: "/messages/groups_message/",
   },
   SENDERS: {
     LIST: "/senders/",
@@ -27,9 +29,16 @@ export const API_ENDPOINTS = {
   },
   DASHBOARD: {
     STATS: "/statistics/",
+    REPORTING: "/statistics/reporting/",
   },
   EXPORTS: {
     LIST: "/exports/",
     CREATE: "/exports/",
-  }
+  },
+  MEMBERSHIP: {
+    CREATE: "/auth/v1/memberships",
+    LIST: "/auth/v1/memberships",
+    DETAIL: (id: string) => `/auth/v1/memberships/${id}`,
+    CHANGE_ROLE: (id: string) => `/auth/v1/memberships/${id}/change_role`,
+  },
 } as const;

@@ -1,14 +1,19 @@
-import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  keepPreviousData,
+} from "@tanstack/react-query";
 import { usersService, UserFilters } from "@/lib/api/services";
 import { CreateUserFormData } from "@/lib/schemas/user.schema";
 import { toast } from "react-toastify";
 
-export function useUsers(filters?: UserFilters) {
+export function useUsers(filters?: UserFilters, shouldFetch: boolean = true) {
   return useQuery({
     queryKey: ["users", filters],
     queryFn: () => usersService.getUsers(filters),
     placeholderData: keepPreviousData,
-
+    enabled: !!shouldFetch,
   });
 }
 

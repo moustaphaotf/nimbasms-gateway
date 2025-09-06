@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  ChevronsUpDown,
-  Edit2,
-  User2,
-} from "lucide-react";
+import { ChevronsUpDown, Edit2, User2 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -28,12 +24,14 @@ import Link from "next/link";
 import { useState } from "react";
 import { LogoutButton } from "../auth/logout-button";
 import { PROTECTED_ROUTES } from "@/lib/constants";
+import { useUser } from "@/providers/user-provider";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
 
   const { data, isLoading } = useProfileInfo();
   const [isHoverUserIcon, setIsHoveringUserIcon] = useState(false);
+  const { user } = useUser();
 
   return (
     <SidebarMenu>
@@ -94,6 +92,14 @@ export function NavUser() {
                   </div>
                 </div>
               </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {user && user?.organizations.length > 0 ? (
+                <DropdownMenuItem asChild>
+                  <Link href={PROTECTED_ROUTES.DASHBOARD.url + '?change-organization'}>
+                    Changer d&apos;organisation
+                  </Link>
+                </DropdownMenuItem>
+              ) : null}
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <LogoutButton />

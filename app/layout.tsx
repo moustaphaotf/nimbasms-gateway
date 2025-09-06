@@ -5,12 +5,13 @@ import { QueryProvider } from "@/providers/query-provider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider } from "@/providers/theme-provider";
+import { StartMockWorker } from "@/mocks/components/wrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MTN Dashboard",
-  description: "MTN SMS Dashboard",
+  title: "Nimba SMS Gateway Dashboard",
+  description: "Bienvenue dans l'espace d'administration de Nimba SMS Gateway SMS",
 };
 
 export default function RootLayout({
@@ -27,19 +28,19 @@ export default function RootLayout({
           enableSystem={false}
         >
           <QueryProvider>
-              {children}
-              <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-              />
+            <StartMockWorker>{children}</StartMockWorker>
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="colored"
+            />
           </QueryProvider>
         </ThemeProvider>
       </body>
