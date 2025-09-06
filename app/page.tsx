@@ -70,7 +70,7 @@ export default function LoginPage() {
                 priority
               /> */}
               <h1 className="text-4xl font-bold">
-                Plateforme d&apos;administration SMS
+                {process.env.NEXT_PUBLIC_APP_NAME}
               </h1>
               <p className="text-lg text-muted-foreground">
                 Gérez, surveillez et configurez vos services SMS en toute
