@@ -70,6 +70,7 @@ export default function UsersPage() {
           onSortingChange={setSorting}
           onSearch={setSearch}
           searchPlaceholder="Rechercher un utilisateur..."
+          rowCount={data?.count || 0}
         />
       </Card>
     </div>

@@ -53,6 +53,7 @@ export default function UsersPage() {
           pagination={pagination}
           onSortingChange={setSorting}
           searchPlaceholder="Rechercher un membre..."
+          rowCount={data?.count || 0}
         />
       </Card>
     </div>

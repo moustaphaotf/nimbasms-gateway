@@ -36,6 +36,7 @@ interface DataTableProps<TData, TValue> {
   isLoading?: boolean;
   columnVisibility?: Record<string, boolean>;
   onColumnVisibilityChange?: OnChangeFn<VisibilityState>;
+  rowCount?: number;
 }
 
 export function DataTable<TData, TValue>({
@@ -49,6 +50,7 @@ export function DataTable<TData, TValue>({
   onColumnVisibilityChange,
   onPaginationChange,
   pagination,
+  rowCount,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -188,7 +190,7 @@ export function DataTable<TData, TValue>({
                   table.getState().pagination.pageSize,
                 pageCount * table.getState().pagination.pageSize
               )}{" "}
-              sur {pageCount * table.getState().pagination.pageSize}
+              sur {rowCount}
             </div>
             <div className="flex items-center space-x-2">
               <Button

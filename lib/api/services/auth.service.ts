@@ -7,11 +7,11 @@ import {
   ProfileInfo,
 } from "../types";
 import { API_ENDPOINTS } from "../endpoints";
-import apiClient from "../client";
+import apiClient, { unauthenticatedClient } from "../client";
 
 export const authService = {
   requestEmailOTP: async (email: string) => {
-    const { data } = await apiClient.post<RequestOTPResponse>(
+    const { data } = await unauthenticatedClient.post<RequestOTPResponse>(
       API_ENDPOINTS.AUTH.REQUEST_EMAIL_OTP,
       { email }
     );
@@ -19,7 +19,7 @@ export const authService = {
   },
 
   requestMobileOTP: async (phone: string) => {
-    const { data } = await apiClient.post<RequestOTPResponse>(
+    const { data } = await unauthenticatedClient.post<RequestOTPResponse>(
       API_ENDPOINTS.AUTH.REQUEST_MOBILE_OTP,
       { phone }
     );
@@ -27,7 +27,7 @@ export const authService = {
   },
 
   validateEmailOTP: async (payload: ValidateOTPRequest) => {
-    const { data } = await apiClient.post<AuthTokens>(
+    const { data } = await unauthenticatedClient.post<AuthTokens>(
       API_ENDPOINTS.AUTH.VALIDATE_EMAIL_OTP,
       payload
     );
@@ -35,7 +35,7 @@ export const authService = {
   },
 
   validateMobileOTP: async (payload: ValidateOTPRequest) => {
-    const { data } = await apiClient.post<AuthTokens>(
+    const { data } = await unauthenticatedClient.post<AuthTokens>(
       API_ENDPOINTS.AUTH.VALIDATE_MOBILE_OTP,
       payload
     );
@@ -43,7 +43,7 @@ export const authService = {
   },
 
   refreshToken: async (refresh: string) => {
-    const { data } = await apiClient.post<RefreshTokenResponse>(
+    const { data } = await unauthenticatedClient.post<RefreshTokenResponse>(
       API_ENDPOINTS.AUTH.REFRESH_TOKEN,
       { refresh }
     );

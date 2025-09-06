@@ -66,6 +66,7 @@ export default function ExportPage() {
           onSearch={setSearch}
           searchPlaceholder="Rechercher dans les exportations..."
           isLoading={isLoading}
+          rowCount={data?.count || 0}
         />
       </Card>
     </div>

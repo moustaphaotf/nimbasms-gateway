@@ -38,6 +38,13 @@ function createApiClient(baseURL: string): AxiosInstance {
 // Create base API client
 const apiClient = createApiClient(process.env.NEXT_PUBLIC_API_URL || "");
 
+export const unauthenticatedClient = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 // Create v1 API client
 export const v1ApiClient = createApiClient(
   process.env.NEXT_PUBLIC_API_V1_PREFIX || ""

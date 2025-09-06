@@ -114,6 +114,7 @@ export default function HistoryPage() {
             columnVisibility={{
               owner: user !== null && user.isStaff,
             }}
+            rowCount={messages?.count || 0}
           />
         </div>
       </Card>
