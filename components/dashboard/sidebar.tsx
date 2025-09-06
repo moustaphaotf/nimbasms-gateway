@@ -23,7 +23,7 @@ export function Sidebar({ className }: SidebarProps) {
       )}
     >
       <div className="flex flex-col h-full">
-        <div className="p-6">
+        {/* <div className="p-6">
           <Image
             src={logoSrc}
             alt={process.env.NEXT_PUBLIC_APP_NAME + " Logo"}
@@ -31,7 +31,7 @@ export function Sidebar({ className }: SidebarProps) {
             height={30}
             priority
           />
-        </div>
+        </div> */}
         <ScrollArea className="flex-1 px-3">
           <div className="space-y-2">
             <Button

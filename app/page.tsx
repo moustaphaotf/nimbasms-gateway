@@ -62,13 +62,13 @@ export default function LoginPage() {
             className="space-y-8"
           >
             <div className="space-y-4">
-              <Image
+              {/* <Image
                 src={logoSrc}
                 alt={process.env.NEXT_PUBLIC_APP_NAME + " Logo"}
                 width={120}
                 height={60}
                 priority
-              />
+              /> */}
               <h1 className="text-4xl font-bold">
                 Plateforme d&apos;administration SMS
               </h1>
@@ -115,13 +115,13 @@ export default function LoginPage() {
           className="w-full max-w-md space-y-8 px-4"
         >
           <div className="flex flex-col items-center space-y-2 lg:hidden">
-            <Image
+            {/* <Image
               src={logoSrc}
               alt={process.env.NEXT_PUBLIC_APP_NAME + " Logo"}
               width={80}
               height={40}
               priority
-            />
+            /> */}
             <h1 className="text-2xl font-semibold text-center">
               Administration {process.env.NEXT_PUBLIC_APP_NAME}
             </h1>
