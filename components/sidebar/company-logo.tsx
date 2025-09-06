@@ -16,7 +16,7 @@ export function CompanyLogo() {
       <SidebarMenuItem>
         <Image
           src={logoSrc}
-          alt="Nimba SMS Gateway Logo"
+          alt={process.env.NEXT_PUBLIC_APP_NAME + " Logo"}
           width={60}
           height={30}
           priority

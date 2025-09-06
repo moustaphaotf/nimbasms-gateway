@@ -64,7 +64,7 @@ export default function LoginPage() {
             <div className="space-y-4">
               <Image
                 src={logoSrc}
-                alt="Nimba SMS Gateway Logo"
+                alt={process.env.NEXT_PUBLIC_APP_NAME + " Logo"}
                 width={120}
                 height={60}
                 priority
@@ -117,13 +117,13 @@ export default function LoginPage() {
           <div className="flex flex-col items-center space-y-2 lg:hidden">
             <Image
               src={logoSrc}
-              alt="Nimba SMS Gateway Logo"
+              alt={process.env.NEXT_PUBLIC_APP_NAME + " Logo"}
               width={80}
               height={40}
               priority
             />
             <h1 className="text-2xl font-semibold text-center">
-              Administration Nimba SMS Gateway
+              Administration {process.env.NEXT_PUBLIC_APP_NAME}
             </h1>
           </div>
 
@@ -134,7 +134,9 @@ export default function LoginPage() {
         {/* Footer */}
         <footer className="m">
           <div className="container mx-auto px-4 py-6 text-center text-xs text-muted-foreground">
-            <p>© 2025 Nimba SMS. Tous droits réservés.</p>
+            <p>
+              © 2025 {process.env.NEXT_PUBLIC_APP_NAME}. Tous droits réservés.
+            </p>
           </div>
         </footer>
       </div>

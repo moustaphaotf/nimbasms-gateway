@@ -10,8 +10,9 @@ import { StartMockWorker } from "@/mocks/components/wrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Nimba SMS Gateway Dashboard",
-  description: "Bienvenue dans l'espace d'administration de Nimba SMS Gateway SMS",
+  title: process.env.NEXT_PUBLIC_APP_NAME + " Dashboard",
+  description:
+    "Bienvenue dans l'espace d'administration de " + process.env.NEXT_PUBLIC_APP_NAME,
 };
 
 export default function RootLayout({
