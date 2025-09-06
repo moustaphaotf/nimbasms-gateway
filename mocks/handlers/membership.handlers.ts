@@ -30,7 +30,7 @@ const generateMockMembership = (id: number) => ({
 
 export const membershipHandlers = [
   // Get Members List
-  http.get(`${BASE_URL}/v1${API_ENDPOINTS.MEMBERSHIP.LIST}`, ({ request }) => {
+  http.get(`${BASE_URL}${API_ENDPOINTS.MEMBERSHIP.LIST}`, ({ request }) => {
     const url = new URL(request.url);
     const limit = parseInt(url.searchParams.get("limit") || "20");
     const offset = parseInt(url.searchParams.get("offset") || "0");
@@ -77,7 +77,7 @@ export const membershipHandlers = [
 
   // Create Member
   http.post(
-    `${BASE_URL}/v1${API_ENDPOINTS.MEMBERSHIP.CREATE}`,
+    `${BASE_URL}${API_ENDPOINTS.MEMBERSHIP.CREATE}`,
     async ({ request }) => {
       const memberData: any = await request.json();
       return HttpResponse.json({

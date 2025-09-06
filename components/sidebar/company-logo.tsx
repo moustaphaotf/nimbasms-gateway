@@ -7,10 +7,10 @@ import Image from "next/image";
 
 export function CompanyLogo() {
   const { theme } = useTheme();
-  
+
   // Détermine le logo à utiliser selon le thème
   const logoSrc = theme === "dark" ? "/logo.png" : "/logo-black.png";
-
+  return null;
   return (
     <SidebarMenu>
       <SidebarMenuItem>
